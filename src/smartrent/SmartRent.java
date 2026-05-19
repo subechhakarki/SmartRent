@@ -8,12 +8,13 @@ import database.Db;
 import database.mysqlConnection;
 
 public class SmartRent {
-
     public static void main(String[] args) {
-        // TODO code application logic here
-        Db database = new mysqlConnection();
-        database .openConnection();
         
+        // Test database connection
+        Db database = new mysqlConnection();
+        database.openConnection();
+        
+        // Generate admin hash - copy output, paste into schema.sql, then remove this line
+        System.out.println(PasswordUtil.hashPassword("Admin@1234"));
     }
-    
 }
