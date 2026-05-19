@@ -1,2 +1,2 @@
 package Controller;
-public class AdminController {}
+public class AdminController { public void approveOwner() {} }
