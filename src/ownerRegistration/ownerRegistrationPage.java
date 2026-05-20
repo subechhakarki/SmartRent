@@ -49,11 +49,11 @@ public class ownerRegistrationPage extends javax.swing.JFrame {
         jTextField6 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
-        jTextField10 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         haveAccount = new javax.swing.JLabel();
+        jPasswordField1 = new javax.swing.JPasswordField();
+        jPasswordField2 = new javax.swing.JPasswordField();
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -198,28 +198,6 @@ public class ownerRegistrationPage extends javax.swing.JFrame {
         });
         jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 320, 190, 30));
 
-        jTextField9.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
-        jTextField9.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField9FocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextField9FocusLost(evt);
-            }
-        });
-        jPanel1.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 460, 160, 30));
-
-        jTextField10.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
-        jTextField10.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField10FocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextField10FocusLost(evt);
-            }
-        });
-        jPanel1.add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 460, 190, 30));
-
         jButton2.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
         jButton2.setForeground(new java.awt.Color(0, 102, 102));
         jButton2.setText("Log in here");
@@ -238,6 +216,12 @@ public class ownerRegistrationPage extends javax.swing.JFrame {
         haveAccount.setForeground(new java.awt.Color(102, 102, 102));
         haveAccount.setText("Already have an account?");
         jPanel1.add(haveAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 600, -1, -1));
+
+        jPasswordField1.setToolTipText("");
+        jPanel1.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 460, 160, 30));
+
+        jPasswordField2.setToolTipText("");
+        jPanel1.add(jPasswordField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 460, 190, 30));
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ownerRegistration/owner registration.png"))); // NOI18N
         jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -323,22 +307,6 @@ public class ownerRegistrationPage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField8FocusLost
 
-    private void jTextField9FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField9FocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField9FocusGained
-
-    private void jTextField9FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField9FocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField9FocusLost
-
-    private void jTextField10FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField10FocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField10FocusGained
-
-    private void jTextField10FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField10FocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField10FocusLost
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -384,8 +352,9 @@ public class ownerRegistrationPage extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
@@ -393,7 +362,6 @@ public class ownerRegistrationPage extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel password;
     private javax.swing.JLabel registration;
     // End of variables declaration//GEN-END:variables
