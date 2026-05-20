@@ -3,46 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/RenterRegisterView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/LandingView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/database/mysqlConnection.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Controller/AuthController.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Controller/AdminController.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Controller/PropertyController.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Controller/ApplicationController.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Controller/LeaseController.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Controller/RatingController.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/DAO/UserDAO.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/DAO/PropertyDAO.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/DAO/ApplicationDAO.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/DAO/LeaseDAO.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/DAO/RatingDAO.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/DAO/SavedPropertyDAO.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/User.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/PropertyOwner.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/Renter.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/Property.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/PropertyImage.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/RentalApplication.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/Lease.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/PropertyRating.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/SavedProperty.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/smartrent/SessionService.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/smartrent/PasswordUtil.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/smartrent/ValidationUtil.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/LoginView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/OwnerRegisterView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/AdminDashboardView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/OwnerDashboardView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/RenterDashboardView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/PropertyFormView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/ApplicationFormView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/ApplicationListView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/MyApplicationsView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/LeaseFormView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/PropertyRatingView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/SavedPropertiesView.java</file>
-            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/database/Db.java</file>
+            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/SmartRent/src/view/OwnerRegisterView.java</file>
+            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/SmartRent/src/view/LandingView.java</file>
+            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/SmartRent/src/ownerRegistration/owner%20registration.png</file>
+            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/SmartRent/src/view/PropertyFormView.java</file>
+            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/SmartRent/src/view/OwnerDashboardView.java</file>
+            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/SmartRent/src/view/RenterDashboardView.java</file>
+            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/SmartRent/src/view/SavedPropertiesView.java</file>
+            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/SmartRent/src/view/RenterRegisterView.java</file>
+            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/SmartRent/src/ownerRegistration/ownerRegistration.java</file>
+            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/SmartRent/src/ownerRegistration/ownerRegistrationPage.java</file>
         </group>
     </open-files>
 </project-private>

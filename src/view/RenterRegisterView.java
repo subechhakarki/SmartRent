@@ -58,6 +58,7 @@ public class RenterRegisterView extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(102, 102, 102));
         jLabel3.setText("Fill in your details to create your account");
+        jLabel3.setToolTipText("");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 200, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Gadugi", 1, 16)); // NOI18N
