@@ -13,10 +13,14 @@ public class LandingView extends javax.swing.JPanel {
     /**
      * Creates new form LandingPage
      */
-    public LandingView() {
-        initComponents();
-    }
-
+    private smartrent.MainFrame mainFrame;
+    
+    public LandingView(smartrent.MainFrame mainFrame) {
+    initComponents();
+    this.mainFrame = mainFrame;
+    jLabel1.getParent().setComponentZOrder(jLabel1, jLabel1.getParent().getComponentCount() - 1);
+}
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,20 +32,20 @@ public class LandingView extends javax.swing.JPanel {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jLabel15 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
@@ -49,10 +53,14 @@ public class LandingView extends javax.swing.JPanel {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setFont(new java.awt.Font("Gadugi", 1, 26)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 102, 102));
-        jLabel2.setText("Welcome to SmartRent");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 160, -1, -1));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel5.setText("Log In");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 280, -1, 40));
+
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Screenshot_2026-05-21_120713-removebg-preview.png"))); // NOI18N
+        jLabel15.setText("jbvjgh");
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 300, 60, 50));
 
         jLabel3.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(102, 102, 102));
@@ -63,11 +71,6 @@ public class LandingView extends javax.swing.JPanel {
         jLabel4.setForeground(new java.awt.Color(51, 102, 0));
         jLabel4.setText("Register");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 380, 70, 40));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 102, 102));
-        jLabel5.setText("Log In");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 280, -1, 40));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 102));
@@ -83,6 +86,11 @@ public class LandingView extends javax.swing.JPanel {
         jLabel9.setText("Access your existing account ");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 310, 160, 30));
 
+        jLabel2.setFont(new java.awt.Font("Gadugi", 1, 26)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel2.setText("Welcome to SmartRent");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 160, -1, -1));
+
         jLabel10.setText("a renter.");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 430, -1, 20));
 
@@ -96,14 +104,12 @@ public class LandingView extends javax.swing.JPanel {
         jLabel14.setText("jbvjgh");
         jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 510, 60, 50));
 
+        jButton2.setContentAreaFilled(false);
         jButton2.addActionListener(this::jButton2ActionPerformed);
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 490, 280, 80));
 
-        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Screenshot_2026-05-21_120713-removebg-preview.png"))); // NOI18N
-        jLabel15.setText("jbvjgh");
-        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 300, 60, 50));
-
         jButton3.setFont(new java.awt.Font("Gadugi", 1, 18)); // NOI18N
+        jButton3.setContentAreaFilled(false);
         jButton3.addActionListener(this::jButton3ActionPerformed);
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 280, 280, 80));
 
@@ -111,6 +117,7 @@ public class LandingView extends javax.swing.JPanel {
         jLabel16.setText("jbvjgh");
         jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 400, 60, 50));
 
+        jButton4.setContentAreaFilled(false);
         jButton4.addActionListener(this::jButton4ActionPerformed);
         jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 380, 280, 80));
 
@@ -134,15 +141,14 @@ public class LandingView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        mainFrame.showPanel("LOGIN");    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        mainFrame.showPanel("RENTER_REGISTER");
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        mainFrame.showPanel("OWNER_REGISTER");
     }//GEN-LAST:event_jButton2ActionPerformed
 
 

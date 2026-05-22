@@ -13,8 +13,11 @@ public class RenterRegisterView extends javax.swing.JPanel {
     /**
      * Creates new form SignUp_RenterRegistration
      */
-    public RenterRegisterView() {
-        initComponents();
+    private smartrent.MainFrame mainFrame;
+
+    public RenterRegisterView(smartrent.MainFrame mainFrame) {
+    initComponents();
+    this.mainFrame = mainFrame;
     }
 
     /**
@@ -100,8 +103,10 @@ public class RenterRegisterView extends javax.swing.JPanel {
         btnLogin.setForeground(new java.awt.Color(0, 102, 102));
         btnLogin.setText("Log in here");
         btnLogin.setBorder(null);
+        btnLogin.setBorderPainted(false);
+        btnLogin.setContentAreaFilled(false);
         btnLogin.addActionListener(this::btnLoginActionPerformed);
-        jPanel1.add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 630, -1, -1));
+        jPanel1.add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 630, -1, -1));
         jPanel1.add(txtConfirmPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 510, 290, 40));
         jPanel1.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 430, 290, 40));
 
@@ -133,11 +138,30 @@ public class RenterRegisterView extends javax.swing.JPanel {
     }//GEN-LAST:event_txtUsernameActionPerformed
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
-        // TODO add your handling code here:
+    String fullName = txtUsername.getText().trim();
+    String email = txtEmail.getText().trim();
+    String password = new String(txtPassword.getPassword());
+    String confirmPassword = new String(txtConfirmPassword.getPassword());
+
+    Controller.AuthController authController = new Controller.AuthController();
+    String result = authController.registerRenter(fullName, email, password, confirmPassword);
+
+    if (result.equals("SUCCESS")) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Account created successfully! Please log in.",
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        mainFrame.showPanel("LOGIN");
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            result,
+            "Registration Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
+    mainFrame.showPanel("LOGIN");
     }//GEN-LAST:event_btnLoginActionPerformed
 
 

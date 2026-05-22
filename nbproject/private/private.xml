@@ -22,6 +22,17 @@
             <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/database/Db.java</file>
             <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/schema.sql</file>
             <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/smartrent/SmartRent.java</file>
+            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/Renter.java</file>
+            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/DAO/UserDAO.java</file>
+            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Controller/AdminController.java</file>
+            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/Lease.java</file>
+            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/Property.java</file>
+            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/PropertyImage.java</file>
+            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/PropertyOwner.java</file>
+            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/PropertyRating.java</file>
+            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/RentalApplication.java</file>
+            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/SavedProperty.java</file>
+            <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/smartrent/SessionService.java</file>
         </group>
     </open-files>
 </project-private>
