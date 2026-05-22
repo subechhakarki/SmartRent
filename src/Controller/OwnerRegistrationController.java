@@ -47,12 +47,13 @@ public class OwnerRegistrationController {
                 String businessEmail = ownerView.getBusinessEmailField().getText();
                 String password = new String(ownerView.getPasswordField().getPassword());
                 String confirmPassword = new String(ownerView.getConfirmPasswordField().getPassword());
+                String hashedPassword = Integer.toHexString(password.hashCode());
                 
                 OwnerRegistration owner = new OwnerRegistration(
-                        fullName, email, phoneNumber, address,
-                        businessName, registrationNumber,
-                        businessAddress, businessEmail,
-                        password, confirmPassword
+                fullName, email, phoneNumber, address,
+                businessName, registrationNumber,
+                businessAddress, businessEmail,
+                hashedPassword, hashedPassword
                 );
                 
                 if (!password.equals(confirmPassword)) {
