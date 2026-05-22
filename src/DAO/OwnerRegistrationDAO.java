@@ -3,15 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package DAO;
-import database.mysqlConnection;
+import database.OwnerDBConnection;
 import Model.OwnerRegistration;
 import java.sql.*;
 public class OwnerRegistrationDAO {
-    mysqlConnection mysql = new mysqlConnection();
+    OwnerDBConnection mysql = new OwnerDBConnection();
     
     public void createOwner(OwnerRegistration owner){
         Connection conn = mysql.openConnection();
-        String sql = "insert into owners(full_name, email, phone_number, address, business_name, registration_number, business_address, business_email, password) values (?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into property_owners(full_name, email, phone_number, address, business_name, registration_number, business_address, business_email, password) values (?,?,?,?,?,?,?,?,?)";
         try(PreparedStatement pstm = conn.prepareStatement(sql)){
             pstm.setString(1, owner.getFullName());
             pstm.setString(2, owner.getEmail());
@@ -32,7 +32,7 @@ public class OwnerRegistrationDAO {
     
     public boolean checkOwner(OwnerRegistration owner){
         Connection conn = mysql.openConnection();
-        String sql = "SELECT * FROM owners where email = ? or registration_number = ?";
+        String sql = "SELECT * FROM property_owners where email = ? or registration_number = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, owner.getEmail());
             pstmt.setString(2, owner.getRegistrationNumber());
