@@ -18,8 +18,9 @@ public class OwnerRegistrationPage extends javax.swing.JFrame {
      * Creates new form ownerRegistrationPage
      */
     public OwnerRegistrationPage() {
-        initComponents();
-    }
+    initComponents();
+    new Controller.OwnerRegistrationController(this);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
