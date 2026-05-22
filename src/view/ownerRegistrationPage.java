@@ -4,18 +4,20 @@
  */
 package view;
 
+import java.awt.event.ActionListener;
+
 /**
  *
- * @author ASUS
+ * @author Bibek Bidari
  */
-public class ownerRegistrationPage extends javax.swing.JFrame {
+public class OwnerRegistrationPage extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ownerRegistrationPage.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(OwnerRegistrationPage.class.getName());
 
     /**
      * Creates new form ownerRegistrationPage
      */
-    public ownerRegistrationPage() {
+    public OwnerRegistrationPage() {
         initComponents();
     }
 
@@ -50,7 +52,7 @@ public class ownerRegistrationPage extends javax.swing.JFrame {
         jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        CreateOwnerAccount = new javax.swing.JButton();
         haveAccount = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
         jPasswordField2 = new javax.swing.JPasswordField();
@@ -206,11 +208,11 @@ public class ownerRegistrationPage extends javax.swing.JFrame {
         jButton2.addActionListener(this::jButton2ActionPerformed);
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 602, 70, -1));
 
-        jButton1.setBackground(new java.awt.Color(0, 102, 102));
-        jButton1.setFont(new java.awt.Font("Gadugi", 1, 16)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Create Owner Account");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 560, 240, 30));
+        CreateOwnerAccount.setBackground(new java.awt.Color(0, 102, 102));
+        CreateOwnerAccount.setFont(new java.awt.Font("Gadugi", 1, 16)); // NOI18N
+        CreateOwnerAccount.setForeground(new java.awt.Color(255, 255, 255));
+        CreateOwnerAccount.setText("Create Owner Account");
+        jPanel1.add(CreateOwnerAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 560, 240, 30));
 
         haveAccount.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         haveAccount.setForeground(new java.awt.Color(102, 102, 102));
@@ -333,7 +335,7 @@ public class ownerRegistrationPage extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new ownerRegistrationPage().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new OwnerRegistrationPage().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -341,6 +343,7 @@ public class ownerRegistrationPage extends javax.swing.JFrame {
     private javax.swing.JLabel BusinessAddress;
     private javax.swing.JLabel BusinessEmail;
     private javax.swing.JLabel ConfirmPassword;
+    private javax.swing.JButton CreateOwnerAccount;
     private javax.swing.JLabel Email;
     private javax.swing.JLabel Fullname;
     private javax.swing.JLabel Head;
@@ -349,7 +352,6 @@ public class ownerRegistrationPage extends javax.swing.JFrame {
     private javax.swing.JLabel businessName;
     private javax.swing.JLabel fill;
     private javax.swing.JLabel haveAccount;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
@@ -365,4 +367,82 @@ public class ownerRegistrationPage extends javax.swing.JFrame {
     private javax.swing.JLabel password;
     private javax.swing.JLabel registration;
     // End of variables declaration//GEN-END:variables
+/**
+     * @return the fullNameField
+     */
+    public javax.swing.JTextField getFullNameField() {
+        return jTextField3;
+    }
+    
+    /**
+     * @return the emailField
+     */
+    public javax.swing.JTextField getEmailField() {
+        return jTextField2;
+    }
+    
+    /**
+     * @return the phoneNumberField
+     */
+    public javax.swing.JTextField getPhoneNumberField() {
+        return jTextField4;
+    }
+    
+    /**
+     * @return the addressField
+     */
+    public javax.swing.JTextField getAddressField() {
+        return jTextField1;
+    }
+    
+    /**
+     * @return the businessNameField
+     */
+    public javax.swing.JTextField getBusinessNameField() {
+        return jTextField5;
+    }
+    
+    /**
+     * @return the registrationNumberField
+     */
+    public javax.swing.JTextField getRegistrationNumberField() {
+        return jTextField8;
+    }
+    
+    /**
+     * @return the businessAddressField
+     */
+    public javax.swing.JTextField getBusinessAddressField() {
+        return jTextField7;
+    }
+    
+    /**
+     * @return the businessEmailField
+     */
+    public javax.swing.JTextField getBusinessEmailField() {
+        return jTextField6;
+    }
+    
+    /**
+     * @return the passwordField
+     */
+    public javax.swing.JPasswordField getPasswordField() {
+        return jPasswordField1;
+    }
+    
+    /**
+     * @return the confirmPasswordField
+     */
+    public javax.swing.JPasswordField getConfirmPasswordField() {
+        return jPasswordField2;
+    }
+    
+    /**
+     * @param listener
+     */
+    public void addCreateAccountListener(ActionListener listener) {
+        CreateOwnerAccount.addActionListener(listener);
+    }
+    
+    
 }
