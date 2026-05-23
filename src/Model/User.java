@@ -34,6 +34,7 @@ public class User {
         this.userStatus = userStatus;
         this.phone = phone;
     }
+    
 
     public int getUserId() { return userId; }
     public String getFullName() { return fullName; }

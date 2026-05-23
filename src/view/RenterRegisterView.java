@@ -13,8 +13,11 @@ public class RenterRegisterView extends javax.swing.JPanel {
     /**
      * Creates new form SignUp_RenterRegistration
      */
-    public RenterRegisterView() {
-        initComponents();
+    private smartrent.MainFrame mainFrame;
+
+    public RenterRegisterView(smartrent.MainFrame mainFrame) {
+    initComponents();
+    this.mainFrame = mainFrame;
     }
 
     /**
@@ -28,18 +31,18 @@ public class RenterRegisterView extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtUsername = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnRegister = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btnLogin = new javax.swing.JButton();
+        txtConfirmPassword = new javax.swing.JPasswordField();
+        txtPassword = new javax.swing.JPasswordField();
         jLabel8 = new javax.swing.JLabel();
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -49,11 +52,11 @@ public class RenterRegisterView extends javax.swing.JPanel {
         jLabel2.setText("Register as a Renter");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 160, -1, -1));
 
-        jTextField1.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(102, 102, 102));
-        jTextField1.setText("Enter your email address");
-        jTextField1.addActionListener(this::jTextField1ActionPerformed);
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 350, 290, 40));
+        txtEmail.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
+        txtEmail.setForeground(new java.awt.Color(102, 102, 102));
+        txtEmail.setText("Enter your email address");
+        txtEmail.addActionListener(this::txtEmailActionPerformed);
+        jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 350, 290, 40));
 
         jLabel3.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(102, 102, 102));
@@ -65,28 +68,16 @@ public class RenterRegisterView extends javax.swing.JPanel {
         jLabel4.setText("Email Address");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 320, -1, -1));
 
-        jTextField4.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
-        jTextField4.setForeground(new java.awt.Color(102, 102, 102));
-        jTextField4.setText("Create a password");
-        jTextField4.addActionListener(this::jTextField4ActionPerformed);
-        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 430, 290, 40));
-
-        jTextField2.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(102, 102, 102));
-        jTextField2.setText("Enter your username");
-        jTextField2.addActionListener(this::jTextField2ActionPerformed);
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 270, 290, 40));
+        txtUsername.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
+        txtUsername.setForeground(new java.awt.Color(102, 102, 102));
+        txtUsername.setText("Enter your username");
+        txtUsername.addActionListener(this::txtUsernameActionPerformed);
+        jPanel1.add(txtUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 270, 290, 40));
 
         jLabel5.setFont(new java.awt.Font("Gadugi", 1, 16)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
         jLabel5.setText("Password");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 400, -1, -1));
-
-        jTextField3.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
-        jTextField3.setForeground(new java.awt.Color(102, 102, 102));
-        jTextField3.setText("Confirm your password");
-        jTextField3.addActionListener(this::jTextField3ActionPerformed);
-        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 510, 290, 40));
 
         jLabel7.setFont(new java.awt.Font("Gadugi", 1, 16)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
@@ -98,22 +89,26 @@ public class RenterRegisterView extends javax.swing.JPanel {
         jLabel9.setText("UserName");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 240, -1, -1));
 
-        jButton1.setBackground(new java.awt.Color(0, 102, 102));
-        jButton1.setFont(new java.awt.Font("Gadugi", 1, 16)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Create Your Renter Account");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 570, 290, 40));
+        btnRegister.setBackground(new java.awt.Color(0, 102, 102));
+        btnRegister.setFont(new java.awt.Font("Gadugi", 1, 16)); // NOI18N
+        btnRegister.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegister.setText("Create Your Renter Account");
+        btnRegister.addActionListener(this::btnRegisterActionPerformed);
+        jPanel1.add(btnRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 570, 290, 40));
 
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
         jLabel1.setText("Already have an account?");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 630, -1, -1));
 
-        jButton2.setForeground(new java.awt.Color(0, 102, 102));
-        jButton2.setText("Log in here");
-        jButton2.setBorder(null);
-        jButton2.addActionListener(this::jButton2ActionPerformed);
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 630, -1, -1));
+        btnLogin.setForeground(new java.awt.Color(0, 102, 102));
+        btnLogin.setText("Log in here");
+        btnLogin.setBorder(null);
+        btnLogin.setBorderPainted(false);
+        btnLogin.setContentAreaFilled(false);
+        btnLogin.addActionListener(this::btnLoginActionPerformed);
+        jPanel1.add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 630, -1, -1));
+        jPanel1.add(txtConfirmPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 510, 290, 40));
+        jPanel1.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 430, 290, 40));
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Screenshot 2026-05-17 221219.png"))); // NOI18N
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1010, 730));
@@ -134,34 +129,45 @@ public class RenterRegisterView extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtEmailActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtUsernameActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+    String fullName = txtUsername.getText().trim();
+    String email = txtEmail.getText().trim();
+    String password = new String(txtPassword.getPassword());
+    String confirmPassword = new String(txtConfirmPassword.getPassword());
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    Controller.AuthController authController = new Controller.AuthController();
+    String result = authController.registerRenter(fullName, email, password, confirmPassword);
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    if (result.equals("SUCCESS")) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Account created successfully! Please log in.",
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        mainFrame.showPanel("LOGIN");
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            result,
+            "Registration Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_btnRegisterActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+    mainFrame.showPanel("LOGIN");
+    }//GEN-LAST:event_btnLoginActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnRegister;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -171,9 +177,9 @@ public class RenterRegisterView extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JPasswordField txtConfirmPassword;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }
