@@ -10,6 +10,7 @@ import database.mysqlConnection;
 
 public class SmartRent {
     public static void main(String[] args) {
+<<<<<<< HEAD
 
         // Test database connection
         Db database = new mysqlConnection();
@@ -19,5 +20,14 @@ public class SmartRent {
         java.awt.EventQueue.invokeLater(() -> {
             new MainFrame().setVisible(true);
         });
+=======
+        
+        // Test database connection
+        Db database = new mysqlConnection();
+        database.openConnection();
+        
+        // Generate admin hash - copy output, paste into schema.sql, then remove this line
+        System.out.println(PasswordUtil.hashPassword("Admin@1234"));
+>>>>>>> owner-registration/bibek-bidari
     }
 }

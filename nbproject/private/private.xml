@@ -2,6 +2,7 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group>
             <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/RenterRegisterView.java</file>
             <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/view/LandingView.java</file>
@@ -34,5 +35,8 @@
             <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/Model/SavedProperty.java</file>
             <file>file:/C:/Users/Subechha%20Karki/Documents/NetBeansProjects/SmartRent/src/smartrent/SessionService.java</file>
         </group>
+=======
+        <group/>
+>>>>>>> owner-registration/bibek-bidari
     </open-files>
 </project-private>
