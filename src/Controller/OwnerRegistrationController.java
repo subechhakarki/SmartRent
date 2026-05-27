@@ -32,6 +32,7 @@ public class OwnerRegistrationController {
     }
     public void close() {
         this.ownerView.dispose();
+        new view.LoginView().setVisible(true);
     }
     class CreateAccountListener implements ActionListener {
         @Override
