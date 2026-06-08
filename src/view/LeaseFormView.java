@@ -1,2 +1,2 @@
 package view;
-public class LeaseFormView extends javax.swing.JPanel { public LeaseFormView() { initComponents(); } private void initComponents() {} }
+public class LeaseFormView extends javax.swing.JPanel { private javax.swing.JTextField txtRent; public LeaseFormView() { initComponents(); } private void initComponents() { txtRent = new javax.swing.JTextField(); } }
