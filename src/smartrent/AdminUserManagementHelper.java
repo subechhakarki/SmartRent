@@ -1,2 +1,2 @@
 package smartrent;
-public class AdminUserManagementHelper {}
+public class AdminUserManagementHelper { public void manage() {} }
