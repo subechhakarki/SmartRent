@@ -1,2 +1,2 @@
 package smartrent;
-public class AutoUpdateHelper {}
+public class AutoUpdateHelper { public void updateStatus() {} }
