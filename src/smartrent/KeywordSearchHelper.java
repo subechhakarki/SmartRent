@@ -1,2 +1,2 @@
 package smartrent;
-public class KeywordSearchHelper {}
+public class KeywordSearchHelper { public void filter() {} }
