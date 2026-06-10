@@ -16,10 +16,15 @@ public class LandingView extends javax.swing.JPanel {
     private smartrent.MainFrame mainFrame;
     
     public LandingView(smartrent.MainFrame mainFrame) {
-    initComponents();
-    this.mainFrame = mainFrame;
-    jLabel1.getParent().setComponentZOrder(jLabel1, jLabel1.getParent().getComponentCount() - 1);
-}
+        initComponents();
+        this.mainFrame = mainFrame;
+        if (jLabel1.getParent() != null) {
+            jLabel1.getParent().setComponentZOrder(jLabel1, jLabel1.getParent().getComponentCount() - 1);
+            jLabel1.getParent().setComponentZOrder(jButton2, 0);
+            jLabel1.getParent().setComponentZOrder(jButton3, 0);
+            jLabel1.getParent().setComponentZOrder(jButton4, 0);
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -141,14 +146,21 @@ public class LandingView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        mainFrame.showPanel("LOGIN");    }//GEN-LAST:event_jButton3ActionPerformed
+        new view.LoginView().setVisible(true);
+        if (mainFrame != null) {
+            mainFrame.dispose();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         mainFrame.showPanel("RENTER_REGISTER");
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        mainFrame.showPanel("OWNER_REGISTER");
+        new view.OwnerRegistrationPage().setVisible(true);
+        if (mainFrame != null) {
+            mainFrame.dispose();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
 
