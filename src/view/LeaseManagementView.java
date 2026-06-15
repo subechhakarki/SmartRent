@@ -3,7 +3,7 @@ package view;
 import Controller.LeaseController;
 import Model.Lease;
 import Model.User;
-import smartrent.SessionService;
+import Controller.SessionService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,9 +15,9 @@ import java.util.ArrayList;
 public class LeaseManagementView extends javax.swing.JFrame {
 
     private LeaseController leaseController;
-    private javax.swing.JButton btnPrev;
-    private javax.swing.JButton btnNext;
-    private javax.swing.JPanel pnlPageNumbers;
+    public javax.swing.JButton btnPrev;
+    public javax.swing.JButton btnNext;
+    public javax.swing.JPanel pnlPageNumbers;
 
     public LeaseManagementView() {
         initComponents();
@@ -37,6 +37,8 @@ public class LeaseManagementView extends javax.swing.JFrame {
 
         pnlSidebar = new javax.swing.JPanel();
         lblLogo = new javax.swing.JLabel();
+        lblLogo.setBackground(new java.awt.Color(209, 232, 237));
+        lblLogo.setOpaque(true);
         btnNavDashboard = new javax.swing.JButton();
         btnNavMyProperties = new javax.swing.JButton();
         btnNavLeaseManagement = new javax.swing.JButton();
@@ -75,9 +77,9 @@ public class LeaseManagementView extends javax.swing.JFrame {
 
         lblLogo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         lblLogo.setForeground(new java.awt.Color(255, 255, 255));
-        lblLogo.setText("SmartRent");
+        lblLogo.setText("");
         pnlSidebar.add(lblLogo);
-        lblLogo.setBounds(20, 20, 160, 40);
+        lblLogo.setBounds(0, 0, 200, 80);
 
         btnNavDashboard.setBackground(new java.awt.Color(60, 110, 113));
         btnNavDashboard.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -88,7 +90,7 @@ public class LeaseManagementView extends javax.swing.JFrame {
         btnNavDashboard.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnNavDashboard.setMargin(new java.awt.Insets(2, 20, 2, 14));
         pnlSidebar.add(btnNavDashboard);
-        btnNavDashboard.setBounds(0, 80, 200, 40);
+        btnNavDashboard.setBounds(0, 100, 200, 40);
 
         btnNavMyProperties.setBackground(new java.awt.Color(60, 110, 113));
         btnNavMyProperties.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -99,7 +101,7 @@ public class LeaseManagementView extends javax.swing.JFrame {
         btnNavMyProperties.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnNavMyProperties.setMargin(new java.awt.Insets(2, 20, 2, 14));
         pnlSidebar.add(btnNavMyProperties);
-        btnNavMyProperties.setBounds(0, 120, 200, 40);
+        btnNavMyProperties.setBounds(0, 140, 200, 40);
 
         btnNavLeaseManagement.setBackground(new java.awt.Color(80, 128, 128));
         btnNavLeaseManagement.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -110,7 +112,7 @@ public class LeaseManagementView extends javax.swing.JFrame {
         btnNavLeaseManagement.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnNavLeaseManagement.setMargin(new java.awt.Insets(2, 20, 2, 14));
         pnlSidebar.add(btnNavLeaseManagement);
-        btnNavLeaseManagement.setBounds(0, 160, 200, 40);
+        btnNavLeaseManagement.setBounds(0, 180, 200, 40);
 
         btnNavLogout.setBackground(new java.awt.Color(60, 110, 113));
         btnNavLogout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -121,7 +123,7 @@ public class LeaseManagementView extends javax.swing.JFrame {
         btnNavLogout.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnNavLogout.setMargin(new java.awt.Insets(2, 20, 2, 14));
         pnlSidebar.add(btnNavLogout);
-        btnNavLogout.setBounds(0, 220, 200, 40);
+        btnNavLogout.setBounds(0, 240, 200, 40);
 
         getContentPane().add(pnlSidebar);
         pnlSidebar.setBounds(0, 0, 200, 800);
@@ -292,50 +294,38 @@ public class LeaseManagementView extends javax.swing.JFrame {
         leaseController.logout(this);
     }//GEN-LAST:event_btnNavLogoutActionPerformed
 
-    public javax.swing.JLabel getLblWelcome() { return lblWelcome; }
-    public javax.swing.JLabel getLblActiveLeases() { return lblActiveLeases; }
-    public javax.swing.JLabel getLblExpiredLeases() { return lblExpiredLeases; }
-    public javax.swing.JLabel getLblTerminatedLeases() { return lblTerminatedLeases; }
-    public javax.swing.JLabel getLblEntriesSummary() { return lblEntriesSummary; }
 
-    public javax.swing.JPanel getPnlTableBody() { return pnlTableBody; }
-    public javax.swing.JPanel getPnlPagination() { return pnlPagination; }
-    public javax.swing.JScrollPane getScrollTable() { return scrollTable; }
-    public javax.swing.JPanel getPnlCard() { return pnlCard; }
 
-    public javax.swing.JButton getBtnPrev() { return btnPrev; }
-    public javax.swing.JButton getBtnNext() { return btnNext; }
-    public javax.swing.JPanel getPnlPageNumbers() { return pnlPageNumbers; }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnNavDashboard;
-    private javax.swing.JButton btnNavLeaseManagement;
-    private javax.swing.JButton btnNavLogout;
-    private javax.swing.JButton btnNavMyProperties;
-    private javax.swing.JLabel lblActiveLeases;
-    private javax.swing.JLabel lblColActions;
-    private javax.swing.JLabel lblColEndDate;
-    private javax.swing.JLabel lblColProperty;
-    private javax.swing.JLabel lblColRentAmount;
-    private javax.swing.JLabel lblColStartDate;
-    private javax.swing.JLabel lblColStatus;
-    private javax.swing.JLabel lblColTenant;
-    private javax.swing.JLabel lblEntriesSummary;
-    private javax.swing.JLabel lblExpiredLeases;
-    private javax.swing.JLabel lblHeaderTitle;
-    private javax.swing.JLabel lblLeaseManagementTitle;
-    private javax.swing.JLabel lblLogo;
-    private javax.swing.JLabel lblTerminatedLeases;
-    private javax.swing.JLabel lblWelcome;
-    private javax.swing.JPanel pnlActiveLeases;
-    private javax.swing.JPanel pnlCard;
-    private javax.swing.JPanel pnlExpiredLeases;
-    private javax.swing.JPanel pnlHeader;
-    private javax.swing.JPanel pnlPagination;
-    private javax.swing.JPanel pnlSidebar;
-    private javax.swing.JPanel pnlTableBody;
-    private javax.swing.JPanel pnlTableHeader;
-    private javax.swing.JPanel pnlTerminatedLeases;
-    private javax.swing.JScrollPane scrollTable;
+    public javax.swing.JButton btnNavDashboard;
+    public javax.swing.JButton btnNavLeaseManagement;
+    public javax.swing.JButton btnNavLogout;
+    public javax.swing.JButton btnNavMyProperties;
+    public javax.swing.JLabel lblActiveLeases;
+    public javax.swing.JLabel lblColActions;
+    public javax.swing.JLabel lblColEndDate;
+    public javax.swing.JLabel lblColProperty;
+    public javax.swing.JLabel lblColRentAmount;
+    public javax.swing.JLabel lblColStartDate;
+    public javax.swing.JLabel lblColStatus;
+    public javax.swing.JLabel lblColTenant;
+    public javax.swing.JLabel lblEntriesSummary;
+    public javax.swing.JLabel lblExpiredLeases;
+    public javax.swing.JLabel lblHeaderTitle;
+    public javax.swing.JLabel lblLeaseManagementTitle;
+    public javax.swing.JLabel lblLogo;
+    public javax.swing.JLabel lblTerminatedLeases;
+    public javax.swing.JLabel lblWelcome;
+    public javax.swing.JPanel pnlActiveLeases;
+    public javax.swing.JPanel pnlCard;
+    public javax.swing.JPanel pnlExpiredLeases;
+    public javax.swing.JPanel pnlHeader;
+    public javax.swing.JPanel pnlPagination;
+    public javax.swing.JPanel pnlSidebar;
+    public javax.swing.JPanel pnlTableBody;
+    public javax.swing.JPanel pnlTableHeader;
+    public javax.swing.JPanel pnlTerminatedLeases;
+    public javax.swing.JScrollPane scrollTable;
     // End of variables declaration//GEN-END:variables
 }

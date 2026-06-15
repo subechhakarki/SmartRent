@@ -3,7 +3,7 @@ package Controller;
 import DAO.LeaseDAO;
 import Model.Lease;
 import Model.User;
-import smartrent.SessionService;
+import Controller.SessionService;
 import view.*;
 
 import java.awt.*;
@@ -38,11 +38,12 @@ public class LeaseController {
     }
 
     public void initLeaseManagementView(LeaseManagementView view) {
-        view.getScrollTable().getVerticalScrollBar().setUnitIncrement(16);
+        LogoLoader.styleOwnerSidebar(view, view.pnlSidebar, view.lblLogo, view.btnNavDashboard, view.btnNavMyProperties, view.btnNavLeaseManagement, view.btnNavLogout, "leases");
+        view.scrollTable.getVerticalScrollBar().setUnitIncrement(16);
 
         User currentUser = SessionService.getInstance().getCurrentUser();
         if (currentUser != null) {
-            view.getLblWelcome().setText("Welcome, " + currentUser.getFullName().split(" ")[0]);
+            view.lblWelcome.setText("Welcome, " + currentUser.getFullName().split(" ")[0]);
         }
 
         setupCustomComponents(view);
@@ -55,21 +56,21 @@ public class LeaseController {
     }
 
     private void setupCustomComponents(LeaseManagementView view) {
-        view.getPnlPagination().setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 0));
-        view.getPnlPagination().removeAll();
-        view.getPnlPagination().add(view.getBtnPrev());
-        view.getPnlPagination().add(view.getPnlPageNumbers());
-        view.getPnlPagination().add(view.getBtnNext());
+        view.pnlPagination.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 0));
+        view.pnlPagination.removeAll();
+        view.pnlPagination.add(view.btnPrev);
+        view.pnlPagination.add(view.pnlPageNumbers);
+        view.pnlPagination.add(view.btnNext);
 
-        stylePaginationButton(view.getBtnPrev());
-        stylePaginationButton(view.getBtnNext());
+        stylePaginationButton(view.btnPrev);
+        stylePaginationButton(view.btnNext);
 
-        view.getPnlCard().setBorder(BorderFactory.createCompoundBorder(
+        view.pnlCard.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(226, 232, 240), 1),
                 BorderFactory.createEmptyBorder(15, 15, 15, 15)
         ));
         
-        view.getScrollTable().getViewport().setBackground(Color.WHITE);
+        view.scrollTable.getViewport().setBackground(Color.WHITE);
     }
 
     private void stylePaginationButton(JButton btn) {
@@ -84,14 +85,14 @@ public class LeaseController {
     }
 
     private void setupEvents(LeaseManagementView view) {
-        view.getBtnPrev().addActionListener(e -> {
+        view.btnPrev.addActionListener(e -> {
             if (currentPage > 1) {
                 currentPage--;
                 loadLeases(view);
             }
         });
 
-        view.getBtnNext().addActionListener(e -> {
+        view.btnNext.addActionListener(e -> {
             int totalPages = (int) Math.ceil((double) currentLeaseList.size() / itemsPerPage);
             if (currentPage < totalPages) {
                 currentPage++;
@@ -118,11 +119,11 @@ public class LeaseController {
             }
         }
 
-        view.getLblActiveLeases().setText("<html><table cellpadding='5'><tr><td><font size='6' color='white'>⌂</font></td><td><font color='white'>Active Leases</font><br><font size='5' color='white'><b>" + activeCount + " Active</b></font></td></tr></table></html>");
-        view.getLblExpiredLeases().setText("<html><table cellpadding='5'><tr><td><font size='6' color='white'>⚠</font></td><td><font color='white'>Expired Leases</font><br><font size='5' color='white'><b>" + expiredCount + " Expired</b></font></td></tr></table></html>");
-        view.getLblTerminatedLeases().setText("<html><table cellpadding='5'><tr><td><font size='6' color='white'>✓</font></td><td><font color='white'>Terminated Leases</font><br><font size='5' color='white'><b>" + terminatedCount + " Terminated</b></font></td></tr></table></html>");
+        view.lblActiveLeases.setText("<html><table cellpadding='5'><tr><td><font size='6' color='white'>⌂</font></td><td><font color='white'>Active Leases</font><br><font size='5' color='white'><b>" + activeCount + " Active</b></font></td></tr></table></html>");
+        view.lblExpiredLeases.setText("<html><table cellpadding='5'><tr><td><font size='6' color='white'>⚠</font></td><td><font color='white'>Expired Leases</font><br><font size='5' color='white'><b>" + expiredCount + " Expired</b></font></td></tr></table></html>");
+        view.lblTerminatedLeases.setText("<html><table cellpadding='5'><tr><td><font size='6' color='white'>✓</font></td><td><font color='white'>Terminated Leases</font><br><font size='5' color='white'><b>" + terminatedCount + " Terminated</b></font></td></tr></table></html>");
 
-        view.getPnlTableBody().removeAll();
+        view.pnlTableBody.removeAll();
         int totalLeases = currentLeaseList.size();
 
         int totalPages = (int) Math.ceil((double) totalLeases / itemsPerPage);
@@ -136,27 +137,27 @@ public class LeaseController {
         int endIndex = Math.min(startIndex + itemsPerPage, totalLeases);
 
         if (totalLeases == 0) {
-            view.getLblEntriesSummary().setText("Showing 0 to 0 of 0 entries");
+            view.lblEntriesSummary.setText("Showing 0 to 0 of 0 entries");
         } else {
-            view.getLblEntriesSummary().setText("Showing " + (startIndex + 1) + " to " + endIndex + " of " + totalLeases + " entries");
+            view.lblEntriesSummary.setText("Showing " + (startIndex + 1) + " to " + endIndex + " of " + totalLeases + " entries");
         }
 
         for (int i = startIndex; i < endIndex; i++) {
             Lease l = currentLeaseList.get(i);
-            view.getPnlTableBody().add(createRowPanel(l));
+            view.pnlTableBody.add(createRowPanel(l));
         }
 
         updatePaginationControls(view, totalPages);
 
-        view.getPnlTableBody().revalidate();
-        view.getPnlTableBody().repaint();
+        view.pnlTableBody.revalidate();
+        view.pnlTableBody.repaint();
     }
 
     private void updatePaginationControls(LeaseManagementView view, int totalPages) {
-        view.getBtnPrev().setEnabled(currentPage > 1);
-        view.getBtnNext().setEnabled(currentPage < totalPages && totalPages > 1);
+        view.btnPrev.setEnabled(currentPage > 1);
+        view.btnNext.setEnabled(currentPage < totalPages && totalPages > 1);
 
-        view.getPnlPageNumbers().removeAll();
+        view.pnlPageNumbers.removeAll();
         for (int p = 1; p <= totalPages; p++) {
             final int pageNum = p;
             JButton btnPage = new JButton(String.valueOf(pageNum));
@@ -177,10 +178,10 @@ public class LeaseController {
                     loadLeases(view);
                 });
             }
-            view.getPnlPageNumbers().add(btnPage);
+            view.pnlPageNumbers.add(btnPage);
         }
-        view.getPnlPageNumbers().revalidate();
-        view.getPnlPageNumbers().repaint();
+        view.pnlPageNumbers.revalidate();
+        view.pnlPageNumbers.repaint();
     }
 
     private JPanel createRowPanel(Lease l) {
@@ -295,8 +296,8 @@ public class LeaseController {
         sb.append("========================================\n");
         sb.append("This is a digitally generated record.\n");
         
-        view.getTxtLeaseDetails().setText(sb.toString());
-        view.getTxtLeaseDetails().setCaretPosition(0);
+        view.txtLeaseDetails.setText(sb.toString());
+        view.txtLeaseDetails.setCaretPosition(0);
     }
 
     public void navigateToDashboard(JFrame view) {

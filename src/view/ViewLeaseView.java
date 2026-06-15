@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class ViewLeaseView extends javax.swing.JFrame {
 
-    private javax.swing.JButton btnDownloadPDF;
+    public javax.swing.JButton btnDownloadPDF;
 
     public ViewLeaseView(Lease lease) {
         initComponents();
@@ -27,7 +27,6 @@ public class ViewLeaseView extends javax.swing.JFrame {
         new Controller.LeaseController().initViewLeaseView(this, lease);
     }
 
-    public javax.swing.JTextArea getTxtLeaseDetails() { return txtLeaseDetails; }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -62,8 +61,8 @@ public class ViewLeaseView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lblHeader;
-    private javax.swing.JScrollPane scrollPane;
-    private javax.swing.JTextArea txtLeaseDetails;
+    public javax.swing.JLabel lblHeader;
+    public javax.swing.JScrollPane scrollPane;
+    public javax.swing.JTextArea txtLeaseDetails;
     // End of variables declaration//GEN-END:variables
 }
