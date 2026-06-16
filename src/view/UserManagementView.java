@@ -2,7 +2,7 @@ package view;
 
 import Controller.AdminController;
 import Model.User;
-import smartrent.SessionService;
+import Controller.SessionService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,9 +13,9 @@ import java.util.List;
 public class UserManagementView extends javax.swing.JFrame {
 
     private AdminController adminController;
-    private final javax.swing.JButton btnPrev = new javax.swing.JButton("Previous");
-    private final javax.swing.JButton btnNext = new javax.swing.JButton("Next");
-    private final javax.swing.JPanel pnlPageNumbers = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 0));
+    public final javax.swing.JButton btnPrev = new javax.swing.JButton("Previous");
+    public final javax.swing.JButton btnNext = new javax.swing.JButton("Next");
+    public final javax.swing.JPanel pnlPageNumbers = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 0));
 
     public UserManagementView() {
         initComponents();
@@ -32,16 +32,6 @@ public class UserManagementView extends javax.swing.JFrame {
         adminController.initUserManagementView(this);
     }
 
-    public javax.swing.JTextField getTxtSearch() { return txtSearch; }
-    public javax.swing.JPanel getPnlCard() { return pnlCard; }
-    public javax.swing.JPanel getPnlPagination() { return pnlPagination; }
-    public javax.swing.JButton getBtnPrev() { return btnPrev; }
-    public javax.swing.JPanel getPnlPageNumbers() { return pnlPageNumbers; }
-    public javax.swing.JButton getBtnNext() { return btnNext; }
-    public javax.swing.JScrollPane getScrollTable() { return scrollTable; }
-    public javax.swing.JComboBox getCmbRoleFilter() { return cmbRoleFilter; }
-    public javax.swing.JPanel getPnlTableBody() { return pnlTableBody; }
-    public javax.swing.JLabel getLblEntriesSummary() { return lblEntriesSummary; }
 
 
     @SuppressWarnings("unchecked")
@@ -50,7 +40,8 @@ public class UserManagementView extends javax.swing.JFrame {
 
         pnlSidebar = new javax.swing.JPanel();
         lblLogo = new javax.swing.JLabel();
-        lblLogoSubtitle = new javax.swing.JLabel();
+        lblLogo.setBackground(new java.awt.Color(209, 232, 237));
+        lblLogo.setOpaque(true);
         btnNavDashboard = new javax.swing.JButton();
         btnNavUserManagement = new javax.swing.JButton();
         btnNavLogout = new javax.swing.JButton();
@@ -71,65 +62,63 @@ public class UserManagementView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SmartRent - User Management");
-        setPreferredSize(new java.awt.Dimension(1024, 768));
+        setPreferredSize(new java.awt.Dimension(1100, 800));
         setResizable(false);
         getContentPane().setLayout(null);
 
-        pnlSidebar.setBackground(new java.awt.Color(31, 97, 109));
+        pnlSidebar.setBackground(new java.awt.Color(60, 110, 113));
         pnlSidebar.setLayout(null);
 
-        lblLogo.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        lblLogo.setForeground(new java.awt.Color(255, 255, 255));
-        lblLogo.setText("SmartRent");
+        lblLogo.setBackground(new java.awt.Color(209, 232, 237));
+        lblLogo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblLogo.setForeground(new java.awt.Color(60, 110, 113));
+        lblLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/SmartRentLogo_Banner.png"))); // NOI18N
+        lblLogo.setOpaque(true);
         pnlSidebar.add(lblLogo);
-        lblLogo.setBounds(20, 20, 180, 30);
+        lblLogo.setBounds(0, 0, 200, 80);
 
-        lblLogoSubtitle.setFont(new java.awt.Font("Segoe UI", 2, 9)); // NOI18N
-        lblLogoSubtitle.setForeground(new java.awt.Color(180, 210, 215));
-        lblLogoSubtitle.setText("The rental experience you actually deserve");
-        pnlSidebar.add(lblLogoSubtitle);
-        lblLogoSubtitle.setBounds(20, 48, 190, 15);
-
-        btnNavDashboard.setBackground(new java.awt.Color(31, 97, 109));
+        btnNavDashboard.setBackground(new java.awt.Color(60, 110, 113));
         btnNavDashboard.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnNavDashboard.setForeground(new java.awt.Color(255, 255, 255));
-        btnNavDashboard.setText("  ⊞  Dashboard");
+        btnNavDashboard.setText("Dashboard");
         btnNavDashboard.setBorderPainted(false);
-        btnNavDashboard.setContentAreaFilled(false);
         btnNavDashboard.setFocusPainted(false);
         btnNavDashboard.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNavDashboard.setMargin(new java.awt.Insets(2, 20, 2, 14));
         pnlSidebar.add(btnNavDashboard);
-        btnNavDashboard.setBounds(0, 80, 220, 40);
+        btnNavDashboard.setBounds(0, 100, 200, 40);
 
-        btnNavUserManagement.setBackground(new java.awt.Color(44, 122, 135));
+        btnNavUserManagement.setBackground(new java.awt.Color(80, 128, 128));
         btnNavUserManagement.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnNavUserManagement.setForeground(new java.awt.Color(255, 255, 255));
-        btnNavUserManagement.setText("  👤  User Management");
+        btnNavUserManagement.setText("User Management");
         btnNavUserManagement.setBorderPainted(false);
         btnNavUserManagement.setFocusPainted(false);
         btnNavUserManagement.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNavUserManagement.setMargin(new java.awt.Insets(2, 20, 2, 14));
         pnlSidebar.add(btnNavUserManagement);
-        btnNavUserManagement.setBounds(0, 120, 220, 40);
+        btnNavUserManagement.setBounds(0, 140, 200, 40);
 
-        btnNavLogout.setBackground(new java.awt.Color(31, 97, 109));
+        btnNavLogout.setBackground(new java.awt.Color(60, 110, 113));
         btnNavLogout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnNavLogout.setForeground(new java.awt.Color(255, 255, 255));
-        btnNavLogout.setText("  🚪  Logout");
+        btnNavLogout.setText("Logout");
         btnNavLogout.setBorderPainted(false);
-        btnNavLogout.setContentAreaFilled(false);
         btnNavLogout.setFocusPainted(false);
         btnNavLogout.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNavLogout.setMargin(new java.awt.Insets(2, 20, 2, 14));
         pnlSidebar.add(btnNavLogout);
-        btnNavLogout.setBounds(0, 160, 220, 40);
+        btnNavLogout.setBounds(0, 200, 200, 40);
 
         getContentPane().add(pnlSidebar);
-        pnlSidebar.setBounds(0, 0, 220, 768);
+        pnlSidebar.setBounds(0, 0, 200, 800);
 
         lblHeaderTitle.setFont(new java.awt.Font("Segoe UI", 1, 26)); // NOI18N
         lblHeaderTitle.setForeground(new java.awt.Color(45, 55, 72));
         lblHeaderTitle.setText("User Management");
         getContentPane().add(lblHeaderTitle);
-        lblHeaderTitle.setBounds(250, 20, 400, 40);
+        lblHeaderTitle.setBounds(230, 20, 400, 40);
 
         pnlCard.setBackground(new java.awt.Color(255, 255, 255));
         pnlCard.setLayout(null);
@@ -137,13 +126,13 @@ public class UserManagementView extends javax.swing.JFrame {
         cmbRoleFilter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All Roles", "Owner", "Renter" }));
         cmbRoleFilter.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         pnlCard.add(cmbRoleFilter);
-        cmbRoleFilter.setBounds(380, 20, 150, 35);
+        cmbRoleFilter.setBounds(450, 20, 150, 35);
 
         txtSearch.setText("Search users...");
         txtSearch.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtSearch.setForeground(new java.awt.Color(128, 128, 128));
         pnlCard.add(txtSearch);
-        txtSearch.setBounds(550, 20, 205, 35);
+        txtSearch.setBounds(620, 20, 210, 35);
 
         pnlTableHeader.setBackground(new java.awt.Color(247, 250, 252));
         pnlTableHeader.setLayout(null);
@@ -152,34 +141,34 @@ public class UserManagementView extends javax.swing.JFrame {
         lblHName.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblHName.setForeground(new java.awt.Color(74, 85, 104));
         pnlTableHeader.add(lblHName);
-        lblHName.setBounds(15, 10, 150, 20);
+        lblHName.setBounds(15, 10, 180, 20);
 
         lblHRole.setText("Role");
         lblHRole.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblHRole.setForeground(new java.awt.Color(74, 85, 104));
         pnlTableHeader.add(lblHRole);
-        lblHRole.setBounds(175, 10, 80, 20);
+        lblHRole.setBounds(210, 10, 80, 20);
 
         lblHEmail.setText("Email");
         lblHEmail.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblHEmail.setForeground(new java.awt.Color(74, 85, 104));
         pnlTableHeader.add(lblHEmail);
-        lblHEmail.setBounds(265, 10, 210, 20);
+        lblHEmail.setBounds(300, 10, 230, 20);
 
         lblHStatus.setText("Status");
         lblHStatus.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblHStatus.setForeground(new java.awt.Color(74, 85, 104));
         pnlTableHeader.add(lblHStatus);
-        lblHStatus.setBounds(485, 10, 90, 20);
+        lblHStatus.setBounds(545, 10, 95, 20);
 
         lblHActions.setText("Actions");
         lblHActions.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblHActions.setForeground(new java.awt.Color(74, 85, 104));
         pnlTableHeader.add(lblHActions);
-        lblHActions.setBounds(585, 10, 140, 20);
+        lblHActions.setBounds(650, 10, 150, 20);
 
         pnlCard.add(pnlTableHeader);
-        pnlTableHeader.setBounds(15, 75, 740, 40);
+        pnlTableHeader.setBounds(15, 75, 815, 40);
 
         scrollTable.setBorder(null);
 
@@ -188,20 +177,20 @@ public class UserManagementView extends javax.swing.JFrame {
         scrollTable.setViewportView(pnlTableBody);
 
         pnlCard.add(scrollTable);
-        scrollTable.setBounds(15, 115, 740, 450);
+        scrollTable.setBounds(15, 115, 815, 450);
 
         lblEntriesSummary.setText("Showing 0 to 0 of 0 entries");
         lblEntriesSummary.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblEntriesSummary.setForeground(new java.awt.Color(113, 128, 150));
         pnlCard.add(lblEntriesSummary);
-        lblEntriesSummary.setBounds(15, 585, 300, 30);
+        lblEntriesSummary.setBounds(15, 605, 300, 30);
 
         pnlPagination.setBackground(new java.awt.Color(255, 255, 255));
         pnlCard.add(pnlPagination);
-        pnlPagination.setBounds(355, 580, 400, 40);
+        pnlPagination.setBounds(430, 600, 400, 40);
 
         getContentPane().add(pnlCard);
-        pnlCard.setBounds(230, 70, 770, 640);
+        pnlCard.setBounds(230, 80, 845, 660);
 
         pack();
         setLocationRelativeTo(null);
@@ -220,25 +209,24 @@ public class UserManagementView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnNavDashboard;
-    private javax.swing.JButton btnNavLogout;
-    private javax.swing.JButton btnNavUserManagement;
-    private javax.swing.JComboBox cmbRoleFilter;
-    private javax.swing.JLabel lblEntriesSummary;
-    private javax.swing.JLabel lblHActions;
-    private javax.swing.JLabel lblHEmail;
-    private javax.swing.JLabel lblHName;
-    private javax.swing.JLabel lblHRole;
-    private javax.swing.JLabel lblHStatus;
-    private javax.swing.JLabel lblHeaderTitle;
-    private javax.swing.JLabel lblLogo;
-    private javax.swing.JLabel lblLogoSubtitle;
-    private javax.swing.JPanel pnlCard;
-    private javax.swing.JPanel pnlPagination;
-    private javax.swing.JPanel pnlSidebar;
-    private javax.swing.JPanel pnlTableBody;
-    private javax.swing.JPanel pnlTableHeader;
-    private javax.swing.JScrollPane scrollTable;
-    private javax.swing.JTextField txtSearch;
+    public javax.swing.JButton btnNavDashboard;
+    public javax.swing.JButton btnNavLogout;
+    public javax.swing.JButton btnNavUserManagement;
+    public javax.swing.JComboBox cmbRoleFilter;
+    public javax.swing.JLabel lblEntriesSummary;
+    public javax.swing.JLabel lblHActions;
+    public javax.swing.JLabel lblHEmail;
+    public javax.swing.JLabel lblHName;
+    public javax.swing.JLabel lblHRole;
+    public javax.swing.JLabel lblHStatus;
+    public javax.swing.JLabel lblHeaderTitle;
+    public javax.swing.JLabel lblLogo;
+    public javax.swing.JPanel pnlCard;
+    public javax.swing.JPanel pnlPagination;
+    public javax.swing.JPanel pnlSidebar;
+    public javax.swing.JPanel pnlTableBody;
+    public javax.swing.JPanel pnlTableHeader;
+    public javax.swing.JScrollPane scrollTable;
+    public javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }
