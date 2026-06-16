@@ -13,17 +13,6 @@ public class OwnerDashboardView extends javax.swing.JFrame {
     }
 
     // Getters for controller usage
-    public javax.swing.JScrollPane getScrollPane() { return scrollPane; }
-    public javax.swing.JLabel getLblWelcome() { return lblWelcome; }
-    public javax.swing.JLabel getLblStatProperties() { return lblStatProperties; }
-    public javax.swing.JLabel getLblStatApplications() { return lblStatApplications; }
-    public javax.swing.JLabel getLblStatLeases() { return lblStatLeases; }
-    public javax.swing.JPanel getPnlTableBody() { return pnlTableBody; }
-    public javax.swing.JButton getBtnAddProperty() { return btnAddProperty; }
-    public javax.swing.JButton getBtnNavDashboard() { return btnNavDashboard; }
-    public javax.swing.JButton getBtnNavMyProperties() { return btnNavMyProperties; }
-    public javax.swing.JButton getBtnNavLeaseManagement() { return btnNavLeaseManagement; }
-    public javax.swing.JButton getBtnNavLogout() { return btnNavLogout; }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -31,6 +20,8 @@ public class OwnerDashboardView extends javax.swing.JFrame {
 
         pnlSidebar = new javax.swing.JPanel();
         lblLogo = new javax.swing.JLabel();
+        lblLogo.setBackground(new java.awt.Color(209, 232, 237));
+        lblLogo.setOpaque(true);
         btnNavDashboard = new javax.swing.JButton();
         btnNavMyProperties = new javax.swing.JButton();
         btnNavLeaseManagement = new javax.swing.JButton();
@@ -59,7 +50,7 @@ public class OwnerDashboardView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SmartRent - Owner Dashboard");
         setBackground(new java.awt.Color(245, 245, 245));
-        setPreferredSize(new java.awt.Dimension(1024, 768));
+        setPreferredSize(new java.awt.Dimension(1280, 800));
         getContentPane().setLayout(null);
 
         pnlSidebar.setBackground(new java.awt.Color(60, 110, 113));
@@ -67,9 +58,9 @@ public class OwnerDashboardView extends javax.swing.JFrame {
 
         lblLogo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         lblLogo.setForeground(new java.awt.Color(255, 255, 255));
-        lblLogo.setText("SmartRent");
+        lblLogo.setText("");
         pnlSidebar.add(lblLogo);
-        lblLogo.setBounds(20, 20, 160, 40);
+        lblLogo.setBounds(0, 0, 200, 80);
 
         btnNavDashboard.setBackground(new java.awt.Color(80, 128, 128));
         btnNavDashboard.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -80,7 +71,7 @@ public class OwnerDashboardView extends javax.swing.JFrame {
         btnNavDashboard.setMargin(new java.awt.Insets(2, 20, 2, 14));
         btnNavDashboard.addActionListener(this::btnNavDashboardActionPerformed);
         pnlSidebar.add(btnNavDashboard);
-        btnNavDashboard.setBounds(0, 80, 200, 40);
+        btnNavDashboard.setBounds(0, 100, 200, 40);
 
         btnNavMyProperties.setBackground(new java.awt.Color(60, 110, 113));
         btnNavMyProperties.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -91,7 +82,7 @@ public class OwnerDashboardView extends javax.swing.JFrame {
         btnNavMyProperties.setMargin(new java.awt.Insets(2, 20, 2, 14));
         btnNavMyProperties.addActionListener(this::btnNavMyPropertiesActionPerformed);
         pnlSidebar.add(btnNavMyProperties);
-        btnNavMyProperties.setBounds(0, 120, 200, 40);
+        btnNavMyProperties.setBounds(0, 140, 200, 40);
 
         btnNavLeaseManagement.setBackground(new java.awt.Color(60, 110, 113));
         btnNavLeaseManagement.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -102,7 +93,7 @@ public class OwnerDashboardView extends javax.swing.JFrame {
         btnNavLeaseManagement.setMargin(new java.awt.Insets(2, 20, 2, 14));
         btnNavLeaseManagement.addActionListener(this::btnNavLeaseManagementActionPerformed);
         pnlSidebar.add(btnNavLeaseManagement);
-        btnNavLeaseManagement.setBounds(0, 160, 200, 40);
+        btnNavLeaseManagement.setBounds(0, 180, 200, 40);
 
         btnNavLogout.setBackground(new java.awt.Color(60, 110, 113));
         btnNavLogout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -113,10 +104,10 @@ public class OwnerDashboardView extends javax.swing.JFrame {
         btnNavLogout.setMargin(new java.awt.Insets(2, 20, 2, 14));
         btnNavLogout.addActionListener(this::btnNavLogoutActionPerformed);
         pnlSidebar.add(btnNavLogout);
-        btnNavLogout.setBounds(0, 220, 200, 40);
+        btnNavLogout.setBounds(0, 240, 200, 40);
 
         getContentPane().add(pnlSidebar);
-        pnlSidebar.setBounds(0, 0, 200, 768);
+        pnlSidebar.setBounds(0, 0, 200, 800);
 
         pnlHeader.setBackground(new java.awt.Color(255, 255, 255));
         pnlHeader.setLayout(null);
@@ -131,10 +122,10 @@ public class OwnerDashboardView extends javax.swing.JFrame {
         lblWelcome.setText("Welcome, Owner");
         lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         pnlHeader.add(lblWelcome);
-        lblWelcome.setBounds(580, 15, 200, 40);
+        lblWelcome.setBounds(800, 15, 200, 40);
 
         getContentPane().add(pnlHeader);
-        pnlHeader.setBounds(200, 0, 824, 70);
+        pnlHeader.setBounds(200, 0, 1080, 70);
 
         pnlStats.setBackground(new java.awt.Color(245, 245, 245));
         pnlStats.setOpaque(false);
@@ -147,10 +138,10 @@ public class OwnerDashboardView extends javax.swing.JFrame {
         lblStatProperties.setForeground(new java.awt.Color(255, 255, 255));
         lblStatProperties.setText("<html>Total Properties<br><font size='5'>0</font> Properties</html>");
         pnlTotalProps.add(lblStatProperties);
-        lblStatProperties.setBounds(60, 10, 150, 50);
+        lblStatProperties.setBounds(20, 10, 260, 50);
 
         pnlStats.add(pnlTotalProps);
-        pnlTotalProps.setBounds(30, 20, 220, 70);
+        pnlTotalProps.setBounds(30, 20, 300, 70);
 
         pnlPendingApps.setBackground(new java.awt.Color(243, 112, 33));
         pnlPendingApps.setLayout(null);
@@ -159,10 +150,10 @@ public class OwnerDashboardView extends javax.swing.JFrame {
         lblStatApplications.setForeground(new java.awt.Color(255, 255, 255));
         lblStatApplications.setText("<html>Pending Applications<br><font size='5'>0</font> Applications</html>");
         pnlPendingApps.add(lblStatApplications);
-        lblStatApplications.setBounds(60, 10, 150, 50);
+        lblStatApplications.setBounds(20, 10, 260, 50);
 
         pnlStats.add(pnlPendingApps);
-        pnlPendingApps.setBounds(270, 20, 220, 70);
+        pnlPendingApps.setBounds(370, 20, 300, 70);
 
         pnlPendingApprovals.setBackground(new java.awt.Color(64, 160, 69));
         pnlPendingApprovals.setLayout(null);
@@ -171,20 +162,22 @@ public class OwnerDashboardView extends javax.swing.JFrame {
         lblStatLeases.setForeground(new java.awt.Color(255, 255, 255));
         lblStatLeases.setText("<html>Pending Approvals<br><font size='5'>0</font> Pending</html>");
         pnlPendingApprovals.add(lblStatLeases);
-        lblStatLeases.setBounds(60, 10, 150, 50);
+        lblStatLeases.setBounds(20, 10, 260, 50);
 
         pnlStats.add(pnlPendingApprovals);
-        pnlPendingApprovals.setBounds(510, 20, 220, 70);
+        pnlPendingApprovals.setBounds(710, 20, 300, 70);
 
-        btnAddProperty.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAddProperty.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnAddProperty.setText("+");
+        btnAddProperty.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnAddProperty.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         btnAddProperty.setForeground(new java.awt.Color(30, 121, 222));
         btnAddProperty.addActionListener(this::btnAddPropertyActionPerformed);
         pnlStats.add(btnAddProperty);
-        btnAddProperty.setBounds(760, 40, 30, 30);
+        btnAddProperty.setBounds(1020, 35, 40, 40);
 
         getContentPane().add(pnlStats);
-        pnlStats.setBounds(200, 70, 824, 120);
+        pnlStats.setBounds(200, 70, 1080, 120);
 
         lblTableTitle.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblTableTitle.setText("Rental Applications");
@@ -198,34 +191,34 @@ public class OwnerDashboardView extends javax.swing.JFrame {
         lblColUser.setForeground(new java.awt.Color(96, 128, 160));
         lblColUser.setText("User Name");
         pnlTableHeader.add(lblColUser);
-        lblColUser.setBounds(20, 10, 120, 20);
+        lblColUser.setBounds(20, 10, 180, 20);
 
         lblColRole.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblColRole.setForeground(new java.awt.Color(96, 128, 160));
         lblColRole.setText("Property");
         pnlTableHeader.add(lblColRole);
-        lblColRole.setBounds(150, 10, 140, 20);
+        lblColRole.setBounds(220, 10, 180, 20);
 
         lblColEmail.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblColEmail.setForeground(new java.awt.Color(96, 128, 160));
         lblColEmail.setText("Email");
         pnlTableHeader.add(lblColEmail);
-        lblColEmail.setBounds(300, 10, 160, 20);
+        lblColEmail.setBounds(420, 10, 200, 20);
 
         lblColStatus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblColStatus.setForeground(new java.awt.Color(96, 128, 160));
         lblColStatus.setText("Status");
         pnlTableHeader.add(lblColStatus);
-        lblColStatus.setBounds(470, 10, 70, 20);
+        lblColStatus.setBounds(640, 10, 100, 20);
 
         lblColActions.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblColActions.setForeground(new java.awt.Color(96, 128, 160));
         lblColActions.setText("Actions");
         pnlTableHeader.add(lblColActions);
-        lblColActions.setBounds(550, 10, 190, 20);
+        lblColActions.setBounds(760, 10, 220, 20);
 
         getContentPane().add(pnlTableHeader);
-        pnlTableHeader.setBounds(230, 240, 770, 40);
+        pnlTableHeader.setBounds(230, 240, 1020, 40);
 
         scrollPane.setBorder(null);
 
@@ -234,7 +227,7 @@ public class OwnerDashboardView extends javax.swing.JFrame {
         scrollPane.setViewportView(pnlTableBody);
 
         getContentPane().add(scrollPane);
-        scrollPane.setBounds(230, 280, 770, 450);
+        scrollPane.setBounds(230, 280, 1020, 450);
 
         pack();
         setLocationRelativeTo(null);
@@ -261,31 +254,31 @@ public class OwnerDashboardView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddProperty;
-    private javax.swing.JButton btnNavDashboard;
-    private javax.swing.JButton btnNavLeaseManagement;
-    private javax.swing.JButton btnNavLogout;
-    private javax.swing.JButton btnNavMyProperties;
-    private javax.swing.JLabel lblColActions;
-    private javax.swing.JLabel lblColEmail;
-    private javax.swing.JLabel lblColRole;
-    private javax.swing.JLabel lblColStatus;
-    private javax.swing.JLabel lblColUser;
-    private javax.swing.JLabel lblDashboardHeader;
-    private javax.swing.JLabel lblLogo;
-    private javax.swing.JLabel lblStatApplications;
-    private javax.swing.JLabel lblStatLeases;
-    private javax.swing.JLabel lblStatProperties;
-    private javax.swing.JLabel lblTableTitle;
-    private javax.swing.JLabel lblWelcome;
-    private javax.swing.JPanel pnlHeader;
-    private javax.swing.JPanel pnlPendingApprovals;
-    private javax.swing.JPanel pnlPendingApps;
-    private javax.swing.JPanel pnlSidebar;
-    private javax.swing.JPanel pnlStats;
-    private javax.swing.JPanel pnlTableBody;
-    private javax.swing.JPanel pnlTableHeader;
-    private javax.swing.JPanel pnlTotalProps;
-    private javax.swing.JScrollPane scrollPane;
+    public javax.swing.JButton btnAddProperty;
+    public javax.swing.JButton btnNavDashboard;
+    public javax.swing.JButton btnNavLeaseManagement;
+    public javax.swing.JButton btnNavLogout;
+    public javax.swing.JButton btnNavMyProperties;
+    public javax.swing.JLabel lblColActions;
+    public javax.swing.JLabel lblColEmail;
+    public javax.swing.JLabel lblColRole;
+    public javax.swing.JLabel lblColStatus;
+    public javax.swing.JLabel lblColUser;
+    public javax.swing.JLabel lblDashboardHeader;
+    public javax.swing.JLabel lblLogo;
+    public javax.swing.JLabel lblStatApplications;
+    public javax.swing.JLabel lblStatLeases;
+    public javax.swing.JLabel lblStatProperties;
+    public javax.swing.JLabel lblTableTitle;
+    public javax.swing.JLabel lblWelcome;
+    public javax.swing.JPanel pnlHeader;
+    public javax.swing.JPanel pnlPendingApprovals;
+    public javax.swing.JPanel pnlPendingApps;
+    public javax.swing.JPanel pnlSidebar;
+    public javax.swing.JPanel pnlStats;
+    public javax.swing.JPanel pnlTableBody;
+    public javax.swing.JPanel pnlTableHeader;
+    public javax.swing.JPanel pnlTotalProps;
+    public javax.swing.JScrollPane scrollPane;
     // End of variables declaration//GEN-END:variables
 }
