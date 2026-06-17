@@ -1,6 +1,6 @@
 package DAO;
 
-import database.DatabaseConnection;
+import database.mySQLConnection;
 import Model.User;
 
 import java.sql.*;
@@ -9,90 +9,12 @@ import java.util.ArrayList;
 
 public class UserDAO {
 
-    private static List<User> mockUsers = null;
 
-    private static synchronized void initMockUsers() {
-        if (mockUsers == null) {
-            mockUsers = new ArrayList<>();
-            
-            User u1 = new User();
-            u1.setUserId(1);
-            u1.setFullName("John Smith");
-            u1.setEmail("john.smith@email.com");
-            u1.setPhone("9876543210");
-            u1.setPassword(org.mindrot.jbcrypt.BCrypt.hashpw("owner123", org.mindrot.jbcrypt.BCrypt.gensalt()));
-            u1.setRole("PROPERTY_OWNER");
-            u1.setUserStatus("ACTIVE");
-            mockUsers.add(u1);
-            
-            User u2 = new User();
-            u2.setUserId(2);
-            u2.setFullName("Emily Brown");
-            u2.setEmail("emily.brown@email.com");
-            u2.setPhone("9876543211");
-            u2.setPassword(org.mindrot.jbcrypt.BCrypt.hashpw("renter123", org.mindrot.jbcrypt.BCrypt.gensalt()));
-            u2.setRole("RENTER");
-            u2.setUserStatus("ACTIVE");
-            mockUsers.add(u2);
-            
-            User u3 = new User();
-            u3.setUserId(3);
-            u3.setFullName("Michael Wilson");
-            u3.setEmail("michael.wilson@email.com");
-            u3.setPhone("9876543212");
-            u3.setPassword(org.mindrot.jbcrypt.BCrypt.hashpw("owner123", org.mindrot.jbcrypt.BCrypt.gensalt()));
-            u3.setRole("PROPERTY_OWNER");
-            u3.setUserStatus("ACTIVE");
-            mockUsers.add(u3);
-            
-            User u4 = new User();
-            u4.setUserId(4);
-            u4.setFullName("Sarah Johnson");
-            u4.setEmail("sarah.johnson@email.com");
-            u4.setPhone("9876543213");
-            u4.setPassword(org.mindrot.jbcrypt.BCrypt.hashpw("renter123", org.mindrot.jbcrypt.BCrypt.gensalt()));
-            u4.setRole("RENTER");
-            u4.setUserStatus("ACTIVE");
-            mockUsers.add(u4);
-            
-            User u5 = new User();
-            u5.setUserId(5);
-            u5.setFullName("David Lee");
-            u5.setEmail("david.lee@email.com");
-            u5.setPhone("9876543214");
-            u5.setPassword(org.mindrot.jbcrypt.BCrypt.hashpw("renter123", org.mindrot.jbcrypt.BCrypt.gensalt()));
-            u5.setRole("RENTER");
-            u5.setUserStatus("DEACTIVATED");
-            mockUsers.add(u5);
- 
-            User u6 = new User();
-            u6.setUserId(6);
-            u6.setFullName("John Owner");
-            u6.setEmail("owner@smartrent.com");
-            u6.setPhone("1111111111");
-            u6.setPassword(org.mindrot.jbcrypt.BCrypt.hashpw("owner123", org.mindrot.jbcrypt.BCrypt.gensalt()));
-            u6.setRole("PROPERTY_OWNER");
-            u6.setUserStatus("ACTIVE");
-            mockUsers.add(u6);
- 
-            User u7 = new User();
-            u7.setUserId(7);
-            u7.setFullName("Jane Renter");
-            u7.setEmail("renter@smartrent.com");
-            u7.setPhone("2222222222");
-            u7.setPassword(org.mindrot.jbcrypt.BCrypt.hashpw("renter123", org.mindrot.jbcrypt.BCrypt.gensalt()));
-            u7.setRole("RENTER");
-            u7.setUserStatus("ACTIVE");
-            mockUsers.add(u7);
-        }
-    }
 
     public boolean isEmailExists(String email) {
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) {
-            return "admin@smartrent.com".equalsIgnoreCase(email) || 
-                   "renter@smartrent.com".equalsIgnoreCase(email) || 
-                   "owner@smartrent.com".equalsIgnoreCase(email);
+            return false;
         }
         String query = "SELECT 1 FROM users WHERE email = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -106,22 +28,8 @@ public class UserDAO {
     }
 
     public User getUserById(int userId) {
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) {
-            initMockUsers();
-            for (User u : mockUsers) {
-                if (u.getUserId() == userId) return u;
-            }
-            if (userId == 999) {
-                User u = new User();
-                u.setUserId(999);
-                u.setFullName("System Admin");
-                u.setEmail("admin@smartrent.com");
-                u.setPassword("admin123");
-                u.setRole("SUPER_ADMIN");
-                u.setUserStatus("ACTIVE");
-                return u;
-            }
             return null;
         }
         String query = "SELECT * FROM users WHERE user_id = ?";
@@ -138,22 +46,8 @@ public class UserDAO {
     }
 
     public User getUserByEmail(String email) {
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) {
-            initMockUsers();
-            for (User u : mockUsers) {
-                if (u.getEmail().equalsIgnoreCase(email)) return u;
-            }
-            if ("admin@smartrent.com".equalsIgnoreCase(email)) {
-                User u = new User();
-                u.setUserId(999);
-                u.setFullName("System Admin");
-                u.setEmail("admin@smartrent.com");
-                u.setPassword("admin123");
-                u.setRole("SUPER_ADMIN");
-                u.setUserStatus("ACTIVE");
-                return u;
-            }
             return null;
         }
         String query = "SELECT * FROM users WHERE email = ?";
@@ -174,6 +68,11 @@ public class UserDAO {
                 if (locked != null) {
                     user.setLockedUntil(new java.util.Date(locked.getTime()));
                 }
+                user.setOtpCode(rs.getString("otp_code"));
+                java.sql.Timestamp otpExp = rs.getTimestamp("otp_expiry");
+                if (otpExp != null) {
+                    user.setOtpExpiry(new java.util.Date(otpExp.getTime()));
+                }
                 return user;
             }
         } catch (SQLException e) {
@@ -183,7 +82,7 @@ public class UserDAO {
     }
 
     public void incrementLoginAttempts(int userId, int currentAttempts) {
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) return;
         String query = "UPDATE users SET login_attempts = ?, locked_until = ? WHERE user_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -204,7 +103,7 @@ public class UserDAO {
     }
 
     public void resetLoginAttempts(int userId) {
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) return;
         String query = "UPDATE users SET login_attempts = 0, locked_until = NULL WHERE user_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -216,8 +115,8 @@ public class UserDAO {
     }
 
     public boolean rejectOwnerRegistration(int userId) {
-        Connection conn = DatabaseConnection.getConnection();
-        if (conn == null) return true;
+        Connection conn = mySQLConnection.getConnection();
+        if (conn == null) return false;
         // For now, let's delete the pending user from DB.
         String query = "DELETE FROM users WHERE user_id = ? AND user_status = 'PENDING'";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -231,10 +130,9 @@ public class UserDAO {
 
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) {
-            initMockUsers();
-            return new ArrayList<>(mockUsers);
+            return list;
         }
         String query = "SELECT * FROM users WHERE role != 'SUPER_ADMIN'";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -249,10 +147,9 @@ public class UserDAO {
     }
 
     public boolean deleteUser(int userId) {
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) {
-            initMockUsers();
-            return mockUsers.removeIf(u -> u.getUserId() == userId);
+            return false;
         }
         String query = "DELETE FROM users WHERE user_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -265,18 +162,8 @@ public class UserDAO {
     }
 
     public boolean updateUser(int userId, String fullName, String email, String role, String status) {
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) {
-            initMockUsers();
-            for (User u : mockUsers) {
-                if (u.getUserId() == userId) {
-                    u.setFullName(fullName);
-                    u.setEmail(email);
-                    u.setRole(role);
-                    u.setUserStatus(status);
-                    return true;
-                }
-            }
             return false;
         }
         String query = "UPDATE users SET full_name = ?, email = ?, role = ?, user_status = ? WHERE user_id = ?";
@@ -294,8 +181,8 @@ public class UserDAO {
     }
 
     public boolean createRenter(User user, String employmentStatus, double monthlyIncome) {
-        Connection conn = DatabaseConnection.getConnection();
-        if (conn == null) return true;
+        Connection conn = mySQLConnection.getConnection();
+        if (conn == null) return false;
         String insertUser = "INSERT INTO users (full_name, email, phone, password_hash, role, user_status) VALUES (?, ?, ?, ?, 'RENTER', 'ACTIVE')";
         String insertRenter = "INSERT INTO renters (renter_id, employment_status, monthly_income) VALUES (?, ?, ?)";
         try {
@@ -344,8 +231,8 @@ public class UserDAO {
     }
 
     public boolean createOwner(User user) {
-        Connection conn = DatabaseConnection.getConnection();
-        if (conn == null) return true;
+        Connection conn = mySQLConnection.getConnection();
+        if (conn == null) return false;
         String insertUser = "INSERT INTO users (full_name, email, phone, password_hash, role, user_status) VALUES (?, ?, ?, ?, 'PROPERTY_OWNER', 'PENDING')";
         String insertOwner = "INSERT INTO property_owners (owner_id, approval_status) VALUES (?, 'PENDING')";
         try {
@@ -385,17 +272,8 @@ public class UserDAO {
 
     public java.util.List<User> getPendingOwners() {
         java.util.List<User> list = new java.util.ArrayList<>();
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) {
-            // Return a dummy pending owner for testing
-            User u = new User();
-            u.setUserId(2);
-            u.setFullName("Demo Pending Owner");
-            u.setEmail("owner@smartrent.com");
-            u.setPhone("9876543210");
-            u.setRole("PROPERTY_OWNER");
-            u.setUserStatus("PENDING");
-            list.add(u);
             return list;
         }
         String query = "SELECT u.* FROM users u JOIN property_owners p ON u.user_id = p.owner_id WHERE p.approval_status = 'PENDING'";
@@ -419,8 +297,8 @@ public class UserDAO {
     }
 
     public boolean updateOwnerApproval(int userId, String status, String note) {
-        Connection conn = DatabaseConnection.getConnection();
-        if (conn == null) return true;
+        Connection conn = mySQLConnection.getConnection();
+        if (conn == null) return false;
         String updateUser = "UPDATE users SET user_status = ? WHERE user_id = ?";
         String updateOwner = "UPDATE property_owners SET approval_status = ?, approval_note = ? WHERE owner_id = ?";
         
@@ -453,9 +331,9 @@ public class UserDAO {
 
     public int[] getPlatformStats() {
         int[] stats = new int[4]; // [Total Users, Active Users, Pending Approvals, Deactivated/Suspended]
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) {
-            return new int[]{10, 8, 1, 1}; // Dummy stats
+            return stats;
         }
         String totalQuery = "SELECT COUNT(*) FROM users WHERE role != 'SUPER_ADMIN'";
         String activeQuery = "SELECT COUNT(*) FROM users WHERE user_status = 'ACTIVE' AND role != 'SUPER_ADMIN'";
@@ -474,8 +352,8 @@ public class UserDAO {
     }
 
     public boolean updateUserStatus(int userId, String status) {
-        Connection conn = DatabaseConnection.getConnection();
-        if (conn == null) return true;
+        Connection conn = mySQLConnection.getConnection();
+        if (conn == null) return false;
         String query = "UPDATE users SET user_status = ? WHERE user_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, status);
@@ -489,16 +367,8 @@ public class UserDAO {
 
     public int[] getUserRoleCounts() {
         int[] counts = new int[2]; // [Owner Count, Renter Count]
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) {
-            initMockUsers();
-            for (User u : mockUsers) {
-                if ("PROPERTY_OWNER".equals(u.getRole())) {
-                    counts[0]++;
-                } else if ("RENTER".equals(u.getRole())) {
-                    counts[1]++;
-                }
-            }
             return counts;
         }
         String query = "SELECT role, COUNT(*) FROM users GROUP BY role";
@@ -519,9 +389,9 @@ public class UserDAO {
     }
 
     public String getOwnerRejectionNote(int userId) {
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) {
-            return "Application does not meet platform requirements.";
+            return "";
         }
         String query = "SELECT approval_note FROM property_owners WHERE owner_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -537,6 +407,23 @@ public class UserDAO {
         return "";
     }
 
+    public boolean updatePassword(String email, String newPassword) {
+        Connection conn = mySQLConnection.getConnection();
+        String hashedPassword = org.mindrot.jbcrypt.BCrypt.hashpw(newPassword, org.mindrot.jbcrypt.BCrypt.gensalt());
+        if (conn == null) {
+            return false;
+        }
+        String query = "UPDATE users SET password_hash = ? WHERE email = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, hashedPassword);
+            stmt.setString(2, email);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     private User mapResultSetToUser(ResultSet rs) throws SQLException {
         User user = new User();
         user.setUserId(rs.getInt("user_id"));
@@ -550,5 +437,53 @@ public class UserDAO {
             user.setCreatedAt(new java.util.Date(created.getTime()));
         }
         return user;
+    }
+
+    public boolean storeOTP(String email, String otp, java.sql.Timestamp expiry) {
+        Connection conn = mySQLConnection.getConnection();
+        if (conn == null) {
+            return false;
+        }
+        String query = "UPDATE users SET otp_code = ?, otp_expiry = ? WHERE email = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, otp);
+            stmt.setTimestamp(2, expiry);
+            stmt.setString(3, email);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean verifyOTP(String email, String otp) {
+        Connection conn = mySQLConnection.getConnection();
+        if (conn == null) {
+            return false;
+        }
+        String query = "SELECT 1 FROM users WHERE email = ? AND otp_code = ? AND otp_expiry > CURRENT_TIMESTAMP";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            stmt.setString(2, otp);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void clearOTP(String email) {
+        Connection conn = mySQLConnection.getConnection();
+        if (conn == null) {
+            return;
+        }
+        String query = "UPDATE users SET otp_code = NULL, otp_expiry = NULL WHERE email = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
