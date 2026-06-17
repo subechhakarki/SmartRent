@@ -2,11 +2,13 @@ package Controller;
 
 import DAO.PropertyDAO;
 import Model.Property;
-import smartrent.SessionService;
+import Controller.SessionService;
 import Model.User;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import java.util.Date;
 import java.util.List;
 import java.text.SimpleDateFormat;
@@ -62,7 +64,8 @@ public class PropertyController {
         p.setAvailableFrom(availableFrom != null ? availableFrom : new Date());
 
         // Process and compress images using Thumbnailator
-        java.io.File uploadDir = new java.io.File("uploaded_images");
+        java.io.File projectRoot = getProjectRoot();
+        java.io.File uploadDir = new java.io.File(projectRoot, "uploaded_images");
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
@@ -72,14 +75,15 @@ public class PropertyController {
             long timestamp = System.currentTimeMillis();
             for (int i = 0; i < imagePaths.size(); i++) {
                 String originalPath = imagePaths.get(i);
-                String targetPath = "uploaded_images/prop_" + timestamp + "_" + i + ".jpg";
+                String relativePath = "uploaded_images/prop_" + timestamp + "_" + i + ".jpg";
+                java.io.File targetFile = new java.io.File(projectRoot, relativePath);
                 try {
                     net.coobird.thumbnailator.Thumbnails.of(new java.io.File(originalPath))
                             .size(320, 240)
                             .outputFormat("jpg")
                             .outputQuality(0.85)
-                            .toFile(new java.io.File(targetPath));
-                    processedPaths.add(targetPath);
+                            .toFile(targetFile);
+                    processedPaths.add(relativePath);
                 } catch (java.io.IOException e) {
                     System.err.println("Failed to resize image " + originalPath + ": " + e.getMessage());
                     // Fallback to original path if processing fails
@@ -96,7 +100,7 @@ public class PropertyController {
         return propertyDAO.getPropertyById(propertyId);
     }
 
-    public String updateProperty(int propertyId, String title, String address, String propertyType, String bedroomsStr, String bathroomsStr, String rentStr, String depositStr) {
+    public String updateProperty(int propertyId, String title, String address, String propertyType, String bedroomsStr, String bathroomsStr, String rentStr, String depositStr, Date availableFrom, List<String> imagePaths, int primaryImageIndex) {
         User currentUser = SessionService.getInstance().getCurrentUser();
         if (currentUser == null || !"PROPERTY_OWNER".equals(currentUser.getRole())) {
             return "Unauthorized access.";
@@ -122,6 +126,39 @@ public class PropertyController {
             return "Please enter valid numbers for bedrooms, bathrooms, rent, and deposit.";
         }
 
+        // Process images
+        java.io.File projectRoot = getProjectRoot();
+        java.io.File uploadDir = new java.io.File(projectRoot, "uploaded_images");
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        java.util.List<String> processedPaths = new java.util.ArrayList<>();
+        if (imagePaths != null && !imagePaths.isEmpty()) {
+            long timestamp = System.currentTimeMillis();
+            for (int i = 0; i < imagePaths.size(); i++) {
+                String originalPath = imagePaths.get(i);
+                // If it is already a relative path inside uploaded_images, keep it as is
+                if (originalPath.startsWith("uploaded_images/") || originalPath.startsWith("uploaded_images\\")) {
+                    processedPaths.add(originalPath);
+                } else {
+                    String relativePath = "uploaded_images/prop_" + timestamp + "_" + i + ".jpg";
+                    java.io.File targetFile = new java.io.File(projectRoot, relativePath);
+                    try {
+                        net.coobird.thumbnailator.Thumbnails.of(new java.io.File(originalPath))
+                                .size(320, 240)
+                                .outputFormat("jpg")
+                                .outputQuality(0.85)
+                                .toFile(targetFile);
+                        processedPaths.add(relativePath);
+                    } catch (java.io.IOException e) {
+                        System.err.println("Failed to resize image " + originalPath + ": " + e.getMessage());
+                        processedPaths.add(originalPath);
+                    }
+                }
+            }
+        }
+
         Property p = new Property();
         p.setPropertyId(propertyId);
         p.setOwnerId(currentUser.getUserId());
@@ -132,6 +169,22 @@ public class PropertyController {
         p.setBathrooms(bathrooms);
         p.setMonthlyRent(rent);
         p.setDeposit(deposit);
+        p.setAvailableFrom(availableFrom != null ? availableFrom : new Date());
+
+        // Composing comma-separated image paths
+        String combinedImagePath = "";
+        if (!processedPaths.isEmpty()) {
+            List<String> orderedPaths = new java.util.ArrayList<>();
+            String primary = (primaryImageIndex >= 0 && primaryImageIndex < processedPaths.size()) ? processedPaths.get(primaryImageIndex) : processedPaths.get(0);
+            orderedPaths.add(primary);
+            for (String path : processedPaths) {
+                if (!path.equals(primary)) {
+                    orderedPaths.add(path);
+                }
+            }
+            combinedImagePath = String.join(",", orderedPaths);
+        }
+        p.setPrimaryImagePath(combinedImagePath);
 
         boolean success = propertyDAO.updateProperty(p);
         return success ? "SUCCESS" : "Failed to update property.";
@@ -180,6 +233,33 @@ public class PropertyController {
         return new DAO.RatingDAO().getAverageRating(propertyId);
     }
 
+    public static String getStarHtml(double rating) {
+        int rounded = (int) Math.round(rating);
+        StringBuilder sb = new StringBuilder("<html><font face='Segoe UI Symbol' color='#F39C12'>");
+        for (int i = 0; i < 5; i++) {
+            if (i < rounded) {
+                sb.append("★");
+            } else {
+                sb.append("</font><font face='Segoe UI Symbol' color='#D1D5DB'>★</font><font face='Segoe UI Symbol' color='#F39C12'>");
+            }
+        }
+        sb.append("</font> <font color='gray'>(").append(String.format("%.1f", rating)).append(")</font></html>");
+        return sb.toString();
+    }
+
+    public static String getStarHtmlForScore(int score) {
+        StringBuilder sb = new StringBuilder("<html><font face='Segoe UI Symbol' color='#F39C12'>");
+        for (int i = 0; i < 5; i++) {
+            if (i < score) {
+                sb.append("★");
+            } else {
+                sb.append("</font><font face='Segoe UI Symbol' color='#D1D5DB'>★</font><font face='Segoe UI Symbol' color='#F39C12'>");
+            }
+        }
+        sb.append("</font></html>");
+        return sb.toString();
+    }
+
     public List<Property> getOwnerProperties() {
         User currentUser = SessionService.getInstance().getCurrentUser();
         if (currentUser == null || !"PROPERTY_OWNER".equals(currentUser.getRole())) {
@@ -189,85 +269,60 @@ public class PropertyController {
     }
 
     public void initRenterDashboard(view.RenterDashboardView view) {
-        User currentUser = SessionService.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            view.getLblWelcome().setText("Welcome, " + currentUser.getFullName().split(" ")[0]);
-        }
+        view.scrollPaneProperties.getVerticalScrollBar().setUnitIncrement(16);
+        view.scrollPaneProperties.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         
-        view.getScrollPaneProperties().getVerticalScrollBar().setUnitIncrement(16);
-        view.getScrollPaneProperties().setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        
-        view.setTitle("SmartRent - Renter Dashboard v2");
+        view.setTitle("SmartRent - Renter Dashboard");
         view.setSize(1280, 800);
         view.setPreferredSize(new Dimension(1280, 800));
+        view.setResizable(false);
+        view.setLocationRelativeTo(null);
         
-        view.getPnlSidebar().setBounds(0, 0, 220, 800);
+        // Centralized Sidebar Styling
+        LogoLoader.styleRenterSidebar(
+                view,
+                view.pnlSidebar,
+                view.lblLogo,
+                view.btnNavDashboard,
+                view.btnNavMyApplications,
+                view.btnNavPropertyRatings,
+                view.btnNavSavedProperties,
+                view.btnNavLogout,
+                "dashboard"
+        );
         
-        view.getLblLogo().setText("<html><font size='5'>\ud83c\udfe0</font> SmartRent</html>");
-        view.getLblLogo().setBounds(20, 20, 180, 40);
-        
-        view.getBtnNavDashboard().setText("\u229e  Dashboard");
-        view.getBtnNavDashboard().setBounds(0, 80, 220, 40);
-        view.getBtnNavDashboard().setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        view.getBtnNavDashboard().setMargin(new java.awt.Insets(2, 20, 2, 14));
-        
-        view.getBtnNavMyApplications().setText("\ud83d\udcc4  My Applications");
-        view.getBtnNavMyApplications().setBounds(0, 120, 220, 40);
-        view.getBtnNavMyApplications().setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        view.getBtnNavMyApplications().setMargin(new java.awt.Insets(2, 20, 2, 14));
-        
-        view.getBtnNavPropertyRatings().setText("\u2605  Property Ratings");
-        view.getBtnNavPropertyRatings().setBounds(0, 160, 220, 40);
-        view.getBtnNavPropertyRatings().setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        view.getBtnNavPropertyRatings().setMargin(new java.awt.Insets(2, 20, 2, 14));
-        
-        view.getBtnNavSavedProperties().setText("\u2661  Saved Properties");
-        view.getBtnNavSavedProperties().setBounds(0, 200, 220, 40);
-        view.getBtnNavSavedProperties().setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        view.getBtnNavSavedProperties().setMargin(new java.awt.Insets(2, 20, 2, 14));
-        
-        view.getBtnNavLogout().setText("\ud83d\udeaa  Logout");
-        view.getBtnNavLogout().setBounds(0, 260, 220, 40);
-        view.getBtnNavLogout().setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        view.getBtnNavLogout().setMargin(new java.awt.Insets(2, 20, 2, 14));
-        
-        view.getLblDashboardHeader().setBounds(250, 20, 200, 40);
-        view.getLblWelcome().setBounds(1030, 20, 200, 40);
-        view.getLblWelcome().setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        
-        view.getPnlFilters().setBounds(250, 70, 1000, 60);
-        view.getPnlFilters().setBackground(new java.awt.Color(245, 247, 250));
-        
-        view.getTxtLocation().setBounds(0, 15, 150, 35);
-        view.getTxtMaxPrice().setBounds(170, 15, 150, 35);
-        view.getCmbBedrooms().setBounds(340, 15, 100, 35);
-        view.getCmbPropertyType().setBounds(460, 15, 120, 35);
-        
-        view.getBtnSearch().setBounds(850, 15, 150, 35);
-        view.getBtnSearch().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
-        
-        view.getScrollPaneProperties().setBounds(250, 140, 1000, 600);
+        try {
+            User currentUser = SessionService.getInstance().getCurrentUser();
+            if (currentUser != null) {
+                view.lblWelcome.setText("Welcome, " + currentUser.getFullName().split(" ")[0]);
+            }
+        } catch (Exception e) { /* ignore */ }
         
         loadRenterProperties(view);
     }
 
     public void loadRenterProperties(view.RenterDashboardView view) {
-        String location = view.getTxtLocation().getText().equals("Location") ? "" : view.getTxtLocation().getText();
+        String location = view.txtLocation.getText().equals("Location") ? "" : view.txtLocation.getText();
         
         double maxPrice = 0;
         try {
-            if (!view.getTxtMaxPrice().getText().equals("Max Price")) {
-                maxPrice = Double.parseDouble(view.getTxtMaxPrice().getText());
+            if (!view.txtMaxPrice.getText().equals("Max Price")) {
+                maxPrice = Double.parseDouble(view.txtMaxPrice.getText());
             }
         } catch (NumberFormatException e) {
             // ignore
         }
         
-        String bedrooms = view.getCmbBedrooms().getSelectedItem().toString();
+        String bedrooms = view.cmbBedrooms.getSelectedItem().toString();
         if (bedrooms.equals("4+")) bedrooms = "4";
         
-        String propertyType = view.getCmbPropertyType().getSelectedItem().toString();
+        String propertyType = view.cmbPropertyType.getSelectedItem().toString();
         if (propertyType.equals("Any")) propertyType = "";
+
+        boolean hasFilters = !location.isEmpty() 
+            || (maxPrice > 0) 
+            || (!bedrooms.equals("Any")) 
+            || (!propertyType.isEmpty() && !propertyType.equals("Any"));
 
         List<Property> properties = new java.util.ArrayList<>();
         try {
@@ -277,36 +332,41 @@ public class PropertyController {
         }
         
         if (properties == null || properties.isEmpty()) {
-            properties = new java.util.ArrayList<>();
-            Property d1 = new Property(); d1.setPropertyId(1); d1.setTitle("Lakeside Apartment"); d1.setAddress("Mumbai"); d1.setMonthlyRent(45000.0); d1.setAvgRating(4.5); properties.add(d1);
-            Property d2 = new Property(); d2.setPropertyId(2); d2.setTitle("Greenview Villa"); d2.setAddress("Bangalore"); d2.setMonthlyRent(60000.0); d2.setAvgRating(4.8); properties.add(d2);
-            Property d3 = new Property(); d3.setPropertyId(3); d3.setTitle("Urban Loft"); d3.setAddress("Delhi"); d3.setMonthlyRent(38000.0); d3.setAvgRating(3.9); properties.add(d3);
-            Property d4 = new Property(); d4.setPropertyId(4); d4.setTitle("Sunset Hills House"); d4.setAddress("Pune"); d4.setMonthlyRent(55000.0); d4.setAvgRating(4.2); properties.add(d4);
-            Property d5 = new Property(); d5.setPropertyId(5); d5.setTitle("Palmview House"); d5.setAddress("Goa"); d5.setMonthlyRent(32000.0); d5.setAvgRating(4.0); properties.add(d5);
-            Property d6 = new Property(); d6.setPropertyId(6); d6.setTitle("Cityscape Studio"); d6.setAddress("Hyderabad"); d6.setMonthlyRent(25000.0); d6.setAvgRating(3.7); properties.add(d6);
-            Property d7 = new Property(); d7.setPropertyId(7); d7.setTitle("Maplewood Residence"); d7.setAddress("Chennai"); d7.setMonthlyRent(70000.0); d7.setAvgRating(4.6); properties.add(d7);
-            Property d8 = new Property(); d8.setPropertyId(8); d8.setTitle("Cozy Cottage"); d8.setAddress("Jaipur"); d8.setMonthlyRent(28000.0); d8.setAvgRating(4.1); properties.add(d8);
+            if (hasFilters) {
+                properties = new java.util.ArrayList<>();
+                JOptionPane.showMessageDialog(view, "No properties found matching your search criteria.", "No Results", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                properties = new java.util.ArrayList<>();
+                Property d1 = new Property(); d1.setPropertyId(1); d1.setTitle("Lakeside Apartment"); d1.setAddress("Mumbai"); d1.setMonthlyRent(45000.0); d1.setAvgRating(4.5); properties.add(d1);
+                Property d2 = new Property(); d2.setPropertyId(2); d2.setTitle("Greenview Villa"); d2.setAddress("Bangalore"); d2.setMonthlyRent(60000.0); d2.setAvgRating(4.8); properties.add(d2);
+                Property d3 = new Property(); d3.setPropertyId(3); d3.setTitle("Urban Loft"); d3.setAddress("Delhi"); d3.setMonthlyRent(38000.0); d3.setAvgRating(3.9); properties.add(d3);
+                Property d4 = new Property(); d4.setPropertyId(4); d4.setTitle("Sunset Hills House"); d4.setAddress("Pune"); d4.setMonthlyRent(55000.0); d4.setAvgRating(4.2); properties.add(d4);
+                Property d5 = new Property(); d5.setPropertyId(5); d5.setTitle("Palmview House"); d5.setAddress("Goa"); d5.setMonthlyRent(32000.0); d5.setAvgRating(4.0); properties.add(d5);
+                Property d6 = new Property(); d6.setPropertyId(6); d6.setTitle("Cityscape Studio"); d6.setAddress("Hyderabad"); d6.setMonthlyRent(25000.0); d6.setAvgRating(3.7); properties.add(d6);
+                Property d7 = new Property(); d7.setPropertyId(7); d7.setTitle("Maplewood Residence"); d7.setAddress("Chennai"); d7.setMonthlyRent(70000.0); d7.setAvgRating(4.6); properties.add(d7);
+                Property d8 = new Property(); d8.setPropertyId(8); d8.setTitle("Cozy Cottage"); d8.setAddress("Jaipur"); d8.setMonthlyRent(28000.0); d8.setAvgRating(4.1); properties.add(d8);
+            }
         }
         
-        view.getPnlCard1().setVisible(false);
-        view.getPnlCard2().setVisible(false);
-        view.getPnlCard3().setVisible(false);
-        view.getPnlCard4().setVisible(false);
+        view.pnlCard1.setVisible(false);
+        view.pnlCard2.setVisible(false);
+        view.pnlCard3.setVisible(false);
+        view.pnlCard4.setVisible(false);
         view.getPnlCard5().setVisible(false);
         view.getPnlCard6().setVisible(false);
         
         int count = Math.min(properties.size(), 6);
         for (int i = 0; i < count; i++) {
             Property p = properties.get(i);
-            if (i == 0) configureCard(view, view.getPnlCard1(), p);
-            else if (i == 1) configureCard(view, view.getPnlCard2(), p);
-            else if (i == 2) configureCard(view, view.getPnlCard3(), p);
-            else if (i == 3) configureCard(view, view.getPnlCard4(), p);
+            if (i == 0) configureCard(view, view.pnlCard1, p);
+            else if (i == 1) configureCard(view, view.pnlCard2, p);
+            else if (i == 2) configureCard(view, view.pnlCard3, p);
+            else if (i == 3) configureCard(view, view.pnlCard4, p);
             else if (i == 4) configureCard(view, view.getPnlCard5(), p);
             else if (i == 5) configureCard(view, view.getPnlCard6(), p);
         }
         
-        int containerWidth = view.getPnlPropertiesGrid().getWidth();
+        int containerWidth = view.pnlPropertiesGrid.getWidth();
         if (containerWidth <= 0) {
             containerWidth = 980;
         }
@@ -317,10 +377,10 @@ public class PropertyController {
         
         int rows = (int) Math.ceil(count / (double) cols);
         int prefHeight = rows * (280 + gap) + gap;
-        view.getPnlPropertiesGrid().setPreferredSize(new Dimension(containerWidth, Math.max(prefHeight, 600)));
+        view.pnlPropertiesGrid.setPreferredSize(new Dimension(containerWidth, Math.max(prefHeight, 600)));
         
-        view.getPnlPropertiesGrid().revalidate();
-        view.getPnlPropertiesGrid().repaint();
+        view.pnlPropertiesGrid.revalidate();
+        view.pnlPropertiesGrid.repaint();
     }
 
     private void configureCard(view.RenterDashboardView view, view.PropertyCardRenter card, Property p) {
@@ -375,24 +435,93 @@ public class PropertyController {
 
     // PropertyRatingsView management
     public void initRatingsView(PropertyRatingsView view, int propertyId, String propertyTitle) {
-        view.getLblTitle().setText("Ratings for: " + propertyTitle);
-        view.getPnlRatingsList().setLayout(new javax.swing.BoxLayout(view.getPnlRatingsList(), javax.swing.BoxLayout.Y_AXIS));
-        
         User currentUser = SessionService.getInstance().getCurrentUser();
-        if (propertyId == -1 || currentUser == null || !"RENTER".equals(currentUser.getRole())) {
-            view.getLblAddRating().setVisible(false);
-            view.getCmbScore().setVisible(false);
-            view.getTxtReview().setVisible(false);
-            view.getBtnSubmitReview().setVisible(false);
-        }
         
-        if (propertyId != -1) {
-            loadRatings(view, propertyId);
+        // Centralized Sidebar Styling
+        LogoLoader.styleRenterSidebar(
+                view,
+                view.pnlSidebar,
+                view.lblLogo,
+                view.btnNavDashboard,
+                view.btnNavMyApplications,
+                view.btnNavPropertyRatings,
+                view.btnNavSavedProperties,
+                view.btnNavLogout,
+                "ratings"
+        );
+        
+        if (currentUser != null && "RENTER".equals(currentUser.getRole())) {
+            view.lblTitle.setText("Places You've Stayed");
+            view.lblAvgRating.setText("History of all the places you've stayed in");
+            
+            // Hide review form
+            view.lblAddRating.setVisible(false);
+            view.cmbScore.setVisible(false);
+            view.txtReview.setVisible(false);
+            view.btnSubmitReview.setVisible(false);
+            
+            // Expand scroll pane
+            view.scrollPaneRatings.setBounds(230, 100, 1000, 600);
+            
+            // Load stay history/leases
+            DAO.LeaseDAO leaseDAO = new DAO.LeaseDAO();
+            List<Model.Lease> leases = leaseDAO.getLeasesByRenter(currentUser.getUserId());
+            String[] columns = {"Property", "Rating", "Action"};
+            DefaultTableModel model = new DefaultTableModel(columns, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return column == 2;
+                }
+            };
+            
+            DAO.RatingDAO ratingDAO = new DAO.RatingDAO();
+            for (Model.Lease lease : leases) {
+                Model.Rating r = ratingDAO.getRatingByRenterAndProperty(currentUser.getUserId(), lease.getPropertyId());
+                String ratingStr = (r != null) ? getStarHtmlForScore(r.getScore()) : "Unrated";
+                model.addRow(new Object[]{lease.getPropertyTitle(), ratingStr, "Rate"});
+            }
+            
+            JTable table = view.tblRatings;
+            table.setModel(model);
+            table.setRowHeight(40);
+            table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+            
+            table.getColumnModel().getColumn(2).setCellRenderer(new ButtonRenderer());
+            table.getColumnModel().getColumn(2).setCellEditor(new ButtonEditor(new JCheckBox(), row -> {
+                Model.Lease selectedLease = leases.get(row);
+                openRateDialog(view, selectedLease.getPropertyId(), selectedLease.getPropertyTitle(), currentUser.getUserId(), () -> {
+                    // Refresh table ratings
+                    model.setRowCount(0);
+                    for (Model.Lease l : leases) {
+                        Model.Rating ratingVal = ratingDAO.getRatingByRenterAndProperty(currentUser.getUserId(), l.getPropertyId());
+                        String rStr = (ratingVal != null) ? getStarHtmlForScore(ratingVal.getScore()) : "Unrated";
+                        model.addRow(new Object[]{l.getPropertyTitle(), rStr, "Rate"});
+                    }
+                });
+            }));
+            
+            view.scrollPaneRatings.setViewportView(table);
         } else {
-            view.getLblAvgRating().setText("Go to the Dashboard to select a property.");
-            view.getPnlRatingsList().removeAll();
-            view.getPnlRatingsList().revalidate();
-            view.getPnlRatingsList().repaint();
+            // Fallback for non-renters
+            view.lblTitle.setText("Ratings for: " + propertyTitle);
+            view.scrollPaneRatings.setViewportView(view.pnlRatingsList);
+            view.pnlRatingsList.setLayout(new javax.swing.BoxLayout(view.pnlRatingsList, javax.swing.BoxLayout.Y_AXIS));
+            view.scrollPaneRatings.setBounds(230, 100, 750, 450);
+            
+            view.lblAddRating.setVisible(false);
+            view.cmbScore.setVisible(false);
+            view.txtReview.setVisible(false);
+            view.btnSubmitReview.setVisible(false);
+            
+            if (propertyId != -1) {
+                loadRatings(view, propertyId);
+            } else {
+                view.lblAvgRating.setText("Go to the Dashboard to select a property.");
+                view.pnlRatingsList.removeAll();
+                view.pnlRatingsList.revalidate();
+                view.pnlRatingsList.repaint();
+            }
         }
         
         view.setSize(1280, 800);
@@ -405,15 +534,15 @@ public class PropertyController {
 
     public void loadRatings(PropertyRatingsView view, int propertyId) {
         double avg = getAverageRating(propertyId);
-        view.getLblAvgRating().setText(String.format("Average Rating: %.1f / 5", avg));
+        view.lblAvgRating.setText(getStarHtml(avg));
         
-        view.getPnlRatingsList().removeAll();
+        view.pnlRatingsList.removeAll();
         List<Model.Rating> ratings = getPropertyRatings(propertyId);
         
         if (ratings.isEmpty()) {
             JLabel emptyLbl = new JLabel("No ratings yet for this property.");
             emptyLbl.setFont(new java.awt.Font("Segoe UI", java.awt.Font.ITALIC, 14));
-            view.getPnlRatingsList().add(emptyLbl);
+            view.pnlRatingsList.add(emptyLbl);
         }
         
         for (Model.Rating r : ratings) {
@@ -423,8 +552,8 @@ public class PropertyController {
             card.setMaximumSize(new Dimension(500, 80));
             card.setBorder(BorderFactory.createLineBorder(java.awt.Color.LIGHT_GRAY));
             
-            JLabel lblName = new JLabel(r.getRenterName() + " (" + r.getScore() + "/5)");
-            lblName.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+            JLabel lblName = new JLabel("<html><b>" + r.getRenterName() + "</b> &nbsp;&nbsp;" + getStarHtmlForScore(r.getScore()) + "</html>");
+            lblName.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
             lblName.setBounds(10, 10, 300, 20);
             card.add(lblName);
             
@@ -439,19 +568,19 @@ public class PropertyController {
             lblReview.setBounds(10, 35, 480, 40);
             card.add(lblReview);
             
-            view.getPnlRatingsList().add(card);
-            view.getPnlRatingsList().add(Box.createRigidArea(new Dimension(0, 10)));
+            view.pnlRatingsList.add(card);
+            view.pnlRatingsList.add(Box.createRigidArea(new Dimension(0, 10)));
         }
-        view.getPnlRatingsList().revalidate();
-        view.getPnlRatingsList().repaint();
+        view.pnlRatingsList.revalidate();
+        view.pnlRatingsList.repaint();
     }
 
     public void submitRating(PropertyRatingsView view, int propertyId) {
         if (propertyId == -1) return;
         
-        int scoreIndex = view.getCmbScore().getSelectedIndex();
+        int scoreIndex = view.cmbScore.getSelectedIndex();
         int score = 5 - scoreIndex; // 0=5, 1=4, 2=3, 3=2, 4=1
-        String review = view.getTxtReview().getText();
+        String review = view.txtReview.getText();
         
         if (review.equals("Write your review here...") || review.trim().isEmpty()) {
             review = "";
@@ -460,7 +589,7 @@ public class PropertyController {
         String result = addRating(propertyId, score, review);
         if (result.equals("SUCCESS")) {
             JOptionPane.showMessageDialog(view, "Thank you for your review!");
-            view.getTxtReview().setText("Write your review here...");
+            view.txtReview.setText("Write your review here...");
             loadRatings(view, propertyId);
         } else {
             JOptionPane.showMessageDialog(view, result);
@@ -490,27 +619,28 @@ public class PropertyController {
 
     // MyPropertiesView management
     public void initMyProperties(MyPropertiesView view) {
+        LogoLoader.styleOwnerSidebar(view, view.pnlSidebar, view.lblLogo, view.btnNavDashboard, view.btnNavMyProperties, view.btnNavLeaseManagement, view.btnNavLogout, "properties");
         User currentUser = SessionService.getInstance().getCurrentUser();
         if (currentUser != null) {
-            view.getLblWelcome().setText("Welcome, " + currentUser.getFullName().split(" ")[0]);
+            view.lblWelcome.setText("Welcome, " + currentUser.getFullName().split(" ")[0]);
         }
         
         loadMyProperties(view);
         
-        view.setSize(1024, 768);
+        view.setSize(1280, 800);
         view.setResizable(false);
         view.setLocationRelativeTo(null);
     }
 
     public void loadMyProperties(MyPropertiesView view) {
-        view.getPnlTableBody().removeAll();
+        view.pnlTableBody.removeAll();
         List<Property> properties = getOwnerProperties();
         
         for (Property p : properties) {
             JPanel row = new JPanel();
             row.setLayout(null);
-            row.setPreferredSize(new Dimension(740, 60));
-            row.setMaximumSize(new Dimension(740, 60));
+            row.setPreferredSize(new Dimension(980, 60));
+            row.setMaximumSize(new Dimension(980, 60));
             row.setAlignmentX(Component.LEFT_ALIGNMENT);
             row.setBackground(Color.WHITE);
             row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240, 240, 240)));
@@ -518,13 +648,13 @@ public class PropertyController {
             JLabel lblTitleText = new JLabel(p.getTitle());
             lblTitleText.setFont(new Font("Segoe UI", Font.BOLD, 14));
             lblTitleText.setForeground(new Color(43, 108, 176));
-            lblTitleText.setBounds(15, 15, 180, 30);
+            lblTitleText.setBounds(15, 15, 280, 30);
             row.add(lblTitleText);
 
             JLabel lblLoc = new JLabel(p.getAddress());
             lblLoc.setFont(new Font("Segoe UI", Font.PLAIN, 13));
             lblLoc.setForeground(new Color(74, 85, 104));
-            lblLoc.setBounds(205, 15, 130, 30);
+            lblLoc.setBounds(310, 15, 200, 30);
             row.add(lblLoc);
 
             String status = p.getPropStatus() != null ? p.getPropStatus() : "AVAILABLE";
@@ -540,7 +670,7 @@ public class PropertyController {
                 lblStatusBadge.setBackground(new Color(221, 107, 32));
                 lblStatusBadge.setForeground(Color.WHITE);
             }
-            lblStatusBadge.setBounds(345, 15, 90, 30);
+            lblStatusBadge.setBounds(530, 15, 100, 30);
             row.add(lblStatusBadge);
 
             JButton btnEdit = new JButton("Edit");
@@ -548,7 +678,7 @@ public class PropertyController {
             btnEdit.setBackground(new Color(43, 108, 176));
             btnEdit.setForeground(Color.WHITE);
             btnEdit.setFocusPainted(false);
-            btnEdit.setBounds(450, 15, 70, 30);
+            btnEdit.setBounds(650, 15, 80, 30);
             btnEdit.addActionListener(e -> {
                 new AddProperty(p.getPropertyId()).setVisible(true);
                 view.dispose();
@@ -560,7 +690,7 @@ public class PropertyController {
             btnDelete.setBackground(new Color(229, 62, 62));
             btnDelete.setForeground(Color.WHITE);
             btnDelete.setFocusPainted(false);
-            btnDelete.setBounds(525, 15, 75, 30);
+            btnDelete.setBounds(740, 15, 80, 30);
             btnDelete.addActionListener(e -> {
                 int confirm = JOptionPane.showConfirmDialog(view, 
                         "Are you sure you want to delete property: " + p.getTitle() + "?", 
@@ -581,14 +711,14 @@ public class PropertyController {
             JLabel lblDateText = new JLabel(dateStr);
             lblDateText.setFont(new Font("Segoe UI", Font.PLAIN, 13));
             lblDateText.setForeground(new Color(113, 128, 150));
-            lblDateText.setBounds(615, 15, 120, 30);
+            lblDateText.setBounds(850, 15, 120, 30);
             row.add(lblDateText);
 
-            view.getPnlTableBody().add(row);
+            view.pnlTableBody.add(row);
         }
 
-        view.getPnlTableBody().revalidate();
-        view.getPnlTableBody().repaint();
+        view.pnlTableBody.revalidate();
+        view.pnlTableBody.repaint();
     }
 
     public void addProperty(MyPropertiesView view) {
@@ -614,16 +744,17 @@ public class PropertyController {
 
     // AddProperty view management
     public void initAddProperty(AddProperty view, int loadedPropertyId) {
+        LogoLoader.styleOwnerSidebar(view, view.pnlSidebar, view.lblLogo, view.btnNavDashboard, view.btnNavMyProperties, view.btnNavLeaseManagement, view.btnNavLogout, "properties");
         User currentUser = SessionService.getInstance().getCurrentUser();
         if (currentUser != null) {
-            view.getLblWelcome().setText("Welcome, " + currentUser.getFullName().split(" ")[0]);
+            view.lblWelcome.setText("Welcome, " + currentUser.getFullName().split(" ")[0]);
         }
         
-        view.getCmbPropertyType().setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Apartment", "House", "Studio" }));
+        view.cmbPropertyType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Apartment", "House", "Studio" }));
 
         refreshImagePreviews(view);
         
-        view.getTxtAvailableFrom().setText(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+        view.txtAvailableFrom.setText(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
         
         if (loadedPropertyId != -1) {
             loadPropertyData(view, loadedPropertyId);
@@ -644,27 +775,27 @@ public class PropertyController {
         btnDelete.setBorderPainted(false);
         btnDelete.setFocusPainted(false);
         btnDelete.addActionListener(e -> deleteProperty(view, loadedPropertyId));
-        view.getPnlCard().add(btnDelete);
-        view.getPnlCard().revalidate();
-        view.getPnlCard().repaint();
+        view.pnlCard.add(btnDelete);
+        view.pnlCard.revalidate();
+        view.pnlCard.repaint();
     }
 
     public void loadPropertyData(AddProperty view, int loadedPropertyId) {
         Property p = getPropertyById(loadedPropertyId);
         if (p != null) {
-            view.getLblAddPropertyTitle().setText("Edit Property");
-            view.getTxtPropTitle().setText(p.getTitle());
-            view.getTxtAddress().setText(p.getAddress());
-            view.getCmbPropertyType().setSelectedItem(p.getPropertyType());
-            view.getTxtBedrooms().setText(String.valueOf(p.getBedrooms()));
-            view.getTxtBathrooms().setText(String.valueOf(p.getBathrooms()));
-            view.getTxtRent().setText(String.valueOf(p.getMonthlyRent()));
-            view.getTxtDeposit().setText(String.valueOf(p.getDeposit()));
+            view.lblAddPropertyTitle.setText("Edit Property");
+            view.txtPropTitle.setText(p.getTitle());
+            view.txtAddress.setText(p.getAddress());
+            view.cmbPropertyType.setSelectedItem(p.getPropertyType());
+            view.txtBedrooms.setText(String.valueOf(p.getBedrooms()));
+            view.txtBathrooms.setText(String.valueOf(p.getBathrooms()));
+            view.txtRent.setText(String.valueOf(p.getMonthlyRent()));
+            view.txtDeposit.setText(String.valueOf(p.getDeposit()));
             
             String dateStr = new SimpleDateFormat("MM/dd/yyyy").format(p.getAvailableFrom() != null ? p.getAvailableFrom() : new Date());
-            view.getTxtAvailableFrom().setText(dateStr);
+            view.txtAvailableFrom.setText(dateStr);
             
-            view.getBtnSave().setText("Update Property");
+            view.btnSave.setText("Update Property");
             
             if (p.getPrimaryImagePath() != null && !p.getPrimaryImagePath().isEmpty()) {
                 view.getSelectedImagePaths().clear();
@@ -683,7 +814,7 @@ public class PropertyController {
                 new MyPropertiesView().setVisible(true);
                 view.dispose();
             } else {
-                view.getLblError().setText(result);
+                view.lblError.setText(result);
             }
         }
     }
@@ -712,17 +843,17 @@ public class PropertyController {
     }
 
     public void saveProperty(AddProperty view, int loadedPropertyId) {
-        String title = view.getTxtPropTitle().getText().trim();
-        String address = view.getTxtAddress().getText().trim();
-        String type = view.getCmbPropertyType().getSelectedItem().toString();
-        String bed = view.getTxtBedrooms().getText().trim();
-        String bath = view.getTxtBathrooms().getText().trim();
-        String rent = view.getTxtRent().getText().trim();
-        String deposit = view.getTxtDeposit().getText().trim();
-        String availStr = view.getTxtAvailableFrom().getText().trim();
+        String title = view.txtPropTitle.getText().trim();
+        String address = view.txtAddress.getText().trim();
+        String type = view.cmbPropertyType.getSelectedItem().toString();
+        String bed = view.txtBedrooms.getText().trim();
+        String bath = view.txtBathrooms.getText().trim();
+        String rent = view.txtRent.getText().trim();
+        String deposit = view.txtDeposit.getText().trim();
+        String availStr = view.txtAvailableFrom.getText().trim();
 
         if (title.isEmpty() || address.isEmpty() || bed.isEmpty() || bath.isEmpty() || rent.isEmpty() || deposit.isEmpty()) {
-            view.getLblError().setText("Please fill out all required fields.");
+            view.lblError.setText("Please fill out all required fields.");
             return;
         }
 
@@ -739,7 +870,7 @@ public class PropertyController {
         if (loadedPropertyId == -1) {
             result = addProperty(title, address, type, bed, bath, rent, deposit, availDate, view.getSelectedImagePaths(), 0);
         } else {
-            result = updateProperty(loadedPropertyId, title, address, type, bed, bath, rent, deposit);
+            result = updateProperty(loadedPropertyId, title, address, type, bed, bath, rent, deposit, availDate, view.getSelectedImagePaths(), 0);
         }
         
         if (result.equals("SUCCESS")) {
@@ -747,48 +878,50 @@ public class PropertyController {
             new MyPropertiesView().setVisible(true);
             view.dispose();
         } else {
-            view.getLblError().setText(result);
+            view.lblError.setText(result);
         }
     }
 
     public void refreshImagePreviews(AddProperty view) {
-        view.getPnlSlot1().setVisible(false);
-        view.getPnlSlot2().setVisible(false);
-        view.getPnlSlot3().setVisible(false);
-        view.getPnlSlot4().setVisible(false);
-        view.getPnlSlot5().setVisible(false);
+        view.pnlSlot1.setVisible(false);
+        view.pnlSlot2.setVisible(false);
+        view.pnlSlot3.setVisible(false);
+        view.pnlSlot4.setVisible(false);
+        view.pnlSlot5.setVisible(false);
 
         int count = view.getSelectedImagePaths().size();
-        view.getLblImagesStatus().setText(count + " Images Selected");
+        view.lblImagesStatus.setText(count + " Images Selected");
 
         if (count > 0) {
-            setupSlot(view.getPnlSlot1(), view.getLblPreview1(), view.getSelectedImagePaths().get(0));
-            view.getPnlSlot1().setVisible(true);
+            setupSlot(view.pnlSlot1, view.lblPreview1, view.getSelectedImagePaths().get(0));
+            view.pnlSlot1.setVisible(true);
         }
         if (count > 1) {
-            setupSlot(view.getPnlSlot2(), view.getLblPreview2(), view.getSelectedImagePaths().get(1));
-            view.getPnlSlot2().setVisible(true);
+            setupSlot(view.pnlSlot2, view.lblPreview2, view.getSelectedImagePaths().get(1));
+            view.pnlSlot2.setVisible(true);
         }
         if (count > 2) {
-            setupSlot(view.getPnlSlot3(), view.getLblPreview3(), view.getSelectedImagePaths().get(2));
-            view.getPnlSlot3().setVisible(true);
+            setupSlot(view.pnlSlot3, view.lblPreview3, view.getSelectedImagePaths().get(2));
+            view.pnlSlot3.setVisible(true);
         }
         if (count > 3) {
-            setupSlot(view.getPnlSlot4(), view.getLblPreview4(), view.getSelectedImagePaths().get(3));
-            view.getPnlSlot4().setVisible(true);
+            setupSlot(view.pnlSlot4, view.lblPreview4, view.getSelectedImagePaths().get(3));
+            view.pnlSlot4.setVisible(true);
         }
         if (count > 4) {
-            setupSlot(view.getPnlSlot5(), view.getLblPreview5(), view.getSelectedImagePaths().get(4));
-            view.getPnlSlot5().setVisible(true);
+            setupSlot(view.pnlSlot5, view.lblPreview5, view.getSelectedImagePaths().get(4));
+            view.pnlSlot5.setVisible(true);
         }
         
-        view.getPnlImagesPreview().revalidate();
-        view.getPnlImagesPreview().repaint();
+        view.pnlImagesPreview.revalidate();
+        view.pnlImagesPreview.repaint();
     }
 
     private void setupSlot(JPanel slot, JLabel label, String path) {
         try {
-            ImageIcon icon = new ImageIcon(path);
+            java.io.File file = resolveFile(path);
+            String resolved = (file != null && file.exists()) ? file.getAbsolutePath() : path;
+            ImageIcon icon = new ImageIcon(resolved);
             Image img = icon.getImage().getScaledInstance(140, 80, Image.SCALE_SMOOTH);
             label.setIcon(new ImageIcon(img));
             label.setText("");
@@ -829,6 +962,18 @@ public class PropertyController {
     }
 
     public void initPropertyDetail(PropertyDetailView view, int propertyId) {
+        // Centralized Sidebar Styling
+        LogoLoader.styleRenterSidebar(
+                view,
+                view.pnlSidebar,
+                view.lblLogo,
+                view.btnNavDashboard,
+                view.btnNavMyApplications,
+                view.btnNavPropertyRatings,
+                view.btnNavSavedProperties,
+                view.btnNavLogout,
+                ""
+        );
         view.setSize(1280, 800);
         view.setResizable(false);
         view.setLocationRelativeTo(null);
@@ -840,16 +985,16 @@ public class PropertyController {
         }
 
         // Set property info
-        view.getLblTitle().setText(p.getTitle());
-        view.getLblAddress().setText("\uD83D\uDCCD " + p.getAddress());
-        view.getLblPropertyType().setText(p.getPropertyType() != null ? p.getPropertyType() : "N/A");
-        view.getLblBedrooms().setText(p.getBedrooms() + " Bedrooms");
-        view.getLblBathrooms().setText(p.getBathrooms() + " Bathrooms");
-        view.getLblRent().setText("Rs. " + String.format("%,.0f", p.getMonthlyRent()) + " / month");
-        view.getLblDeposit().setText("Deposit: Rs. " + String.format("%,.0f", p.getDeposit()));
-        view.getLblAvailableFrom().setText("Available from: " + (p.getAvailableFrom() != null ? new java.text.SimpleDateFormat("MMM dd, yyyy").format(p.getAvailableFrom()) : "Now"));
-        view.getLblStatus().setText(p.getPropStatus() != null ? p.getPropStatus() : "AVAILABLE");
-        view.getLblRating().setText(p.getAvgRating() >= 4.5 ? "\u2605\u2605\u2605\u2605\u2605 " + p.getAvgRating() : "\u2605\u2605\u2605\u2605\u2606 " + p.getAvgRating());
+        view.lblTitle.setText(p.getTitle());
+        view.lblAddress.setText("\uD83D\uDCCD " + p.getAddress());
+        view.lblPropertyType.setText(p.getPropertyType() != null ? p.getPropertyType() : "N/A");
+        view.lblBedrooms.setText(p.getBedrooms() + " Bedrooms");
+        view.lblBathrooms.setText(p.getBathrooms() + " Bathrooms");
+        view.lblRent.setText("Rs. " + String.format("%,.0f", p.getMonthlyRent()) + " / month");
+        view.lblDeposit.setText("Deposit: Rs. " + String.format("%,.0f", p.getDeposit()));
+        view.lblAvailableFrom.setText("Available from: " + (p.getAvailableFrom() != null ? new java.text.SimpleDateFormat("MMM dd, yyyy").format(p.getAvailableFrom()) : "Now"));
+        view.lblStatus.setText(p.getPropStatus() != null ? p.getPropStatus() : "AVAILABLE");
+        view.lblRating.setText(getStarHtml(p.getAvgRating()));
 
         // Load images
         List<String> images = propertyDAO.getPropertyImages(propertyId);
@@ -863,11 +1008,11 @@ public class PropertyController {
         // Show first image
         if (!imageList.isEmpty()) {
             showImage(view, imageList, 0);
-            view.getLblImageCounter().setText("1 / " + imageList.size());
+            view.lblImageCounter.setText("1 / " + imageList.size());
         }
 
         // Set up thumbnails
-        JLabel[] thumbs = {view.getThumbnail1(), view.getThumbnail2(), view.getThumbnail3(), view.getThumbnail4()};
+        JLabel[] thumbs = {view.thumbnail1, view.thumbnail2, view.thumbnail3, view.thumbnail4};
         for (int i = 0; i < thumbs.length; i++) {
             if (i < imageList.size()) {
                 final int idx = i;
@@ -880,7 +1025,7 @@ public class PropertyController {
                     public void mouseClicked(java.awt.event.MouseEvent e) {
                         currentIndex[0] = idx;
                         showImage(view, imageList, idx);
-                        view.getLblImageCounter().setText((idx + 1) + " / " + imageList.size());
+                        view.lblImageCounter.setText((idx + 1) + " / " + imageList.size());
                     }
                 });
                 thumbs[i].setVisible(true);
@@ -890,68 +1035,277 @@ public class PropertyController {
         }
 
         // Arrow buttons
-        view.getBtnPrevImage().addActionListener(e -> {
+        view.btnPrevImage.addActionListener(e -> {
             if (currentIndex[0] > 0) {
                 currentIndex[0]--;
                 showImage(view, imageList, currentIndex[0]);
-                view.getLblImageCounter().setText((currentIndex[0] + 1) + " / " + imageList.size());
+                view.lblImageCounter.setText((currentIndex[0] + 1) + " / " + imageList.size());
             }
         });
-        view.getBtnNextImage().addActionListener(e -> {
+        view.btnNextImage.addActionListener(e -> {
             if (currentIndex[0] < imageList.size() - 1) {
                 currentIndex[0]++;
                 showImage(view, imageList, currentIndex[0]);
-                view.getLblImageCounter().setText((currentIndex[0] + 1) + " / " + imageList.size());
+                view.lblImageCounter.setText((currentIndex[0] + 1) + " / " + imageList.size());
             }
         });
 
         // Action buttons
-        view.getBtnApply().addActionListener(e -> {
+        view.btnApply.addActionListener(e -> {
             new view.ApplicationFormView(propertyId).setVisible(true);
             view.dispose();
         });
-        view.getBtnSave().addActionListener(e -> {
+        view.btnSave.addActionListener(e -> {
             SavedPropertyController savedCtrl = new SavedPropertyController();
             if (savedCtrl.saveProperty(propertyId)) {
                 javax.swing.JOptionPane.showMessageDialog(view, "Property saved!");
             }
         });
-        view.getBtnBack().addActionListener(e -> {
+        view.btnBack.addActionListener(e -> {
             new RenterDashboardView().setVisible(true);
             view.dispose();
         });
 
         // Sidebar navigation
-        view.getBtnNavDashboard().addActionListener(e -> { new RenterDashboardView().setVisible(true); view.dispose(); });
-        view.getBtnNavMyApplications().addActionListener(e -> { new MyApplicationView().setVisible(true); view.dispose(); });
-        view.getBtnNavPropertyRatings().addActionListener(e -> { new PropertyRatingsView().setVisible(true); view.dispose(); });
-        view.getBtnNavSavedProperties().addActionListener(e -> { new SavedPropertiesView().setVisible(true); view.dispose(); });
-        view.getBtnNavLogout().addActionListener(e -> { SessionService.getInstance().logout(); new LoginView().setVisible(true); view.dispose(); });
+        view.btnNavDashboard.addActionListener(e -> { new RenterDashboardView().setVisible(true); view.dispose(); });
+        view.btnNavMyApplications.addActionListener(e -> { new MyApplicationView().setVisible(true); view.dispose(); });
+        view.btnNavPropertyRatings.addActionListener(e -> { new PropertyRatingsView().setVisible(true); view.dispose(); });
+        view.btnNavSavedProperties.addActionListener(e -> { new SavedPropertiesView().setVisible(true); view.dispose(); });
+        view.btnNavLogout.addActionListener(e -> { SessionService.getInstance().logout(); new LoginView().setVisible(true); view.dispose(); });
+    }
+
+    public static java.io.File getProjectRoot() {
+        java.io.File currentDir = new java.io.File(System.getProperty("user.dir"));
+        while (currentDir != null) {
+            if (new java.io.File(currentDir, "build.xml").exists() || new java.io.File(currentDir, "src").exists()) {
+                return currentDir;
+            }
+            currentDir = currentDir.getParentFile();
+        }
+        return new java.io.File(System.getProperty("user.dir"));
+    }
+
+    public static java.io.File resolveFile(String path) {
+        if (path == null || path.isEmpty()) {
+            return null;
+        }
+        java.io.File f = new java.io.File(path);
+        if (f.exists()) {
+            return f;
+        }
+        java.io.File projectRoot = getProjectRoot();
+        String rel = path;
+        int idx = path.indexOf("uploaded_images");
+        if (idx != -1) {
+            rel = path.substring(idx);
+        }
+        java.io.File candidate = new java.io.File(projectRoot, rel);
+        if (candidate.exists()) {
+            return candidate;
+        }
+        java.io.File subuFallback = new java.io.File("C:\\Users\\Subechha Karki\\Documents\\NetBeansProjects\\SmartRent", rel);
+        if (subuFallback.exists()) {
+            return subuFallback;
+        }
+        return f;
     }
 
     private void showImage(PropertyDetailView view, List<String> images, int index) {
         if (index >= 0 && index < images.size()) {
             String path = images.get(index);
-            java.io.File file = new java.io.File(path);
-            if (file.exists()) {
-                javax.swing.ImageIcon icon = new javax.swing.ImageIcon(path);
+            java.io.File file = resolveFile(path);
+            if (file != null && file.exists()) {
+                javax.swing.ImageIcon icon = new javax.swing.ImageIcon(file.getAbsolutePath());
                 java.awt.Image img = icon.getImage().getScaledInstance(580, 340, java.awt.Image.SCALE_SMOOTH);
-                view.getLblMainImage().setIcon(new javax.swing.ImageIcon(img));
-                view.getLblMainImage().setText("");
+                view.lblMainImage.setIcon(new javax.swing.ImageIcon(img));
+                view.lblMainImage.setText("");
             } else {
-                view.getLblMainImage().setIcon(null);
-                view.getLblMainImage().setText("<html><div style='text-align:center;color:white;padding-top:140px;font-size:16px;'>No Image Available</div></html>");
+                java.net.URL imgUrl = getClass().getResource("/Images/Gemini_Generated_Image_enyzbenyzbe.png");
+                if (imgUrl != null) {
+                    javax.swing.ImageIcon icon = new javax.swing.ImageIcon(imgUrl);
+                    java.awt.Image img = icon.getImage().getScaledInstance(580, 340, java.awt.Image.SCALE_SMOOTH);
+                    view.lblMainImage.setIcon(new javax.swing.ImageIcon(img));
+                    view.lblMainImage.setText("");
+                } else {
+                    view.lblMainImage.setIcon(null);
+                    view.lblMainImage.setText("<html><div style='text-align:center;color:white;padding-top:140px;font-size:16px;'>No Image Available</div></html>");
+                }
             }
         }
     }
 
     private void loadThumbnail(JLabel lbl, String path) {
-        java.io.File file = new java.io.File(path);
-        if (file.exists()) {
-            javax.swing.ImageIcon icon = new javax.swing.ImageIcon(path);
+        java.io.File file = resolveFile(path);
+        if (file != null && file.exists()) {
+            javax.swing.ImageIcon icon = new javax.swing.ImageIcon(file.getAbsolutePath());
             java.awt.Image img = icon.getImage().getScaledInstance(120, 70, java.awt.Image.SCALE_SMOOTH);
             lbl.setIcon(new javax.swing.ImageIcon(img));
             lbl.setText("");
+        } else {
+            java.net.URL imgUrl = getClass().getResource("/Images/Gemini_Generated_Image_enyzbenyzbe.png");
+            if (imgUrl != null) {
+                javax.swing.ImageIcon icon = new javax.swing.ImageIcon(imgUrl);
+                java.awt.Image img = icon.getImage().getScaledInstance(120, 70, java.awt.Image.SCALE_SMOOTH);
+                lbl.setIcon(new javax.swing.ImageIcon(img));
+                lbl.setText("");
+            }
         }
+    }
+
+    private void openRateDialog(JFrame parent, int propertyId, String propertyTitle, int renterId, Runnable onSuccess) {
+        JDialog dialog = new JDialog(parent, "Rate Property", true);
+        dialog.setLayout(new GridBagLayout());
+        dialog.getContentPane().setBackground(Color.WHITE);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel lblTitle = new JLabel("Rate Property: " + propertyTitle);
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        dialog.add(lblTitle, gbc);
+
+        JLabel lblScore = new JLabel("Rating:");
+        lblScore.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        dialog.add(lblScore, gbc);
+
+        JComboBox<String> cmbScore = new JComboBox<>(new String[] {
+            "5 - Excellent", "4 - Good", "3 - Average", "2 - Poor", "1 - Terrible"
+        });
+        gbc.gridx = 1;
+        dialog.add(cmbScore, gbc);
+
+        JLabel lblReview = new JLabel("Review:");
+        lblReview.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        dialog.add(lblReview, gbc);
+
+        JTextArea txtReview = new JTextArea(4, 25);
+        txtReview.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        txtReview.setLineWrap(true);
+        txtReview.setWrapStyleWord(true);
+        txtReview.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        
+        // Fetch existing rating if any to pre-fill
+        DAO.RatingDAO ratingDAO = new DAO.RatingDAO();
+        Model.Rating existing = ratingDAO.getRatingByRenterAndProperty(renterId, propertyId);
+        if (existing != null) {
+            cmbScore.setSelectedIndex(5 - existing.getScore());
+            txtReview.setText(existing.getReviewText());
+        } else {
+            txtReview.setText("Write your review here...");
+            txtReview.setForeground(Color.GRAY);
+        }
+
+        // Add focus listener for placeholder
+        txtReview.addFocusListener(new java.awt.event.FocusListener() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if (txtReview.getText().equals("Write your review here...")) {
+                    txtReview.setText("");
+                    txtReview.setForeground(Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                if (txtReview.getText().isEmpty()) {
+                    txtReview.setText("Write your review here...");
+                    txtReview.setForeground(Color.GRAY);
+                }
+            }
+        });
+
+        JScrollPane scrollReview = new JScrollPane(txtReview);
+        gbc.gridx = 1;
+        dialog.add(scrollReview, gbc);
+
+        JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        pnlButtons.setBackground(Color.WHITE);
+        JButton btnCancel = new JButton("Cancel");
+        JButton btnSubmit = new JButton("Submit");
+        btnSubmit.setBackground(new Color(30, 92, 240));
+        btnSubmit.setForeground(Color.WHITE);
+
+        btnCancel.addActionListener(e -> dialog.dispose());
+        btnSubmit.addActionListener(e -> {
+            int scoreIndex = cmbScore.getSelectedIndex();
+            int score = 5 - scoreIndex;
+            String review = txtReview.getText();
+            if (review.equals("Write your review here...") || review.trim().isEmpty()) {
+                review = "";
+            }
+            
+            Model.Rating r = new Model.Rating();
+            r.setPropertyId(propertyId);
+            r.setRenterId(renterId);
+            r.setScore(score);
+            r.setReviewText(review);
+            
+            boolean success = ratingDAO.saveOrUpdateRating(r);
+            if (success) {
+                JOptionPane.showMessageDialog(dialog, "Thank you for your review!");
+                dialog.dispose();
+                onSuccess.run();
+            } else {
+                JOptionPane.showMessageDialog(dialog, "Failed to save rating.");
+            }
+        });
+
+        pnlButtons.add(btnCancel);
+        pnlButtons.add(btnSubmit);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        dialog.add(pnlButtons, gbc);
+
+        dialog.pack();
+        dialog.setSize(450, 320);
+        dialog.setLocationRelativeTo(parent);
+        dialog.setVisible(true);
+    }
+}
+
+class ButtonRenderer extends JButton implements TableCellRenderer {
+    public ButtonRenderer() {
+        setOpaque(true);
+    }
+    public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected, boolean hasFocus, int row, int column) {
+        setText((value == null) ? "Rate" : value.toString());
+        return this;
+    }
+}
+
+class ButtonEditor extends DefaultCellEditor {
+    protected JButton button;
+    private String label;
+    private int selectedRow;
+
+    public ButtonEditor(JCheckBox checkBox, java.util.function.Consumer<Integer> onAction) {
+        super(checkBox);
+        button = new JButton();
+        button.setOpaque(true);
+        button.addActionListener(e -> {
+            fireEditingStopped();
+            onAction.accept(selectedRow);
+        });
+    }
+
+    public Component getTableCellEditorComponent(JTable table, Object value,
+            boolean isSelected, int row, int column) {
+        this.selectedRow = row;
+        label = (value == null) ? "Rate" : value.toString();
+        button.setText(label);
+        return button;
+    }
+
+    public Object getCellEditorValue() {
+        return label;
     }
 }
