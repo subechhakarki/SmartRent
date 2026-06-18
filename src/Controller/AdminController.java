@@ -5,7 +5,7 @@ import DAO.PropertyDAO;
 import Model.User;
 import Model.Property;
 import view.*;
-import smartrent.SessionService;
+import Controller.SessionService;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -113,12 +113,13 @@ public class AdminController {
 
     // Dashboard View Initialization & Loading
     public void initDashboard(AdminDashboardView view) {
+        LogoLoader.styleAdminSidebar(view, view.pnlSidebar, view.lblLogo, view.btnDashboard, view.btnUserManagement, view.btnLogout, "dashboard");
         int[] stats = getPlatformStats();
         if (stats != null && stats.length >= 4) {
-            view.getLblCard1Value().setText(stats[0] + " Users");
-            view.getLblCard2Value().setText(stats[1] + " Active");
-            view.getLblCard3Value().setText(stats[2] + " Pending");
-            view.getLblCard4Value().setText(stats[3] + " Suspended");
+            view.lblCard1Value.setText(stats[0] + " Users");
+            view.lblCard2Value.setText(stats[1] + " Active");
+            view.lblCard3Value.setText(stats[2] + " Pending");
+            view.lblCard4Value.setText(stats[3] + " Suspended");
         }
         
         loadApplicationsTable(view);
@@ -155,19 +156,19 @@ public class AdminController {
             });
         }
 
-        view.getTblApplications().setModel(model);
-        view.getTblApplications().setRowHeight(45);
-        view.getTblApplications().getColumnModel().getColumn(0).setPreferredWidth(120); // Owner Name
-        view.getTblApplications().getColumnModel().getColumn(1).setPreferredWidth(180); // Email
-        view.getTblApplications().getColumnModel().getColumn(2).setPreferredWidth(100); // Phone
-        view.getTblApplications().getColumnModel().getColumn(3).setPreferredWidth(120); // Registered Date
-        view.getTblApplications().getColumnModel().getColumn(4).setPreferredWidth(100); // Status
-        view.getTblApplications().getColumnModel().getColumn(5).setPreferredWidth(180); // Actions
-        view.getTblApplications().getColumnModel().getColumn(5).setMinWidth(150);
+        view.tblApplications.setModel(model);
+        view.tblApplications.setRowHeight(45);
+        view.tblApplications.getColumnModel().getColumn(0).setPreferredWidth(120); // Owner Name
+        view.tblApplications.getColumnModel().getColumn(1).setPreferredWidth(180); // Email
+        view.tblApplications.getColumnModel().getColumn(2).setPreferredWidth(100); // Phone
+        view.tblApplications.getColumnModel().getColumn(3).setPreferredWidth(120); // Registered Date
+        view.tblApplications.getColumnModel().getColumn(4).setPreferredWidth(100); // Status
+        view.tblApplications.getColumnModel().getColumn(5).setPreferredWidth(180); // Actions
+        view.tblApplications.getColumnModel().getColumn(5).setMinWidth(150);
         
         // Set up custom renderer and editor for Actions column
-        view.getTblApplications().getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
-        view.getTblApplications().getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(view));
+        view.tblApplications.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
+        view.tblApplications.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(view));
     }
 
     // Custom cell renderer that draws Approve/Reject buttons
@@ -233,7 +234,7 @@ public class AdminController {
                 fireEditingStopped();
                 if (editingRow >= 0 && editingRow < pendingUserIds.size()) {
                     int userId = pendingUserIds.get(editingRow);
-                    String ownerName = (String) parentView.getTblApplications().getValueAt(editingRow, 0);
+                    String ownerName = (String) parentView.tblApplications.getValueAt(editingRow, 0);
                     int confirm = JOptionPane.showConfirmDialog(parentView, 
                         "Approve owner " + ownerName + "?", 
                         "Approve Owner", JOptionPane.YES_NO_OPTION);
@@ -248,7 +249,7 @@ public class AdminController {
                 fireEditingStopped();
                 if (editingRow >= 0 && editingRow < pendingUserIds.size()) {
                     int userId = pendingUserIds.get(editingRow);
-                    String ownerName = (String) parentView.getTblApplications().getValueAt(editingRow, 0);
+                    String ownerName = (String) parentView.tblApplications.getValueAt(editingRow, 0);
                     String reason = JOptionPane.showInputDialog(parentView, 
                         "Enter rejection reason for " + ownerName + ":", 
                         "Reject Owner", JOptionPane.QUESTION_MESSAGE);
@@ -312,16 +313,16 @@ public class AdminController {
             });
         }
 
-        view.getTblProperties().setModel(model);
-        view.getTblProperties().setRowHeight(45);
-        view.getTblProperties().getColumnModel().getColumn(0).setPreferredWidth(200); // Property Title
-        view.getTblProperties().getColumnModel().getColumn(1).setPreferredWidth(150); // Owner
-        view.getTblProperties().getColumnModel().getColumn(2).setPreferredWidth(100); // Status
-        view.getTblProperties().getColumnModel().getColumn(3).setPreferredWidth(120); // Date Added
-        view.getTblProperties().getColumnModel().getColumn(4).setPreferredWidth(120); // Actions
+        view.tblProperties.setModel(model);
+        view.tblProperties.setRowHeight(45);
+        view.tblProperties.getColumnModel().getColumn(0).setPreferredWidth(200); // Property Title
+        view.tblProperties.getColumnModel().getColumn(1).setPreferredWidth(150); // Owner
+        view.tblProperties.getColumnModel().getColumn(2).setPreferredWidth(100); // Status
+        view.tblProperties.getColumnModel().getColumn(3).setPreferredWidth(120); // Date Added
+        view.tblProperties.getColumnModel().getColumn(4).setPreferredWidth(120); // Actions
         
-        view.getTblProperties().getColumnModel().getColumn(4).setCellRenderer(new PropertyButtonRenderer());
-        view.getTblProperties().getColumnModel().getColumn(4).setCellEditor(new PropertyButtonEditor(view));
+        view.tblProperties.getColumnModel().getColumn(4).setCellRenderer(new PropertyButtonRenderer());
+        view.tblProperties.getColumnModel().getColumn(4).setCellEditor(new PropertyButtonEditor(view));
     }
 
     private class PropertyButtonRenderer extends DefaultTableCellRenderer {
@@ -400,35 +401,36 @@ public class AdminController {
 
     // UserManagementView initialization
     public void initUserManagementView(UserManagementView view) {
+        LogoLoader.styleAdminSidebar(view, view.pnlSidebar, view.lblLogo, view.btnNavDashboard, view.btnNavUserManagement, view.btnNavLogout, "users");
         setupCustomComponents(view);
         setupEvents(view);
         loadUsers(view);
         
-        view.setSize(1280, 800);
+        view.setSize(1100, 800);
         view.setResizable(false);
         view.setLocationRelativeTo(null);
     }
 
     private void setupCustomComponents(UserManagementView view) {
-        view.getTxtSearch().setBorder(BorderFactory.createCompoundBorder(
+        view.txtSearch.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(226, 232, 240), 1),
                 BorderFactory.createEmptyBorder(0, 10, 0, 10)
         ));
-        view.getPnlCard().setBorder(BorderFactory.createCompoundBorder(
+        view.pnlCard.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(226, 232, 240), 1),
                 BorderFactory.createEmptyBorder(15, 15, 15, 15)
         ));
         
-        view.getPnlPagination().setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 0));
-        view.getPnlPagination().removeAll();
-        view.getPnlPagination().add(view.getBtnPrev());
-        view.getPnlPagination().add(view.getPnlPageNumbers());
-        view.getPnlPagination().add(view.getBtnNext());
+        view.pnlPagination.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 0));
+        view.pnlPagination.removeAll();
+        view.pnlPagination.add(view.btnPrev);
+        view.pnlPagination.add(view.pnlPageNumbers);
+        view.pnlPagination.add(view.btnNext);
         
-        stylePaginationButton(view.getBtnPrev());
-        stylePaginationButton(view.getBtnNext());
+        stylePaginationButton(view.btnPrev);
+        stylePaginationButton(view.btnNext);
         
-        view.getScrollTable().getViewport().setBackground(Color.WHITE);
+        view.scrollTable.getViewport().setBackground(Color.WHITE);
     }
 
     private void stylePaginationButton(JButton btn) {
@@ -443,25 +445,25 @@ public class AdminController {
     }
 
     private void setupEvents(UserManagementView view) {
-        view.getTxtSearch().addFocusListener(new FocusListener() {
+        view.txtSearch.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                if ("Search users...".equals(view.getTxtSearch().getText())) {
-                    view.getTxtSearch().setText("");
-                    view.getTxtSearch().setForeground(Color.BLACK);
+                if ("Search users...".equals(view.txtSearch.getText())) {
+                    view.txtSearch.setText("");
+                    view.txtSearch.setForeground(Color.BLACK);
                 }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (view.getTxtSearch().getText().trim().isEmpty()) {
-                    view.getTxtSearch().setText("Search users...");
-                    view.getTxtSearch().setForeground(Color.GRAY);
+                if (view.txtSearch.getText().trim().isEmpty()) {
+                    view.txtSearch.setText("Search users...");
+                    view.txtSearch.setForeground(Color.GRAY);
                 }
             }
         });
 
-        view.getTxtSearch().getDocument().addDocumentListener(new DocumentListener() {
+        view.txtSearch.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) { update(); }
             public void removeUpdate(DocumentEvent e) { update(); }
             public void changedUpdate(DocumentEvent e) { update(); }
@@ -471,14 +473,14 @@ public class AdminController {
             }
         });
 
-        view.getBtnPrev().addActionListener(e -> {
+        view.btnPrev.addActionListener(e -> {
             if (currentPage > 1) {
                 currentPage--;
                 loadUsers(view);
             }
         });
 
-        view.getBtnNext().addActionListener(e -> {
+        view.btnNext.addActionListener(e -> {
             int totalPages = (int) Math.ceil((double) currentUsersList.size() / itemsPerPage);
             if (currentPage < totalPages) {
                 currentPage++;
@@ -493,15 +495,15 @@ public class AdminController {
     }
 
     public void loadUsers(UserManagementView view) {
-        String filter = (String) view.getCmbRoleFilter().getSelectedItem();
-        String search = view.getTxtSearch().getText();
+        String filter = (String) view.cmbRoleFilter.getSelectedItem();
+        String search = view.txtSearch.getText();
         if ("Search users...".equals(search)) {
             search = "";
         }
 
         currentUsersList = getUsers(filter, search);
         
-        view.getPnlTableBody().removeAll();
+        view.pnlTableBody.removeAll();
         int totalUsers = currentUsersList.size();
         
         int totalPages = (int) Math.ceil((double) totalUsers / itemsPerPage);
@@ -515,27 +517,27 @@ public class AdminController {
         int endIndex = Math.min(startIndex + itemsPerPage, totalUsers);
 
         if (totalUsers == 0) {
-            view.getLblEntriesSummary().setText("Showing 0 to 0 of 0 entries");
+            view.lblEntriesSummary.setText("Showing 0 to 0 of 0 entries");
         } else {
-            view.getLblEntriesSummary().setText("Showing " + (startIndex + 1) + " to " + endIndex + " of " + totalUsers + " entries");
+            view.lblEntriesSummary.setText("Showing " + (startIndex + 1) + " to " + endIndex + " of " + totalUsers + " entries");
         }
 
         for (int i = startIndex; i < endIndex; i++) {
             User u = currentUsersList.get(i);
-            view.getPnlTableBody().add(createRowPanel(view, u));
+            view.pnlTableBody.add(createRowPanel(view, u));
         }
 
         updatePaginationControls(view, totalPages);
         
-        view.getPnlTableBody().revalidate();
-        view.getPnlTableBody().repaint();
+        view.pnlTableBody.revalidate();
+        view.pnlTableBody.repaint();
     }
 
     private void updatePaginationControls(UserManagementView view, int totalPages) {
-        view.getBtnPrev().setEnabled(currentPage > 1);
-        view.getBtnNext().setEnabled(currentPage < totalPages && totalPages > 1);
+        view.btnPrev.setEnabled(currentPage > 1);
+        view.btnNext.setEnabled(currentPage < totalPages && totalPages > 1);
 
-        view.getPnlPageNumbers().removeAll();
+        view.pnlPageNumbers.removeAll();
         for (int p = 1; p <= totalPages; p++) {
             final int pageNum = p;
             JButton btnPage = new JButton(String.valueOf(pageNum));
@@ -556,17 +558,17 @@ public class AdminController {
                     loadUsers(view);
                 });
             }
-            view.getPnlPageNumbers().add(btnPage);
+            view.pnlPageNumbers.add(btnPage);
         }
-        view.getPnlPageNumbers().revalidate();
-        view.getPnlPageNumbers().repaint();
+        view.pnlPageNumbers.revalidate();
+        view.pnlPageNumbers.repaint();
     }
 
     private JPanel createRowPanel(UserManagementView view, User u) {
         JPanel row = new JPanel();
         row.setLayout(null);
-        row.setPreferredSize(new Dimension(740, 60));
-        row.setMaximumSize(new Dimension(740, 60));
+        row.setPreferredSize(new Dimension(815, 60));
+        row.setMaximumSize(new Dimension(815, 60));
         row.setAlignmentX(Component.LEFT_ALIGNMENT);
         row.setBackground(Color.WHITE);
         row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240, 240, 240)));
@@ -574,7 +576,7 @@ public class AdminController {
         JLabel lblName = new JLabel(u.getFullName());
         lblName.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         lblName.setForeground(new Color(45, 55, 72));
-        lblName.setBounds(15, 15, 150, 30);
+        lblName.setBounds(15, 15, 180, 30);
         row.add(lblName);
 
         String roleStr = u.getRole();
@@ -588,13 +590,13 @@ public class AdminController {
         JLabel lblRole = new JLabel(roleStr);
         lblRole.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         lblRole.setForeground(new Color(74, 85, 104));
-        lblRole.setBounds(175, 15, 80, 30);
+        lblRole.setBounds(210, 15, 80, 30);
         row.add(lblRole);
 
         JLabel lblEmail = new JLabel(u.getEmail());
         lblEmail.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         lblEmail.setForeground(Color.GRAY);
-        lblEmail.setBounds(265, 15, 210, 30);
+        lblEmail.setBounds(300, 15, 230, 30);
         row.add(lblEmail);
 
         String statusStr = u.getUserStatus() != null ? u.getUserStatus() : "ACTIVE";
@@ -610,7 +612,7 @@ public class AdminController {
             lblStatus.setBackground(new Color(229, 62, 62));
             lblStatus.setForeground(Color.WHITE);
         }
-        lblStatus.setBounds(485, 15, 90, 30);
+        lblStatus.setBounds(545, 15, 95, 30);
         row.add(lblStatus);
 
         JButton btnEdit = new JButton("Edit");
@@ -618,7 +620,7 @@ public class AdminController {
         btnEdit.setBackground(new Color(43, 108, 176));
         btnEdit.setForeground(Color.WHITE);
         btnEdit.setFocusPainted(false);
-        btnEdit.setBounds(585, 15, 65, 30);
+        btnEdit.setBounds(655, 15, 65, 30);
         btnEdit.addActionListener(e -> showEditDialog(view, u));
         row.add(btnEdit);
 
@@ -627,7 +629,7 @@ public class AdminController {
         btnDelete.setBackground(new Color(229, 62, 62));
         btnDelete.setForeground(Color.WHITE);
         btnDelete.setFocusPainted(false);
-        btnDelete.setBounds(660, 15, 70, 30);
+        btnDelete.setBounds(730, 15, 75, 30);
         btnDelete.addActionListener(e -> confirmDelete(view, u));
         row.add(btnDelete);
 
