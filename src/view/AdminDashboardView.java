@@ -13,11 +13,14 @@ public class AdminDashboardView extends javax.swing.JFrame {
         adminController.initDashboard(this);
     }
 
+    
     @SuppressWarnings("unchecked")
     private void initComponents() {
 
         pnlSidebar = new javax.swing.JPanel();
         lblLogo = new javax.swing.JLabel();
+        lblLogo.setBackground(new java.awt.Color(209, 232, 237));
+        lblLogo.setOpaque(true);
         btnDashboard = new javax.swing.JButton();
         btnUserManagement = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
@@ -52,13 +55,16 @@ public class AdminDashboardView extends javax.swing.JFrame {
         pnlSidebar.setBackground(new java.awt.Color(60, 110, 113));
         pnlSidebar.setLayout(null);
 
+        lblLogo.setBackground(new java.awt.Color(209, 232, 237));
         lblLogo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        lblLogo.setForeground(new java.awt.Color(255, 255, 255));
-        lblLogo.setText("SmartRent");
+        lblLogo.setForeground(new java.awt.Color(60, 110, 113));
+        lblLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/SmartRentLogo_Banner.png"))); // NOI18N
+        lblLogo.setOpaque(true);
         pnlSidebar.add(lblLogo);
-        lblLogo.setBounds(20, 20, 160, 40);
+        lblLogo.setBounds(0, 0, 200, 80);
 
-        btnDashboard.setBackground(new java.awt.Color(60, 110, 113));
+        btnDashboard.setBackground(new java.awt.Color(80, 128, 128));
         btnDashboard.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnDashboard.setForeground(new java.awt.Color(255, 255, 255));
         btnDashboard.setText("Dashboard");
@@ -67,7 +73,7 @@ public class AdminDashboardView extends javax.swing.JFrame {
         btnDashboard.setMargin(new java.awt.Insets(2, 20, 2, 14));
         btnDashboard.addActionListener(this::btnDashboardActionPerformed);
         pnlSidebar.add(btnDashboard);
-        btnDashboard.setBounds(0, 80, 200, 40);
+        btnDashboard.setBounds(0, 100, 200, 40);
 
         btnUserManagement.setBackground(new java.awt.Color(60, 110, 113));
         btnUserManagement.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -78,7 +84,7 @@ public class AdminDashboardView extends javax.swing.JFrame {
         btnUserManagement.setMargin(new java.awt.Insets(2, 20, 2, 14));
         btnUserManagement.addActionListener(this::btnUserManagementActionPerformed);
         pnlSidebar.add(btnUserManagement);
-        btnUserManagement.setBounds(0, 120, 200, 40);
+        btnUserManagement.setBounds(0, 140, 200, 40);
 
         btnLogout.setBackground(new java.awt.Color(60, 110, 113));
         btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -89,7 +95,7 @@ public class AdminDashboardView extends javax.swing.JFrame {
         btnLogout.setMargin(new java.awt.Insets(2, 20, 2, 14));
         btnLogout.addActionListener(this::btnLogoutActionPerformed);
         pnlSidebar.add(btnLogout);
-        btnLogout.setBounds(0, 160, 200, 40);
+        btnLogout.setBounds(0, 200, 200, 40);
 
         getContentPane().add(pnlSidebar);
         pnlSidebar.setBounds(0, 0, 200, 800);
@@ -247,12 +253,6 @@ public class AdminDashboardView extends javax.swing.JFrame {
         adminController.logout(this);
     }
 
-    public javax.swing.JLabel getLblCard1Value() { return lblCard1Value; }
-    public javax.swing.JLabel getLblCard2Value() { return lblCard2Value; }
-    public javax.swing.JLabel getLblCard3Value() { return lblCard3Value; }
-    public javax.swing.JLabel getLblCard4Value() { return lblCard4Value; }
-    public javax.swing.JTable getTblApplications() { return tblApplications; }
-    public javax.swing.JTable getTblProperties() { return tblProperties; }
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -263,31 +263,31 @@ public class AdminDashboardView extends javax.swing.JFrame {
     }
 
     // Variables declaration
-    private javax.swing.JButton btnDashboard;
-    private javax.swing.JButton btnLogout;
-    private javax.swing.JButton btnUserManagement;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblCard1Title;
-    private javax.swing.JLabel lblCard1Value;
-    private javax.swing.JLabel lblCard2Title;
-    private javax.swing.JLabel lblCard2Value;
-    private javax.swing.JLabel lblCard3Title;
-    private javax.swing.JLabel lblCard3Value;
-    private javax.swing.JLabel lblCard4Title;
-    private javax.swing.JLabel lblCard4Value;
-    private javax.swing.JLabel lblLogo;
-    private javax.swing.JLabel lblTable1Title;
-    private javax.swing.JLabel lblTitle;
-    private javax.swing.JPanel pnlCard1;
-    private javax.swing.JPanel pnlCard2;
-    private javax.swing.JPanel pnlCard3;
-    private javax.swing.JPanel pnlCard4;
-    private javax.swing.JPanel pnlSidebar;
-    private javax.swing.JPanel pnlTable1;
-    private javax.swing.JPanel pnlTable2;
-    private javax.swing.JTable tblApplications;
-    private javax.swing.JTable tblProperties;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lblTable2Title;
+    public javax.swing.JButton btnDashboard;
+    public javax.swing.JButton btnLogout;
+    public javax.swing.JButton btnUserManagement;
+    public javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JLabel lblCard1Title;
+    public javax.swing.JLabel lblCard1Value;
+    public javax.swing.JLabel lblCard2Title;
+    public javax.swing.JLabel lblCard2Value;
+    public javax.swing.JLabel lblCard3Title;
+    public javax.swing.JLabel lblCard3Value;
+    public javax.swing.JLabel lblCard4Title;
+    public javax.swing.JLabel lblCard4Value;
+    public javax.swing.JLabel lblLogo;
+    public javax.swing.JLabel lblTable1Title;
+    public javax.swing.JLabel lblTitle;
+    public javax.swing.JPanel pnlCard1;
+    public javax.swing.JPanel pnlCard2;
+    public javax.swing.JPanel pnlCard3;
+    public javax.swing.JPanel pnlCard4;
+    public javax.swing.JPanel pnlSidebar;
+    public javax.swing.JPanel pnlTable1;
+    public javax.swing.JPanel pnlTable2;
+    public javax.swing.JTable tblApplications;
+    public javax.swing.JTable tblProperties;
+    public javax.swing.JScrollPane jScrollPane2;
+    public javax.swing.JLabel lblTable2Title;
     // End of variables declaration
 }
