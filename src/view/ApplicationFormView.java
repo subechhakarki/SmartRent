@@ -3,7 +3,7 @@ package view;
 import Controller.ApplicationController;
 import Model.Property;
 import Model.User;
-import smartrent.SessionService;
+import Controller.SessionService;
 import javax.swing.*;
 import java.awt.*;
 import java.text.ParseException;
@@ -229,51 +229,40 @@ public class ApplicationFormView extends javax.swing.JFrame {
         applicationController.logout(this);
     }
 
-    public javax.swing.JTextField getTxtFullName() { return txtFullName; }
-    public javax.swing.JTextField getTxtDOB() { return txtDOB; }
-    public javax.swing.JTextField getTxtPhone() { return txtPhone; }
-    public javax.swing.JTextField getTxtEmail() { return txtEmail; }
-    public javax.swing.JTextField getTxtAddress() { return txtAddress; }
-    public javax.swing.JTextField getTxtMoveInDate() { return txtMoveInDate; }
-    public javax.swing.JTextField getTxtLeaseDuration() { return txtLeaseDuration; }
 
-    public javax.swing.JLabel getLblPropTitle() { return lblPropTitle; }
-    public javax.swing.JLabel getLblPropLocation() { return lblPropLocation; }
-    public javax.swing.JLabel getLblPropPrice() { return lblPropPrice; }
-    public javax.swing.JLabel getLblPropDetails() { return lblPropDetails; }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnNavDashboard;
-    private javax.swing.JButton btnNavLogout;
-    private javax.swing.JButton btnNavMyApplications;
-    private javax.swing.JButton btnNavPropertyRatings;
-    private javax.swing.JButton btnNavSavedProperties;
-    private javax.swing.JButton btnNext;
-    private javax.swing.JLabel lblAddress;
-    private javax.swing.JLabel lblDOB;
-    private javax.swing.JLabel lblEmail;
-    private javax.swing.JLabel lblFullName;
-    private javax.swing.JLabel lblHeader;
-    private javax.swing.JLabel lblLeaseDuration;
-    private javax.swing.JLabel lblLogo;
-    private javax.swing.JLabel lblMoveInDate;
-    private javax.swing.JLabel lblPhone;
-    private javax.swing.JLabel lblPropDetails;
-    private javax.swing.JLabel lblPropImage;
-    private javax.swing.JLabel lblPropLocation;
-    private javax.swing.JLabel lblPropPrice;
-    private javax.swing.JLabel lblPropTitle;
-    private javax.swing.JLabel lblSteps;
-    private javax.swing.JPanel pnlContent;
-    private javax.swing.JPanel pnlPropertyCard;
-    private javax.swing.JPanel pnlSidebar;
-    private javax.swing.JTextField txtAddress;
-    private javax.swing.JTextField txtDOB;
-    private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtFullName;
-    private javax.swing.JTextField txtLeaseDuration;
-    private javax.swing.JTextField txtMoveInDate;
-    private javax.swing.JTextField txtPhone;
+    public javax.swing.JButton btnCancel;
+    public javax.swing.JButton btnNavDashboard;
+    public javax.swing.JButton btnNavLogout;
+    public javax.swing.JButton btnNavMyApplications;
+    public javax.swing.JButton btnNavPropertyRatings;
+    public javax.swing.JButton btnNavSavedProperties;
+    public javax.swing.JButton btnNext;
+    public javax.swing.JLabel lblAddress;
+    public javax.swing.JLabel lblDOB;
+    public javax.swing.JLabel lblEmail;
+    public javax.swing.JLabel lblFullName;
+    public javax.swing.JLabel lblHeader;
+    public javax.swing.JLabel lblLeaseDuration;
+    public javax.swing.JLabel lblLogo;
+    public javax.swing.JLabel lblMoveInDate;
+    public javax.swing.JLabel lblPhone;
+    public javax.swing.JLabel lblPropDetails;
+    public javax.swing.JLabel lblPropImage;
+    public javax.swing.JLabel lblPropLocation;
+    public javax.swing.JLabel lblPropPrice;
+    public javax.swing.JLabel lblPropTitle;
+    public javax.swing.JLabel lblSteps;
+    public javax.swing.JPanel pnlContent;
+    public javax.swing.JPanel pnlPropertyCard;
+    public javax.swing.JPanel pnlSidebar;
+    public javax.swing.JTextField txtAddress;
+    public javax.swing.JTextField txtDOB;
+    public javax.swing.JTextField txtEmail;
+    public javax.swing.JTextField txtFullName;
+    public javax.swing.JTextField txtLeaseDuration;
+    public javax.swing.JTextField txtMoveInDate;
+    public javax.swing.JTextField txtPhone;
     // End of variables declaration//GEN-END:variables
 }

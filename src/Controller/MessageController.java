@@ -2,7 +2,7 @@ package Controller;
 
 import DAO.MessageDAO;
 import Model.Message;
-import smartrent.SessionService;
+import Controller.SessionService;
 import Model.User;
 import view.*;
 
@@ -41,7 +41,7 @@ public class MessageController {
     }
 
     public void initMessagingView(MessagingView view, int otherUserId, String otherUserName) {
-        view.getLblChatWith().setText("Chat with " + otherUserName);
+        view.lblChatWith.setText("Chat with " + otherUserName);
         loadHistory(view, otherUserId);
     }
 
@@ -62,16 +62,16 @@ public class MessageController {
             sb.append(m.getContent()).append("\n\n");
         }
         
-        view.getTxtHistory().setText(sb.toString());
-        view.getTxtHistory().setCaretPosition(view.getTxtHistory().getDocument().getLength());
+        view.txtHistory.setText(sb.toString());
+        view.txtHistory.setCaretPosition(view.txtHistory.getDocument().getLength());
     }
 
     public void sendMessage(MessagingView view, int otherUserId) {
-        String content = view.getTxtNewMessage().getText();
+        String content = view.txtNewMessage.getText();
         if (content.trim().isEmpty()) return;
         
         if (sendMessage(otherUserId, content)) {
-            view.getTxtNewMessage().setText("");
+            view.txtNewMessage.setText("");
             loadHistory(view, otherUserId);
         } else {
             javax.swing.JOptionPane.showMessageDialog(view, "Failed to send message.");

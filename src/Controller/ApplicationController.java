@@ -8,7 +8,7 @@ import Model.RentalApplication;
 import Model.Property;
 import Model.Lease;
 import Model.User;
-import smartrent.SessionService;
+import Controller.SessionService;
 import view.*;
 
 import javax.swing.*;
@@ -121,15 +121,20 @@ public class ApplicationController {
 
     // OwnerDashboardView management
     public void initOwnerDashboard(OwnerDashboardView view) {
-        view.getScrollPane().getVerticalScrollBar().setUnitIncrement(16);
+        LogoLoader.styleOwnerSidebar(view, view.pnlSidebar, view.lblLogo, view.btnNavDashboard, view.btnNavMyProperties, view.btnNavLeaseManagement, view.btnNavLogout, "dashboard");
+        view.scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         
         User currentUser = SessionService.getInstance().getCurrentUser();
         if (currentUser != null) {
-            view.getLblWelcome().setText("Welcome, " + currentUser.getFullName().split(" ")[0]);
+            view.lblWelcome.setText("Welcome, " + currentUser.getFullName().split(" ")[0]);
         }
         
         loadStats(view);
         loadApplications(view);
+        
+        view.setSize(1280, 800);
+        view.setResizable(false);
+        view.setLocationRelativeTo(null);
     }
 
     public void loadStats(OwnerDashboardView view) {
@@ -143,32 +148,32 @@ public class ApplicationController {
             }
         }
         
-        view.getLblStatProperties().setText("<html>Total Properties<br><font size='5'>" + totalProps + "</font> Properties</html>");
-        view.getLblStatApplications().setText("<html>Pending Applications<br><font size='5'>" + pendingApps + "</font> Applications</html>");
-        view.getLblStatLeases().setText("<html>Pending Approvals<br><font size='5'>" + pendingApps + "</font> Pending</html>");
+        view.lblStatProperties.setText("<html>Total Properties<br><font size='5'>" + totalProps + "</font> Properties</html>");
+        view.lblStatApplications.setText("<html>Pending Applications<br><font size='5'>" + pendingApps + "</font> Applications</html>");
+        view.lblStatLeases.setText("<html>Pending Approvals<br><font size='5'>" + pendingApps + "</font> Pending</html>");
     }
 
     public void loadApplications(OwnerDashboardView view) {
         List<RentalApplication> apps = getOwnerApplications();
-        view.getPnlTableBody().removeAll();
+        view.pnlTableBody.removeAll();
         
         for (RentalApplication app : apps) {
             JPanel row = new JPanel(null);
             row.setBackground(Color.WHITE);
-            row.setPreferredSize(new Dimension(740, 60));
-            row.setMaximumSize(new Dimension(740, 60));
+            row.setPreferredSize(new Dimension(980, 60));
+            row.setMaximumSize(new Dimension(980, 60));
             row.setAlignmentX(Component.LEFT_ALIGNMENT);
             
             // User Name
             JLabel lblUser = new JLabel(app.getRenterName());
             lblUser.setFont(new Font("Segoe UI", Font.BOLD, 12));
-            lblUser.setBounds(20, 15, 120, 30);
+            lblUser.setBounds(20, 15, 180, 30);
             row.add(lblUser);
             
             // Property
             JLabel lblProp = new JLabel(app.getPropertyTitle());
             lblProp.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-            lblProp.setBounds(150, 15, 140, 30);
+            lblProp.setBounds(220, 15, 180, 30);
             row.add(lblProp);
             
             // Email
@@ -177,7 +182,7 @@ public class ApplicationController {
             JLabel lblEmail = new JLabel(email);
             lblEmail.setFont(new Font("Segoe UI", Font.PLAIN, 12));
             lblEmail.setForeground(Color.GRAY);
-            lblEmail.setBounds(300, 15, 160, 30);
+            lblEmail.setBounds(420, 15, 200, 30);
             row.add(lblEmail);
             
             // Status Badge
@@ -196,11 +201,11 @@ public class ApplicationController {
                 lblStatus.setBackground(new Color(210, 50, 50)); // Red
                 lblStatus.setText("Rejected");
             }
-            lblStatus.setBounds(470, 15, 70, 30);
+            lblStatus.setBounds(640, 15, 100, 30);
             row.add(lblStatus);
             
             // Actions
-            int btnX = 550;
+            int btnX = 760;
             
             // View Button
             JButton btnView = new JButton("View");
@@ -262,11 +267,11 @@ public class ApplicationController {
             }
             
             row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(230, 230, 230)));
-            view.getPnlTableBody().add(row);
+            view.pnlTableBody.add(row);
         }
         
-        view.getPnlTableBody().revalidate();
-        view.getPnlTableBody().repaint();
+        view.pnlTableBody.revalidate();
+        view.pnlTableBody.repaint();
     }
 
     public java.util.Map<String, String> getApplicationDetailsMap(Model.RentalApplication app) {
@@ -336,25 +341,50 @@ public class ApplicationController {
 
     // ApplicationFormView & ApplicationFormStep2View methods
     public void initApplicationForm(ApplicationFormView view, int propertyId) {
+        LogoLoader.styleRenterSidebar(
+                view,
+                view.pnlSidebar,
+                view.lblLogo,
+                view.btnNavDashboard,
+                view.btnNavMyApplications,
+                view.btnNavPropertyRatings,
+                view.btnNavSavedProperties,
+                view.btnNavLogout,
+                "dashboard"
+        );
         PropertyDAO pDao = new PropertyDAO();
         Property property = pDao.getPropertyById(propertyId);
         if (property != null) {
-            view.getLblPropTitle().setText(property.getTitle() != null ? property.getTitle() : "Unknown Property");
-            view.getLblPropLocation().setText(property.getAddress() != null ? property.getAddress() : "Location");
-            view.getLblPropPrice().setText("Rs. " + String.format("%.0f", property.getMonthlyRent()) + "/mo");
-            view.getLblPropDetails().setText(property.getBedrooms() + " Bed Property");
+            view.lblPropTitle.setText(property.getTitle() != null ? property.getTitle() : "Unknown Property");
+            view.lblPropLocation.setText(property.getAddress() != null ? property.getAddress() : "Location");
+            view.lblPropPrice.setText("Rs. " + String.format("%.0f", property.getMonthlyRent()) + "/mo");
+            view.lblPropDetails.setText(property.getBedrooms() + " Bed Property");
+            
+            if (property.getPrimaryImagePath() != null && !property.getPrimaryImagePath().isEmpty()) {
+                java.io.File file = Controller.PropertyController.resolveFile(property.getPrimaryImagePath());
+                if (file != null && file.exists()) {
+                    javax.swing.ImageIcon icon = new javax.swing.ImageIcon(file.getAbsolutePath());
+                    java.awt.Image img = icon.getImage().getScaledInstance(150, 100, java.awt.Image.SCALE_SMOOTH);
+                    view.lblPropImage.setIcon(new javax.swing.ImageIcon(img));
+                    view.lblPropImage.setText("");
+                } else {
+                    setFallbackFormImage(view.lblPropImage, 150, 100);
+                }
+            } else {
+                setFallbackFormImage(view.lblPropImage, 150, 100);
+            }
         }
         
         User user = SessionService.getInstance().getCurrentUser();
         if (user != null) {
-            view.getTxtFullName().setText(user.getFullName() != null ? user.getFullName() : "");
-            view.getTxtPhone().setText(user.getPhone() != null ? user.getPhone() : "");
-            view.getTxtEmail().setText(user.getEmail() != null ? user.getEmail() : "");
+            view.txtFullName.setText(user.getFullName() != null ? user.getFullName() : "");
+            view.txtPhone.setText(user.getPhone() != null ? user.getPhone() : "");
+            view.txtEmail.setText(user.getEmail() != null ? user.getEmail() : "");
         }
     }
 
     public void nextStep(ApplicationFormView view, int propertyId) {
-        String dateStr = view.getTxtMoveInDate().getText();
+        String dateStr = view.txtMoveInDate.getText();
         
         Date moveInDate = null;
         try {
@@ -373,13 +403,38 @@ public class ApplicationController {
     }
 
     public void initStep2(ApplicationFormStep2View view, int propertyId) {
+        LogoLoader.styleRenterSidebar(
+                view,
+                view.pnlSidebar,
+                view.lblLogo,
+                view.btnNavDashboard,
+                view.btnNavMyApplications,
+                view.btnNavPropertyRatings,
+                view.btnNavSavedProperties,
+                view.btnNavLogout,
+                "dashboard"
+        );
         PropertyDAO pDao = new PropertyDAO();
         Property property = pDao.getPropertyById(propertyId);
         if (property != null) {
-            view.getLblPropTitle().setText(property.getTitle() != null ? property.getTitle() : "Unknown Property");
-            view.getLblPropLocation().setText(property.getAddress() != null ? property.getAddress() : "Location");
-            view.getLblPropPrice().setText("Rs. " + String.format("%.0f", property.getMonthlyRent()) + "/mo");
-            view.getLblPropDetails().setText(property.getBedrooms() + " Bed Property");
+            view.lblPropTitle.setText(property.getTitle() != null ? property.getTitle() : "Unknown Property");
+            view.lblPropLocation.setText(property.getAddress() != null ? property.getAddress() : "Location");
+            view.lblPropPrice.setText("Rs. " + String.format("%.0f", property.getMonthlyRent()) + "/mo");
+            view.lblPropDetails.setText(property.getBedrooms() + " Bed Property");
+            
+            if (property.getPrimaryImagePath() != null && !property.getPrimaryImagePath().isEmpty()) {
+                java.io.File file = Controller.PropertyController.resolveFile(property.getPrimaryImagePath());
+                if (file != null && file.exists()) {
+                    javax.swing.ImageIcon icon = new javax.swing.ImageIcon(file.getAbsolutePath());
+                    java.awt.Image img = icon.getImage().getScaledInstance(150, 100, java.awt.Image.SCALE_SMOOTH);
+                    view.lblPropImage.setIcon(new javax.swing.ImageIcon(img));
+                    view.lblPropImage.setText("");
+                } else {
+                    setFallbackFormImage(view.lblPropImage, 150, 100);
+                }
+            } else {
+                setFallbackFormImage(view.lblPropImage, 150, 100);
+            }
         }
     }
 
@@ -390,7 +445,7 @@ public class ApplicationController {
 
     public void submitApplicationFromStep2(ApplicationFormStep2View step2View) {
         ApplicationFormView step1View = step2View.getStep1View();
-        String dateStr = step1View.getTxtMoveInDate().getText();
+        String dateStr = step1View.txtMoveInDate.getText();
         Date moveInDate = null;
         try {
             moveInDate = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
@@ -399,13 +454,13 @@ public class ApplicationController {
             return;
         }
 
-        String step1Data = "Lease Duration: " + step1View.getTxtLeaseDuration().getText() + " months\n" +
-                           "DOB: " + step1View.getTxtDOB().getText() + "\n";
+        String step1Data = "Lease Duration: " + step1View.txtLeaseDuration.getText() + " months\n" +
+                           "DOB: " + step1View.txtDOB.getText() + "\n";
 
         String extraInfo = step1Data + 
-                           "Employer: " + step2View.getTxtEmployer().getText() + "\n" +
-                           "Job Title: " + step2View.getTxtJobTitle().getText() + "\n" +
-                           "Income: " + step2View.getTxtIncome().getText();
+                           "Employer: " + step2View.txtEmployer.getText() + "\n" +
+                           "Job Title: " + step2View.txtJobTitle.getText() + "\n" +
+                           "Income: " + step2View.txtIncome.getText();
 
         String result = submitApplication(step1View.getPropertyId(), moveInDate, extraInfo);
         
@@ -423,7 +478,7 @@ public class ApplicationController {
         int returnValue = fileChooser.showOpenDialog(view);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             java.io.File selectedFile = fileChooser.getSelectedFile();
-            view.getTxtProof().setText(selectedFile.getAbsolutePath());
+            view.txtProof.setText(selectedFile.getAbsolutePath());
         }
     }
 
@@ -456,9 +511,24 @@ public class ApplicationController {
 
     // MyApplicationView logic
     public void initMyApplicationsView(MyApplicationView view) {
-        // pnlAppsList uses BoxLayout Y_AXIS
-        view.getPnlAppsList().setLayout(new BoxLayout(view.getPnlAppsList(), BoxLayout.Y_AXIS));
-        
+        LogoLoader.styleRenterSidebar(
+                view,
+                view.pnlSidebar,
+                view.lblLogo,
+                view.btnNavDashboard,
+                view.btnNavMyApplications,
+                view.btnNavPropertyRatings,
+                view.btnNavSavedProperties,
+                view.btnNavLogout,
+                "applications"
+        );
+
+        User currentUser = SessionService.getInstance().getCurrentUser();
+        String firstName = currentUser != null ? currentUser.getFullName().split(" ")[0] : "User";
+        view.lblWelcome.setText("Welcome, " + firstName);
+
+        view.pnlHeader.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(230, 230, 230)));
+
         loadMyApplications(view);
         
         view.setSize(1280, 800);
@@ -471,67 +541,198 @@ public class ApplicationController {
 
     public void loadMyApplications(MyApplicationView view) {
         List<RentalApplication> apps = getRenterApplications();
-        view.getPnlAppsList().removeAll();
+        view.pnlAppsList.removeAll();
         
         for (RentalApplication a : apps) {
-            view.getPnlAppsList().add(createAppCard(a));
-            view.getPnlAppsList().add(Box.createRigidArea(new Dimension(0, 15))); // spacing between cards
+            view.pnlAppsList.add(createAppRow(view, a));
         }
         
-        view.getPnlAppsList().revalidate();
-        view.getPnlAppsList().repaint();
+        view.pnlAppsList.revalidate();
+        view.pnlAppsList.repaint();
     }
 
-    private JPanel createAppCard(RentalApplication app) {
-        JPanel card = new JPanel();
-        card.setPreferredSize(new Dimension(720, 120));
-        card.setMaximumSize(new Dimension(720, 120));
-        card.setAlignmentX(Component.LEFT_ALIGNMENT);
-        card.setBackground(Color.WHITE);
-        card.setLayout(null);
-        card.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1, true));
-
-        // Image placeholder
-        JLabel lblImage = new JLabel("Img", SwingConstants.CENTER);
-        lblImage.setOpaque(true);
-        lblImage.setBackground(new Color(200, 200, 200));
-        lblImage.setBounds(10, 10, 100, 100);
-        card.add(lblImage);
-
-        // Title
+    private JPanel createAppRow(MyApplicationView view, RentalApplication app) {
+        JPanel row = new JPanel(null);
+        row.setBackground(Color.WHITE);
+        row.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        int height = 75;
+        if ("APPROVED".equals(app.getAppStatus())) {
+            height = 110;
+        } else if ("REJECTED".equals(app.getAppStatus())) {
+            height = 95;
+        }
+        
+        row.setPreferredSize(new Dimension(980, height));
+        row.setMinimumSize(new Dimension(980, height));
+        row.setMaximumSize(new Dimension(980, height));
+        row.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(235, 238, 242)));
+        
+        // Property Name Column
         JLabel lblTitle = new JLabel(app.getPropertyTitle() != null ? app.getPropertyTitle() : "Unknown Property");
-        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        lblTitle.setBounds(130, 20, 300, 25);
-        card.add(lblTitle);
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblTitle.setForeground(new Color(30, 30, 30));
+        lblTitle.setBounds(30, 15, 280, 22);
+        row.add(lblTitle);
+        
+        String desc = app.getCoverMessage() != null ? app.getCoverMessage() : "";
+        if (desc.contains("\n")) {
+            desc = desc.substring(0, desc.indexOf("\n"));
+        }
+        if (desc.length() > 40) {
+            desc = desc.substring(0, 37) + "...";
+        }
+        JLabel lblDesc = new JLabel(desc);
+        lblDesc.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        lblDesc.setForeground(new Color(150, 160, 175));
+        lblDesc.setBounds(30, 38, 280, 18);
+        row.add(lblDesc);
+        
+        // Submission Date Column
+        String dateStr = "";
+        if (app.getCreatedAt() != null) {
+            dateStr = new java.text.SimpleDateFormat("MM/dd/yyyy").format(app.getCreatedAt());
+        } else {
+            dateStr = "N/A";
+        }
+        JLabel lblDate = new JLabel(dateStr);
+        lblDate.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        lblDate.setForeground(new Color(100, 110, 120));
+        lblDate.setBounds(330, 18, 150, 20);
+        row.add(lblDate);
+        
+        // Status Column
+        Color badgeBg = new Color(170, 185, 200); // default gray
+        Color badgeFg = Color.WHITE;
+        String statusText = app.getAppStatus() != null ? app.getAppStatus() : "SUBMITTED";
+        
+        if ("APPROVED".equals(statusText)) {
+            badgeBg = new Color(25, 165, 95); // green
+        } else if ("REJECTED".equals(statusText)) {
+            badgeBg = new Color(225, 50, 50); // red
+        } else if ("SUBMITTED".equals(statusText)) {
+            badgeBg = new Color(235, 130, 45); // orange
+            statusText = "Submitted";
+        } else if ("WITHDRAWN".equals(statusText)) {
+            badgeBg = new Color(155, 170, 185); // gray
+            statusText = "Withdrawn";
+        }
+        
+        if ("APPROVED".equals(statusText)) statusText = "Approved";
+        else if ("REJECTED".equals(statusText)) statusText = "Rejected";
+        
+        BadgeLabel lblStatusBadge = new BadgeLabel(statusText, badgeBg, badgeFg);
+        lblStatusBadge.setBounds(510, 15, 95, 24);
+        row.add(lblStatusBadge);
+        
+        if ("APPROVED".equals(app.getAppStatus())) {
+            String moveInStr = "N/A";
+            if (app.getMoveInDate() != null) {
+                moveInStr = new java.text.SimpleDateFormat("MM/dd/yyyy").format(app.getMoveInDate());
+            }
+            User owner = userDAO.getUserById(app.getOwnerId());
+            String phone = (owner != null && owner.getPhone() != null) ? owner.getPhone() : "9876543210";
+            
+            JLabel lblMoveIn = new JLabel("<html><b>Move-in Date:</b> <font color='#1E5DF0'>" + moveInStr + "</font></html>");
+            lblMoveIn.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+            lblMoveIn.setForeground(new Color(60, 60, 60));
+            lblMoveIn.setBounds(510, 45, 250, 18);
+            row.add(lblMoveIn);
+            
+            JLabel lblContact = new JLabel("<html><b>Owner Contact:</b> " + phone + "</html>");
+            lblContact.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+            lblContact.setForeground(new Color(60, 60, 60));
+            lblContact.setBounds(510, 65, 250, 18);
+            row.add(lblContact);
+        } else if ("REJECTED".equals(app.getAppStatus())) {
+            String rejNote = app.getRejectionNote() != null ? app.getRejectionNote() : "Income requirements not met";
+            JLabel lblNote = new JLabel("<html><b>Note:</b> " + rejNote + "</html>");
+            lblNote.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+            lblNote.setForeground(new Color(60, 60, 60));
+            lblNote.setBounds(510, 45, 250, 18);
+            row.add(lblNote);
+        }
+        
+        // Actions Column
+        if ("SUBMITTED".equals(app.getAppStatus())) {
+            ActionButton btnWithdraw = new ActionButton("Withdrew", new Color(15, 60, 160));
+            btnWithdraw.setBounds(790, 12, 90, 30);
+            btnWithdraw.addActionListener(e -> {
+                int confirm = JOptionPane.showConfirmDialog(view,
+                        "Are you sure you want to withdraw this application?",
+                        "Confirm Withdrawal",
+                        JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    if (applicationDAO.updateApplicationStatus(app.getApplicationId(), "WITHDRAWN", "")) {
+                        JOptionPane.showMessageDialog(view, "Application withdrawn successfully.");
+                        loadMyApplications(view);
+                    } else {
+                        JOptionPane.showMessageDialog(view, "Failed to withdraw application.");
+                    }
+                }
+            });
+            row.add(btnWithdraw);
+        }
+        
+        return row;
+    }
 
-        // Applied Date
-        JLabel lblDate = new JLabel("Applied on: " + app.getCreatedAt().toString().substring(0, 10));
-        lblDate.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        lblDate.setForeground(Color.GRAY);
-        lblDate.setBounds(130, 50, 200, 20);
-        card.add(lblDate);
+    private void setFallbackFormImage(javax.swing.JLabel lbl, int w, int h) {
+        java.net.URL imgUrl = getClass().getResource("/Images/Gemini_Generated_Image_enyzbenyzbe.png");
+        if (imgUrl == null) {
+            imgUrl = getClass().getResource("/Images/Gemini_Generated_Image_enyzbenyzbenyzbe.png");
+        }
+        if (imgUrl != null) {
+            javax.swing.ImageIcon icon = new javax.swing.ImageIcon(imgUrl);
+            java.awt.Image img = icon.getImage().getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH);
+            lbl.setIcon(new javax.swing.ImageIcon(img));
+            lbl.setText("");
+        } else {
+            lbl.setIcon(null);
+            lbl.setText("Image");
+        }
+    }
 
-        // Status Badge
-        JLabel lblStatus = new JLabel("Status: " + app.getAppStatus());
-        lblStatus.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        Color statusColor = Color.GRAY;
-        if (app.getAppStatus().equals("APPROVED")) statusColor = new Color(34, 180, 50);
-        if (app.getAppStatus().equals("REJECTED")) statusColor = new Color(230, 51, 51);
-        if (app.getAppStatus().equals("SUBMITTED")) statusColor = new Color(230, 140, 25);
-        lblStatus.setForeground(statusColor);
-        lblStatus.setBounds(130, 80, 200, 20);
-        card.add(lblStatus);
+    private static class BadgeLabel extends javax.swing.JLabel {
+        private java.awt.Color bgColor;
+        public BadgeLabel(String text, java.awt.Color bg, java.awt.Color fg) {
+            super(text);
+            this.bgColor = bg;
+            setForeground(fg);
+            setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+            setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            setOpaque(false);
+        }
+        @Override
+        protected void paintComponent(java.awt.Graphics g) {
+            java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+            g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(bgColor);
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+            g2.dispose();
+            super.paintComponent(g);
+        }
+    }
 
-        // Message Button
-        JButton btnMessage = new JButton("Message Owner");
-        btnMessage.setBackground(new Color(30, 92, 240));
-        btnMessage.setForeground(Color.WHITE);
-        btnMessage.setBounds(550, 20, 150, 35);
-        btnMessage.addActionListener(e -> {
-            new MessagingView(app.getOwnerId(), app.getOwnerName()).setVisible(true);
-        });
-        card.add(btnMessage);
-
-        return card;
+    private static class ActionButton extends javax.swing.JButton {
+        public ActionButton(String text, java.awt.Color bg) {
+            super(text);
+            setBackground(bg);
+            setForeground(java.awt.Color.WHITE);
+            setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+            setBorderPainted(false);
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        }
+        @Override
+        protected void paintComponent(java.awt.Graphics g) {
+            java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+            g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(getBackground());
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+            g2.dispose();
+            super.paintComponent(g);
+        }
     }
 }

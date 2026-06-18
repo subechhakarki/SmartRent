@@ -3,13 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package DAO;
-import database.mysqlConnection;
+import database.mySQLConnection;
 import Model.OwnerRegistration;
 import java.sql.*;
 public class OwnerRegistrationDAO {
     
     public void createOwner(OwnerRegistration owner) {
-        mysqlConnection db_conn = new mysqlConnection();
+        mySQLConnection db_conn = new mySQLConnection();
         Connection conn = db_conn.openConnection();
         if (conn == null) return;
         
@@ -62,7 +62,7 @@ public class OwnerRegistrationDAO {
     }
     
     public boolean checkOwner(OwnerRegistration owner) {
-        mysqlConnection db_conn = new mysqlConnection();
+        mySQLConnection db_conn = new mySQLConnection();
         Connection conn = db_conn.openConnection();
         if (conn == null) return false;
         

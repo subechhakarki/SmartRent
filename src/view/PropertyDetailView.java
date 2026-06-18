@@ -18,6 +18,8 @@ public class PropertyDetailView extends javax.swing.JFrame {
 
         pnlSidebar = new javax.swing.JPanel();
         lblLogo = new javax.swing.JLabel();
+        lblLogo.setBackground(new java.awt.Color(209, 232, 237));
+        lblLogo.setOpaque(true);
         btnNavDashboard = new javax.swing.JButton();
         btnNavMyApplications = new javax.swing.JButton();
         btnNavPropertyRatings = new javax.swing.JButton();
@@ -68,9 +70,9 @@ public class PropertyDetailView extends javax.swing.JFrame {
 
         lblLogo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         lblLogo.setForeground(new java.awt.Color(255, 255, 255));
-        lblLogo.setText("SmartRent");
+        lblLogo.setText("");
         pnlSidebar.add(lblLogo);
-        lblLogo.setBounds(20, 20, 180, 40);
+        lblLogo.setBounds(0, 0, 200, 80);
 
         btnNavDashboard.setBackground(new java.awt.Color(60, 110, 113));
         btnNavDashboard.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -80,7 +82,7 @@ public class PropertyDetailView extends javax.swing.JFrame {
         btnNavDashboard.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnNavDashboard.setMargin(new java.awt.Insets(2, 20, 2, 14));
         pnlSidebar.add(btnNavDashboard);
-        btnNavDashboard.setBounds(0, 80, 220, 40);
+        btnNavDashboard.setBounds(0, 100, 200, 40);
 
         btnNavMyApplications.setBackground(new java.awt.Color(60, 110, 113));
         btnNavMyApplications.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -90,7 +92,7 @@ public class PropertyDetailView extends javax.swing.JFrame {
         btnNavMyApplications.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnNavMyApplications.setMargin(new java.awt.Insets(2, 20, 2, 14));
         pnlSidebar.add(btnNavMyApplications);
-        btnNavMyApplications.setBounds(0, 120, 220, 40);
+        btnNavMyApplications.setBounds(0, 140, 200, 40);
 
         btnNavPropertyRatings.setBackground(new java.awt.Color(60, 110, 113));
         btnNavPropertyRatings.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -100,7 +102,7 @@ public class PropertyDetailView extends javax.swing.JFrame {
         btnNavPropertyRatings.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnNavPropertyRatings.setMargin(new java.awt.Insets(2, 20, 2, 14));
         pnlSidebar.add(btnNavPropertyRatings);
-        btnNavPropertyRatings.setBounds(0, 160, 220, 40);
+        btnNavPropertyRatings.setBounds(0, 180, 200, 40);
 
         btnNavSavedProperties.setBackground(new java.awt.Color(60, 110, 113));
         btnNavSavedProperties.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -110,7 +112,7 @@ public class PropertyDetailView extends javax.swing.JFrame {
         btnNavSavedProperties.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnNavSavedProperties.setMargin(new java.awt.Insets(2, 20, 2, 14));
         pnlSidebar.add(btnNavSavedProperties);
-        btnNavSavedProperties.setBounds(0, 200, 220, 40);
+        btnNavSavedProperties.setBounds(0, 220, 200, 40);
 
         btnNavLogout.setBackground(new java.awt.Color(60, 110, 113));
         btnNavLogout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -120,10 +122,10 @@ public class PropertyDetailView extends javax.swing.JFrame {
         btnNavLogout.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnNavLogout.setMargin(new java.awt.Insets(2, 20, 2, 14));
         pnlSidebar.add(btnNavLogout);
-        btnNavLogout.setBounds(0, 260, 220, 40);
+        btnNavLogout.setBounds(0, 280, 200, 40);
 
         getContentPane().add(pnlSidebar);
-        pnlSidebar.setBounds(0, 0, 220, 800);
+        pnlSidebar.setBounds(0, 0, 200, 800);
 
         btnBack.setBackground(new java.awt.Color(245, 247, 250));
         btnBack.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -132,7 +134,7 @@ public class PropertyDetailView extends javax.swing.JFrame {
         btnBack.setBorderPainted(false);
         btnBack.setFocusPainted(false);
         getContentPane().add(btnBack);
-        btnBack.setBounds(240, 15, 200, 35);
+        btnBack.setBounds(220, 15, 200, 35);
 
         pnlImageContainer.setBackground(new java.awt.Color(30, 40, 55));
         pnlImageContainer.setLayout(null);
@@ -158,17 +160,17 @@ public class PropertyDetailView extends javax.swing.JFrame {
         btnNextImage.setBorderPainted(false);
         btnNextImage.setFocusPainted(false);
         pnlImageContainer.add(btnNextImage);
-        btnNextImage.setBounds(550, 150, 45, 50);
+        btnNextImage.setBounds(530, 150, 45, 50);
 
         getContentPane().add(pnlImageContainer);
-        pnlImageContainer.setBounds(250, 60, 600, 350);
+        pnlImageContainer.setBounds(230, 60, 600, 350);
 
         lblImageCounter.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblImageCounter.setForeground(new java.awt.Color(120, 120, 120));
         lblImageCounter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblImageCounter.setText("0 / 0");
         getContentPane().add(lblImageCounter);
-        lblImageCounter.setBounds(480, 415, 100, 25);
+        lblImageCounter.setBounds(460, 415, 100, 25);
 
         thumbnail1.setBackground(new java.awt.Color(60, 60, 70));
         thumbnail1.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
@@ -177,7 +179,7 @@ public class PropertyDetailView extends javax.swing.JFrame {
         thumbnail1.setText("Thumb");
         thumbnail1.setOpaque(true);
         getContentPane().add(thumbnail1);
-        thumbnail1.setBounds(255, 420, 130, 75);
+        thumbnail1.setBounds(235, 420, 130, 75);
 
         thumbnail2.setBackground(new java.awt.Color(60, 60, 70));
         thumbnail2.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
@@ -186,7 +188,7 @@ public class PropertyDetailView extends javax.swing.JFrame {
         thumbnail2.setText("Thumb");
         thumbnail2.setOpaque(true);
         getContentPane().add(thumbnail2);
-        thumbnail2.setBounds(400, 420, 130, 75);
+        thumbnail2.setBounds(380, 420, 130, 75);
 
         thumbnail3.setBackground(new java.awt.Color(60, 60, 70));
         thumbnail3.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
@@ -195,7 +197,7 @@ public class PropertyDetailView extends javax.swing.JFrame {
         thumbnail3.setText("Thumb");
         thumbnail3.setOpaque(true);
         getContentPane().add(thumbnail3);
-        thumbnail3.setBounds(545, 420, 130, 75);
+        thumbnail3.setBounds(525, 420, 130, 75);
 
         thumbnail4.setBackground(new java.awt.Color(60, 60, 70));
         thumbnail4.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
@@ -204,7 +206,7 @@ public class PropertyDetailView extends javax.swing.JFrame {
         thumbnail4.setText("Thumb");
         thumbnail4.setOpaque(true);
         getContentPane().add(thumbnail4);
-        thumbnail4.setBounds(690, 420, 130, 75);
+        thumbnail4.setBounds(670, 420, 130, 75);
 
         pnlInfo.setBackground(new java.awt.Color(255, 255, 255));
         pnlInfo.setLayout(null);
@@ -252,7 +254,7 @@ public class PropertyDetailView extends javax.swing.JFrame {
         lblBathrooms.setForeground(new java.awt.Color(74, 85, 104));
         lblBathrooms.setText("2 Bathrooms");
         pnlInfo.add(lblBathrooms);
-        lblBathrooms.setBounds(220, 130, 140, 22);
+        lblBathrooms.setBounds(200, 130, 140, 22);
 
         lblRent.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblRent.setForeground(new java.awt.Color(30, 92, 240));
@@ -306,7 +308,7 @@ public class PropertyDetailView extends javax.swing.JFrame {
         btnSave.setBounds(195, 360, 165, 45);
 
         getContentPane().add(pnlInfo);
-        pnlInfo.setBounds(870, 60, 380, 435);
+        pnlInfo.setBounds(850, 60, 380, 435);
 
         pnlExtraInfo.setBackground(new java.awt.Color(255, 255, 255));
         pnlExtraInfo.setLayout(null);
@@ -335,80 +337,54 @@ public class PropertyDetailView extends javax.swing.JFrame {
         lblFeatures.setBounds(20, 145, 960, 25);
 
         getContentPane().add(pnlExtraInfo);
-        pnlExtraInfo.setBounds(250, 510, 1000, 220);
+        pnlExtraInfo.setBounds(230, 510, 1000, 220);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     // ===== GETTERS =====
-    public JButton getBtnNavDashboard() { return btnNavDashboard; }
-    public JButton getBtnNavMyApplications() { return btnNavMyApplications; }
-    public JButton getBtnNavPropertyRatings() { return btnNavPropertyRatings; }
-    public JButton getBtnNavSavedProperties() { return btnNavSavedProperties; }
-    public JButton getBtnNavLogout() { return btnNavLogout; }
-    public JLabel getLblMainImage() { return lblMainImage; }
-    public JButton getBtnPrevImage() { return btnPrevImage; }
-    public JButton getBtnNextImage() { return btnNextImage; }
-    public JLabel getLblImageCounter() { return lblImageCounter; }
-    public JLabel getThumbnail1() { return thumbnail1; }
-    public JLabel getThumbnail2() { return thumbnail2; }
-    public JLabel getThumbnail3() { return thumbnail3; }
-    public JLabel getThumbnail4() { return thumbnail4; }
-    public JLabel getLblTitle() { return lblTitle; }
-    public JLabel getLblAddress() { return lblAddress; }
-    public JLabel getLblPropertyType() { return lblPropertyType; }
-    public JLabel getLblBedrooms() { return lblBedrooms; }
-    public JLabel getLblBathrooms() { return lblBathrooms; }
-    public JLabel getLblRent() { return lblRent; }
-    public JLabel getLblDeposit() { return lblDeposit; }
-    public JLabel getLblAvailableFrom() { return lblAvailableFrom; }
-    public JLabel getLblStatus() { return lblStatus; }
-    public JLabel getLblRating() { return lblRating; }
-    public JButton getBtnApply() { return btnApply; }
-    public JButton getBtnSave() { return btnSave; }
-    public JButton getBtnBack() { return btnBack; }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnApply;
-    private javax.swing.JButton btnBack;
-    private javax.swing.JButton btnNavDashboard;
-    private javax.swing.JButton btnNavLogout;
-    private javax.swing.JButton btnNavMyApplications;
-    private javax.swing.JButton btnNavPropertyRatings;
-    private javax.swing.JButton btnNavSavedProperties;
-    private javax.swing.JButton btnNextImage;
-    private javax.swing.JButton btnPrevImage;
-    private javax.swing.JButton btnSave;
-    private javax.swing.JLabel lblAddress;
-    private javax.swing.JLabel lblAvailableFrom;
-    private javax.swing.JLabel lblBathIcon;
-    private javax.swing.JLabel lblBathrooms;
-    private javax.swing.JLabel lblBedIcon;
-    private javax.swing.JLabel lblBedrooms;
-    private javax.swing.JLabel lblDeposit;
-    private javax.swing.JLabel lblDescHeader;
-    private javax.swing.JLabel lblDescText;
-    private javax.swing.JLabel lblFeatures;
-    private javax.swing.JLabel lblFeaturesHeader;
-    private javax.swing.JLabel lblImageCounter;
-    private javax.swing.JLabel lblLogo;
-    private javax.swing.JLabel lblMainImage;
-    private javax.swing.JLabel lblPropertyType;
-    private javax.swing.JLabel lblRating;
-    private javax.swing.JLabel lblRent;
-    private javax.swing.JLabel lblStatus;
-    private javax.swing.JLabel lblTitle;
-    private javax.swing.JPanel pnlExtraInfo;
-    private javax.swing.JPanel pnlImageContainer;
-    private javax.swing.JPanel pnlInfo;
-    private javax.swing.JPanel pnlSidebar;
-    private javax.swing.JSeparator sep1;
-    private javax.swing.JSeparator sep2;
-    private javax.swing.JSeparator sep3;
-    private javax.swing.JLabel thumbnail1;
-    private javax.swing.JLabel thumbnail2;
-    private javax.swing.JLabel thumbnail3;
-    private javax.swing.JLabel thumbnail4;
+    public javax.swing.JButton btnApply;
+    public javax.swing.JButton btnBack;
+    public javax.swing.JButton btnNavDashboard;
+    public javax.swing.JButton btnNavLogout;
+    public javax.swing.JButton btnNavMyApplications;
+    public javax.swing.JButton btnNavPropertyRatings;
+    public javax.swing.JButton btnNavSavedProperties;
+    public javax.swing.JButton btnNextImage;
+    public javax.swing.JButton btnPrevImage;
+    public javax.swing.JButton btnSave;
+    public javax.swing.JLabel lblAddress;
+    public javax.swing.JLabel lblAvailableFrom;
+    public javax.swing.JLabel lblBathIcon;
+    public javax.swing.JLabel lblBathrooms;
+    public javax.swing.JLabel lblBedIcon;
+    public javax.swing.JLabel lblBedrooms;
+    public javax.swing.JLabel lblDeposit;
+    public javax.swing.JLabel lblDescHeader;
+    public javax.swing.JLabel lblDescText;
+    public javax.swing.JLabel lblFeatures;
+    public javax.swing.JLabel lblFeaturesHeader;
+    public javax.swing.JLabel lblImageCounter;
+    public javax.swing.JLabel lblLogo;
+    public javax.swing.JLabel lblMainImage;
+    public javax.swing.JLabel lblPropertyType;
+    public javax.swing.JLabel lblRating;
+    public javax.swing.JLabel lblRent;
+    public javax.swing.JLabel lblStatus;
+    public javax.swing.JLabel lblTitle;
+    public javax.swing.JPanel pnlExtraInfo;
+    public javax.swing.JPanel pnlImageContainer;
+    public javax.swing.JPanel pnlInfo;
+    public javax.swing.JPanel pnlSidebar;
+    public javax.swing.JSeparator sep1;
+    public javax.swing.JSeparator sep2;
+    public javax.swing.JSeparator sep3;
+    public javax.swing.JLabel thumbnail1;
+    public javax.swing.JLabel thumbnail2;
+    public javax.swing.JLabel thumbnail3;
+    public javax.swing.JLabel thumbnail4;
     // End of variables declaration//GEN-END:variables
 }

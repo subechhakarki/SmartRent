@@ -3,7 +3,7 @@ package view;
 import Controller.MessageController;
 import Model.Message;
 import Model.User;
-import smartrent.SessionService;
+import Controller.SessionService;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -72,16 +72,12 @@ public class MessagingView extends javax.swing.JFrame {
         messageController.sendMessage(this, otherUserId);
     }//GEN-LAST:event_btnSendActionPerformed
 
-    public javax.swing.JLabel getLblChatWith() { return lblChatWith; }
-    public javax.swing.JTextArea getTxtHistory() { return txtHistory; }
-    public javax.swing.JTextField getTxtNewMessage() { return txtNewMessage; }
-    public javax.swing.JButton getBtnSend() { return btnSend; }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSend;
-    private javax.swing.JLabel lblChatWith;
-    private javax.swing.JScrollPane scrollPaneHistory;
-    private javax.swing.JTextArea txtHistory;
-    private javax.swing.JTextField txtNewMessage;
+    public javax.swing.JButton btnSend;
+    public javax.swing.JLabel lblChatWith;
+    public javax.swing.JScrollPane scrollPaneHistory;
+    public javax.swing.JTextArea txtHistory;
+    public javax.swing.JTextField txtNewMessage;
     // End of variables declaration//GEN-END:variables
 }
