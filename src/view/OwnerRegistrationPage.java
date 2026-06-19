@@ -311,7 +311,8 @@ public class OwnerRegistrationPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField8FocusLost
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        new LoginView().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -340,33 +341,33 @@ public class OwnerRegistrationPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Address;
-    private javax.swing.JLabel BusinessAddress;
-    private javax.swing.JLabel BusinessEmail;
-    private javax.swing.JLabel ConfirmPassword;
-    private javax.swing.JButton CreateOwnerAccount;
-    private javax.swing.JLabel Email;
-    private javax.swing.JLabel Fullname;
-    private javax.swing.JLabel Head;
-    private javax.swing.JLabel Phone;
-    private javax.swing.JLabel background;
-    private javax.swing.JLabel businessName;
-    private javax.swing.JLabel fill;
-    private javax.swing.JLabel haveAccount;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JLabel password;
-    private javax.swing.JLabel registration;
+    public javax.swing.JLabel Address;
+    public javax.swing.JLabel BusinessAddress;
+    public javax.swing.JLabel BusinessEmail;
+    public javax.swing.JLabel ConfirmPassword;
+    public javax.swing.JButton CreateOwnerAccount;
+    public javax.swing.JLabel Email;
+    public javax.swing.JLabel Fullname;
+    public javax.swing.JLabel Head;
+    public javax.swing.JLabel Phone;
+    public javax.swing.JLabel background;
+    public javax.swing.JLabel businessName;
+    public javax.swing.JLabel fill;
+    public javax.swing.JLabel haveAccount;
+    public javax.swing.JButton jButton2;
+    public javax.swing.JPanel jPanel1;
+    public javax.swing.JPasswordField jPasswordField1;
+    public javax.swing.JPasswordField jPasswordField2;
+    public javax.swing.JTextField jTextField1;
+    public javax.swing.JTextField jTextField2;
+    public javax.swing.JTextField jTextField3;
+    public javax.swing.JTextField jTextField4;
+    public javax.swing.JTextField jTextField5;
+    public javax.swing.JTextField jTextField6;
+    public javax.swing.JTextField jTextField7;
+    public javax.swing.JTextField jTextField8;
+    public javax.swing.JLabel password;
+    public javax.swing.JLabel registration;
     // End of variables declaration//GEN-END:variables
 /**
      * @return the fullNameField
