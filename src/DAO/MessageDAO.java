@@ -1,6 +1,6 @@
 package DAO;
 
-import database.DatabaseConnection;
+import database.mySQLConnection;
 import Model.Message;
 
 import java.sql.Connection;
@@ -13,7 +13,7 @@ import java.util.List;
 public class MessageDAO {
 
     public boolean sendMessage(Message message) {
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) return true;
         String query = "INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -29,7 +29,7 @@ public class MessageDAO {
 
     public List<Message> getConversation(int user1, int user2) {
         List<Message> list = new ArrayList<>();
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) return list;
         String query = "SELECT m.*, u1.full_name as sender_name, u2.full_name as receiver_name " +
                        "FROM messages m " +
@@ -62,7 +62,7 @@ public class MessageDAO {
     }
 
     public boolean markMessagesAsRead(int receiverId, int senderId) {
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) return true;
         String query = "UPDATE messages SET is_read = 1 WHERE receiver_id = ? AND sender_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {

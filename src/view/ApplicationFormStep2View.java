@@ -2,7 +2,7 @@ package view;
 
 import Controller.ApplicationController;
 import Model.Property;
-import smartrent.SessionService;
+import Controller.SessionService;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Date;
@@ -91,7 +91,7 @@ public class ApplicationFormStep2View extends javax.swing.JFrame {
         lblHeader.setBounds(135, 20, 400, 40);
 
         lblSteps.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblSteps.setText("<html>1. Personal Details &gt; <font color='#1E5CF0'><b>2. Employment &amp; Income</b></font> &gt; 3. Reference &amp; Documents</html>");
+        lblSteps.setText("<html>1. Personal Details &gt; <font color='#1E5CF0'><b>2. Employment &amp; Income</b></font></html>");
         getContentPane().add(lblSteps);
         lblSteps.setBounds(135, 70, 600, 30);
 
@@ -284,64 +284,50 @@ public class ApplicationFormStep2View extends javax.swing.JFrame {
         applicationController.logout(this);
     }
 
-    public javax.swing.JTextField getTxtEmployer() { return txtEmployer; }
-    public javax.swing.JTextField getTxtEmployerPhone() { return txtEmployerPhone; }
-    public javax.swing.JTextField getTxtIncome() { return txtIncome; }
-    public javax.swing.JTextField getTxtJobTitle() { return txtJobTitle; }
-    public javax.swing.JTextField getTxtOtherIncome() { return txtOtherIncome; }
-    public javax.swing.JTextField getTxtProof() { return txtProof; }
-    public javax.swing.JTextField getTxtStartDate() { return txtStartDate; }
-    public javax.swing.JTextField getTxtSupervisorEmail() { return txtSupervisorEmail; }
-    public javax.swing.JTextField getTxtSupervisorName() { return txtSupervisorName; }
-    public javax.swing.JTextArea getTxtYears() { return txtYears; }
 
-    public javax.swing.JLabel getLblPropTitle() { return lblPropTitle; }
-    public javax.swing.JLabel getLblPropLocation() { return lblPropLocation; }
-    public javax.swing.JLabel getLblPropPrice() { return lblPropPrice; }
-    public javax.swing.JLabel getLblPropDetails() { return lblPropDetails; }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBack;
-    private javax.swing.JButton btnBrowse;
-    private javax.swing.JButton btnNavDashboard;
-    private javax.swing.JButton btnNavLogout;
-    private javax.swing.JButton btnNavMyApplications;
-    private javax.swing.JButton btnNavPropertyRatings;
-    private javax.swing.JButton btnNavSavedProperties;
-    private javax.swing.JButton btnNext;
-    private javax.swing.JButton btnSubmit;
-    private javax.swing.JLabel lblEmployer;
-    private javax.swing.JLabel lblEmployerPhone;
-    private javax.swing.JLabel lblHeader;
-    private javax.swing.JLabel lblIncome;
-    private javax.swing.JLabel lblJobTitle;
-    private javax.swing.JLabel lblLogo;
-    private javax.swing.JLabel lblOtherIncome;
-    private javax.swing.JLabel lblProof;
-    private javax.swing.JLabel lblProofHint;
-    private javax.swing.JLabel lblPropDetails;
-    private javax.swing.JLabel lblPropImage;
-    private javax.swing.JLabel lblPropLocation;
-    private javax.swing.JLabel lblPropPrice;
-    private javax.swing.JLabel lblPropTitle;
-    private javax.swing.JLabel lblStartDate;
-    private javax.swing.JLabel lblSteps;
-    private javax.swing.JLabel lblSupervisorEmail;
-    private javax.swing.JLabel lblSupervisorName;
-    private javax.swing.JLabel lblYears;
-    private javax.swing.JPanel pnlContent;
-    private javax.swing.JPanel pnlPropertyCard;
-    private javax.swing.JPanel pnlSidebar;
-    private javax.swing.JScrollPane scrollPaneYears;
-    private javax.swing.JTextField txtEmployer;
-    private javax.swing.JTextField txtEmployerPhone;
-    private javax.swing.JTextField txtIncome;
-    private javax.swing.JTextField txtJobTitle;
-    private javax.swing.JTextField txtOtherIncome;
-    private javax.swing.JTextField txtProof;
-    private javax.swing.JTextField txtStartDate;
-    private javax.swing.JTextField txtSupervisorEmail;
-    private javax.swing.JTextField txtSupervisorName;
-    private javax.swing.JTextArea txtYears;
+    public javax.swing.JButton btnBack;
+    public javax.swing.JButton btnBrowse;
+    public javax.swing.JButton btnNavDashboard;
+    public javax.swing.JButton btnNavLogout;
+    public javax.swing.JButton btnNavMyApplications;
+    public javax.swing.JButton btnNavPropertyRatings;
+    public javax.swing.JButton btnNavSavedProperties;
+    public javax.swing.JButton btnNext;
+    public javax.swing.JButton btnSubmit;
+    public javax.swing.JLabel lblEmployer;
+    public javax.swing.JLabel lblEmployerPhone;
+    public javax.swing.JLabel lblHeader;
+    public javax.swing.JLabel lblIncome;
+    public javax.swing.JLabel lblJobTitle;
+    public javax.swing.JLabel lblLogo;
+    public javax.swing.JLabel lblOtherIncome;
+    public javax.swing.JLabel lblProof;
+    public javax.swing.JLabel lblProofHint;
+    public javax.swing.JLabel lblPropDetails;
+    public javax.swing.JLabel lblPropImage;
+    public javax.swing.JLabel lblPropLocation;
+    public javax.swing.JLabel lblPropPrice;
+    public javax.swing.JLabel lblPropTitle;
+    public javax.swing.JLabel lblStartDate;
+    public javax.swing.JLabel lblSteps;
+    public javax.swing.JLabel lblSupervisorEmail;
+    public javax.swing.JLabel lblSupervisorName;
+    public javax.swing.JLabel lblYears;
+    public javax.swing.JPanel pnlContent;
+    public javax.swing.JPanel pnlPropertyCard;
+    public javax.swing.JPanel pnlSidebar;
+    public javax.swing.JScrollPane scrollPaneYears;
+    public javax.swing.JTextField txtEmployer;
+    public javax.swing.JTextField txtEmployerPhone;
+    public javax.swing.JTextField txtIncome;
+    public javax.swing.JTextField txtJobTitle;
+    public javax.swing.JTextField txtOtherIncome;
+    public javax.swing.JTextField txtProof;
+    public javax.swing.JTextField txtStartDate;
+    public javax.swing.JTextField txtSupervisorEmail;
+    public javax.swing.JTextField txtSupervisorName;
+    public javax.swing.JTextArea txtYears;
     // End of variables declaration//GEN-END:variables
 }

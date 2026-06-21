@@ -13,6 +13,8 @@ public class User {
     private int loginAttempts;
     private Date lockedUntil;
     private Date createdAt;
+    private String otpCode;
+    private Date otpExpiry;
 
     public User() {
     }
@@ -56,4 +58,10 @@ public class User {
 
     public Date getCreatedAt() { return createdAt; }
     public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+
+    public String getOtpCode() { return otpCode; }
+    public void setOtpCode(String otpCode) { this.otpCode = otpCode; }
+
+    public Date getOtpExpiry() { return otpExpiry; }
+    public void setOtpExpiry(Date otpExpiry) { this.otpExpiry = otpExpiry; }
 }

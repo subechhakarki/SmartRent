@@ -3,7 +3,7 @@ package Controller;
 import DAO.SavedPropertyDAO;
 import Model.Property;
 import Model.User;
-import smartrent.SessionService;
+import Controller.SessionService;
 import view.*;
 
 import javax.swing.JOptionPane;
@@ -44,15 +44,26 @@ public class SavedPropertyController {
 
     // Presentation logic for SavedPropertiesView
     public void initSavedPropertiesView(SavedPropertiesView view) {
+        // Centralized Sidebar Styling
+        LogoLoader.styleRenterSidebar(
+                view,
+                view.pnlSidebar,
+                view.lblLogo,
+                view.btnNavDashboard,
+                view.btnNavMyApplications,
+                view.btnNavPropertyRatings,
+                view.btnNavSavedProperties,
+                view.btnNavLogout,
+                "saved"
+        );
         try {
             User currentUser = SessionService.getInstance().getCurrentUser();
             if (currentUser != null) {
-                view.getLblWelcome().setText("Welcome, " + currentUser.getFullName().split(" ")[0]);
+                view.lblWelcome.setText("Welcome, " + currentUser.getFullName().split(" ")[0]);
             }
         } catch (Exception e) { /* ignore */ }
         
-        view.getScrollPaneApps().getVerticalScrollBar().setUnitIncrement(16);
-        view.getPnlGrid().setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 20, 20));
+        view.scrollPaneApps.getVerticalScrollBar().setUnitIncrement(16);
         
         loadSavedProperties(view);
         
@@ -76,25 +87,25 @@ public class SavedPropertyController {
             savedProps = new java.util.ArrayList<>();
         }
         
-        view.getPnlCard1().setVisible(false);
-        view.getPnlCard2().setVisible(false);
-        view.getPnlCard3().setVisible(false);
-        view.getPnlCard4().setVisible(false);
+        view.pnlCard1.setVisible(false);
+        view.pnlCard2.setVisible(false);
+        view.pnlCard3.setVisible(false);
+        view.pnlCard4.setVisible(false);
         view.getPnlCard5().setVisible(false);
         view.getPnlCard6().setVisible(false);
         
         int count = Math.min(savedProps.size(), 6);
         for (int i = 0; i < count; i++) {
             Property p = savedProps.get(i);
-            if (i == 0) configureCard(view, view.getPnlCard1(), p);
-            else if (i == 1) configureCard(view, view.getPnlCard2(), p);
-            else if (i == 2) configureCard(view, view.getPnlCard3(), p);
-            else if (i == 3) configureCard(view, view.getPnlCard4(), p);
+            if (i == 0) configureCard(view, view.pnlCard1, p);
+            else if (i == 1) configureCard(view, view.pnlCard2, p);
+            else if (i == 2) configureCard(view, view.pnlCard3, p);
+            else if (i == 3) configureCard(view, view.pnlCard4, p);
             else if (i == 4) configureCard(view, view.getPnlCard5(), p);
             else if (i == 5) configureCard(view, view.getPnlCard6(), p);
         }
         
-        int containerWidth = view.getPnlGrid().getWidth();
+        int containerWidth = view.pnlGrid.getWidth();
         if (containerWidth <= 0) {
             containerWidth = 980;
         }
@@ -105,10 +116,10 @@ public class SavedPropertyController {
         
         int rows = (int) Math.ceil(count / (double) cols);
         int prefHeight = rows * (310 + gap) + gap;
-        view.getPnlGrid().setPreferredSize(new Dimension(containerWidth, Math.max(prefHeight, 660)));
+        view.pnlGrid.setPreferredSize(new Dimension(containerWidth, Math.max(prefHeight, 660)));
         
-        view.getPnlGrid().revalidate();
-        view.getPnlGrid().repaint();
+        view.pnlGrid.revalidate();
+        view.pnlGrid.repaint();
     }
 
     private void configureCard(SavedPropertiesView view, PropertyCardSaved card, Property p) {

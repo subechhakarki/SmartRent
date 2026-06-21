@@ -22,6 +22,20 @@ public class PropertyCardSaved extends javax.swing.JPanel {
         String priceText = "R.S  \u20b9" + String.format("%.0f", p.getMonthlyRent()) + "/month";
         lblPrice.setText(priceText);
         
+        if (p.getPrimaryImagePath() != null && !p.getPrimaryImagePath().isEmpty()) {
+            java.io.File file = Controller.PropertyController.resolveFile(p.getPrimaryImagePath());
+            if (file != null && file.exists()) {
+                javax.swing.ImageIcon icon = new javax.swing.ImageIcon(file.getAbsolutePath());
+                java.awt.Image img = icon.getImage().getScaledInstance(300, 160, java.awt.Image.SCALE_SMOOTH);
+                lblImage.setIcon(new javax.swing.ImageIcon(img));
+                lblImage.setText("");
+            } else {
+                setFallbackImage(300, 160);
+            }
+        } else {
+            setFallbackImage(300, 160);
+        }
+        
         for (ActionListener al : btnRemove.getActionListeners()) {
             btnRemove.removeActionListener(al);
         }
@@ -87,12 +101,28 @@ public class PropertyCardSaved extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 
+    private void setFallbackImage(int w, int h) {
+        java.net.URL imgUrl = getClass().getResource("/Images/Gemini_Generated_Image_enyzbenyzbe.png");
+        if (imgUrl == null) {
+            imgUrl = getClass().getResource("/Images/Gemini_Generated_Image_enyzbenyzbenyzbe.png");
+        }
+        if (imgUrl != null) {
+            javax.swing.ImageIcon icon = new javax.swing.ImageIcon(imgUrl);
+            java.awt.Image img = icon.getImage().getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH);
+            lblImage.setIcon(new javax.swing.ImageIcon(img));
+            lblImage.setText("");
+        } else {
+            lblImage.setIcon(null);
+            lblImage.setText("<html><div style='text-align: center; color: white; padding-top: 50px;'>No Image</div></html>");
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnApply;
-    private javax.swing.JButton btnRemove;
-    private javax.swing.JLabel lblImage;
-    private javax.swing.JLabel lblLoc;
-    private javax.swing.JLabel lblPrice;
-    private javax.swing.JLabel lblTitle;
+    public javax.swing.JButton btnApply;
+    public javax.swing.JButton btnRemove;
+    public javax.swing.JLabel lblImage;
+    public javax.swing.JLabel lblLoc;
+    public javax.swing.JLabel lblPrice;
+    public javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
 }

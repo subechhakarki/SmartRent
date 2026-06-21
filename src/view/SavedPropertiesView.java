@@ -3,7 +3,7 @@ package view;
 import Controller.SavedPropertyController;
 import Model.Property;
 import Model.User;
-import smartrent.SessionService;
+import Controller.SessionService;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,12 +14,12 @@ import javax.swing.*;
 public class SavedPropertiesView extends javax.swing.JFrame {
 
     private SavedPropertyController savedPropertyController;
-    private final PropertyCardSaved pnlCard1 = new PropertyCardSaved();
-    private final PropertyCardSaved pnlCard2 = new PropertyCardSaved();
-    private final PropertyCardSaved pnlCard3 = new PropertyCardSaved();
-    private final PropertyCardSaved pnlCard4 = new PropertyCardSaved();
-    private final PropertyCardSaved pnlCard5 = new PropertyCardSaved();
-    private final PropertyCardSaved pnlCard6 = new PropertyCardSaved();
+    public final PropertyCardSaved pnlCard1 = new PropertyCardSaved();
+    public final PropertyCardSaved pnlCard2 = new PropertyCardSaved();
+    public final PropertyCardSaved pnlCard3 = new PropertyCardSaved();
+    public final PropertyCardSaved pnlCard4 = new PropertyCardSaved();
+    public final PropertyCardSaved pnlCard5 = new PropertyCardSaved();
+    public final PropertyCardSaved pnlCard6 = new PropertyCardSaved();
 
     public SavedPropertiesView() {
         initComponents();
@@ -33,24 +33,9 @@ public class SavedPropertiesView extends javax.swing.JFrame {
         savedPropertyController.initSavedPropertiesView(this);
     }
 
-    public PropertyCardSaved getPnlCard1() { return pnlCard1; }
-    public PropertyCardSaved getPnlCard2() { return pnlCard2; }
-    public PropertyCardSaved getPnlCard3() { return pnlCard3; }
-    public PropertyCardSaved getPnlCard4() { return pnlCard4; }
     public PropertyCardSaved getPnlCard5() { return pnlCard5; }
     public PropertyCardSaved getPnlCard6() { return pnlCard6; }
 
-    public javax.swing.JPanel getPnlGrid() { return pnlGrid; }
-    public javax.swing.JScrollPane getScrollPaneApps() { return scrollPaneApps; }
-    public javax.swing.JPanel getPnlSidebar() { return pnlSidebar; }
-    public javax.swing.JLabel getLblLogo() { return lblLogo; }
-    public javax.swing.JButton getBtnNavDashboard() { return btnNavDashboard; }
-    public javax.swing.JButton getBtnNavMyApplications() { return btnNavMyApplications; }
-    public javax.swing.JButton getBtnNavPropertyRatings() { return btnNavPropertyRatings; }
-    public javax.swing.JButton getBtnNavSavedProperties() { return btnNavSavedProperties; }
-    public javax.swing.JButton getBtnNavLogout() { return btnNavLogout; }
-    public javax.swing.JLabel getLblDashboardHeader() { return lblDashboardHeader; }
-    public javax.swing.JLabel getLblWelcome() { return lblWelcome; }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -58,6 +43,8 @@ public class SavedPropertiesView extends javax.swing.JFrame {
 
         pnlSidebar = new javax.swing.JPanel();
         lblLogo = new javax.swing.JLabel();
+        lblLogo.setBackground(new java.awt.Color(209, 232, 237));
+        lblLogo.setOpaque(true);
         btnNavDashboard = new javax.swing.JButton();
         btnNavMyApplications = new javax.swing.JButton();
         btnNavPropertyRatings = new javax.swing.JButton();
@@ -77,64 +64,82 @@ public class SavedPropertiesView extends javax.swing.JFrame {
         pnlSidebar.setBackground(new java.awt.Color(60, 110, 113));
         pnlSidebar.setLayout(null);
 
+        lblLogo.setBackground(new java.awt.Color(209, 232, 237));
         lblLogo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        lblLogo.setForeground(new java.awt.Color(255, 255, 255));
-        lblLogo.setText("SmartRent");
+        lblLogo.setForeground(new java.awt.Color(60, 110, 113));
+        lblLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/SmartRentLogo_Banner.png"))); // NOI18N
+        lblLogo.setOpaque(true);
         pnlSidebar.add(lblLogo);
-        lblLogo.setBounds(20, 20, 180, 40);
+        lblLogo.setBounds(0, 0, 200, 80);
 
-        btnNavDashboard.setText("Dashboard");
         btnNavDashboard.setBackground(new java.awt.Color(60, 110, 113));
-        btnNavDashboard.setForeground(new java.awt.Color(255, 255, 255));
         btnNavDashboard.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnNavDashboard.setForeground(new java.awt.Color(255, 255, 255));
+        btnNavDashboard.setText("Dashboard");
+        btnNavDashboard.setBorderPainted(false);
+        btnNavDashboard.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNavDashboard.setMargin(new java.awt.Insets(2, 20, 2, 14));
         btnNavDashboard.addActionListener(this::btnNavDashboardActionPerformed);
         pnlSidebar.add(btnNavDashboard);
-        btnNavDashboard.setBounds(0, 80, 220, 40);
+        btnNavDashboard.setBounds(0, 100, 200, 40);
 
-        btnNavMyApplications.setText("My Applications");
         btnNavMyApplications.setBackground(new java.awt.Color(60, 110, 113));
-        btnNavMyApplications.setForeground(new java.awt.Color(255, 255, 255));
         btnNavMyApplications.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnNavMyApplications.setForeground(new java.awt.Color(255, 255, 255));
+        btnNavMyApplications.setText("My Applications");
+        btnNavMyApplications.setBorderPainted(false);
+        btnNavMyApplications.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNavMyApplications.setMargin(new java.awt.Insets(2, 20, 2, 14));
         btnNavMyApplications.addActionListener(this::btnNavMyApplicationsActionPerformed);
         pnlSidebar.add(btnNavMyApplications);
-        btnNavMyApplications.setBounds(0, 120, 220, 40);
+        btnNavMyApplications.setBounds(0, 140, 200, 40);
 
-        btnNavPropertyRatings.setText("Property Ratings");
         btnNavPropertyRatings.setBackground(new java.awt.Color(60, 110, 113));
-        btnNavPropertyRatings.setForeground(new java.awt.Color(255, 255, 255));
         btnNavPropertyRatings.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnNavPropertyRatings.setForeground(new java.awt.Color(255, 255, 255));
+        btnNavPropertyRatings.setText("Property Ratings");
+        btnNavPropertyRatings.setBorderPainted(false);
+        btnNavPropertyRatings.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNavPropertyRatings.setMargin(new java.awt.Insets(2, 20, 2, 14));
         btnNavPropertyRatings.addActionListener(this::btnNavPropertyRatingsActionPerformed);
         pnlSidebar.add(btnNavPropertyRatings);
-        btnNavPropertyRatings.setBounds(0, 160, 220, 40);
+        btnNavPropertyRatings.setBounds(0, 180, 200, 40);
 
-        btnNavSavedProperties.setText("Saved Properties");
         btnNavSavedProperties.setBackground(new java.awt.Color(80, 128, 128));
-        btnNavSavedProperties.setForeground(new java.awt.Color(255, 255, 255));
         btnNavSavedProperties.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnNavSavedProperties.setForeground(new java.awt.Color(255, 255, 255));
+        btnNavSavedProperties.setText("Saved Properties");
+        btnNavSavedProperties.setBorderPainted(false);
+        btnNavSavedProperties.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNavSavedProperties.setMargin(new java.awt.Insets(2, 20, 2, 14));
         pnlSidebar.add(btnNavSavedProperties);
-        btnNavSavedProperties.setBounds(0, 200, 220, 40);
+        btnNavSavedProperties.setBounds(0, 220, 200, 40);
 
-        btnNavLogout.setText("Logout");
         btnNavLogout.setBackground(new java.awt.Color(60, 110, 113));
-        btnNavLogout.setForeground(new java.awt.Color(255, 255, 255));
         btnNavLogout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnNavLogout.setForeground(new java.awt.Color(255, 255, 255));
+        btnNavLogout.setText("Logout");
+        btnNavLogout.setBorderPainted(false);
+        btnNavLogout.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNavLogout.setMargin(new java.awt.Insets(2, 20, 2, 14));
         btnNavLogout.addActionListener(this::btnNavLogoutActionPerformed);
         pnlSidebar.add(btnNavLogout);
-        btnNavLogout.setBounds(0, 260, 220, 40);
+        btnNavLogout.setBounds(0, 280, 200, 40);
 
         getContentPane().add(pnlSidebar);
-        pnlSidebar.setBounds(0, 0, 220, 800);
+        pnlSidebar.setBounds(0, 0, 200, 800);
 
         lblDashboardHeader.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblDashboardHeader.setText("Saved Properties");
         getContentPane().add(lblDashboardHeader);
-        lblDashboardHeader.setBounds(250, 20, 250, 40);
+        lblDashboardHeader.setBounds(230, 20, 250, 40);
 
         lblWelcome.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblWelcome.setText("Welcome, User");
         lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         getContentPane().add(lblWelcome);
-        lblWelcome.setBounds(1030, 20, 200, 40);
+        lblWelcome.setBounds(1050, 20, 200, 40);
 
         scrollPaneApps.setBorder(null);
         scrollPaneApps.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -144,7 +149,7 @@ public class SavedPropertiesView extends javax.swing.JFrame {
         scrollPaneApps.setViewportView(pnlGrid);
 
         getContentPane().add(scrollPaneApps);
-        scrollPaneApps.setBounds(250, 80, 1000, 660);
+        scrollPaneApps.setBounds(230, 80, 1020, 660);
 
         pack();
         setLocationRelativeTo(null);
@@ -167,16 +172,16 @@ public class SavedPropertiesView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnNavDashboard;
-    private javax.swing.JButton btnNavLogout;
-    private javax.swing.JButton btnNavMyApplications;
-    private javax.swing.JButton btnNavPropertyRatings;
-    private javax.swing.JButton btnNavSavedProperties;
-    private javax.swing.JLabel lblDashboardHeader;
-    private javax.swing.JLabel lblLogo;
-    private javax.swing.JLabel lblWelcome;
-    private javax.swing.JPanel pnlGrid;
-    private javax.swing.JPanel pnlSidebar;
-    private javax.swing.JScrollPane scrollPaneApps;
+    public javax.swing.JButton btnNavDashboard;
+    public javax.swing.JButton btnNavLogout;
+    public javax.swing.JButton btnNavMyApplications;
+    public javax.swing.JButton btnNavPropertyRatings;
+    public javax.swing.JButton btnNavSavedProperties;
+    public javax.swing.JLabel lblDashboardHeader;
+    public javax.swing.JLabel lblLogo;
+    public javax.swing.JLabel lblWelcome;
+    public javax.swing.JPanel pnlGrid;
+    public javax.swing.JPanel pnlSidebar;
+    public javax.swing.JScrollPane scrollPaneApps;
     // End of variables declaration//GEN-END:variables
 }

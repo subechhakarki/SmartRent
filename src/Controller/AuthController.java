@@ -2,8 +2,8 @@ package Controller;
 
 import DAO.UserDAO;
 import Model.User;
-import smartrent.SessionService;
-import smartrent.ValidationUtil;
+import Controller.SessionService;
+import Controller.ValidationUtil;
 import view.*;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
@@ -18,10 +18,10 @@ public class AuthController {
     }
 
     public void login(LoginView view) {
-        String email = view.getTxtEmail().getText();
-        String password = new String(view.getTxtPassword().getPassword());
+        String email = view.txtUsername.getText();
+        String password = new String(view.txtPassword.getPassword());
 
-        if (email.isEmpty() || password.isEmpty()) {
+        if (email.isEmpty() || email.equals("Enter your email") || password.isEmpty()) {
             JOptionPane.showMessageDialog(view, "Please enter email and password.", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -42,65 +42,15 @@ public class AuthController {
         }
     }
 
-    public void registerRenter(RenterRegistrationView view) {
-        String fullName = view.getTxtName().getText();
-        String email = view.getTxtEmail().getText();
-        String phone = view.getTxtPhone().getText();
-        String password = new String(view.getTxtPassword().getPassword());
-        String confirmPassword = new String(view.getTxtConfirmPassword().getPassword());
-        String employmentStatus = view.getTxtEmploymentStatus().getText();
-        double monthlyIncome = 0.0;
-        try {
-            monthlyIncome = Double.parseDouble(view.getTxtMonthlyIncome().getText().trim());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(view, "Monthly income must be a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (!password.equals(confirmPassword)) {
-            JOptionPane.showMessageDialog(view, "Passwords do not match.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String result = registerRenter(fullName, email, phone, password, employmentStatus, monthlyIncome);
-        if ("SUCCESS".equals(result)) {
-            JOptionPane.showMessageDialog(view, "Registration Successful! Please log in.");
-            new LoginView().setVisible(true);
-            view.dispose();
-        } else {
-            JOptionPane.showMessageDialog(view, result, "Registration Failed", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    public void registerOwner(PropertyOwnerRegistrationView view) {
-        String fullName = view.getTxtName().getText();
-        String email = view.getTxtEmail().getText();
-        String phone = view.getTxtPhone().getText();
-        String password = new String(view.getTxtPassword().getPassword());
-        String confirmPassword = new String(view.getTxtConfirmPassword().getPassword());
-
-        if (!password.equals(confirmPassword)) {
-            JOptionPane.showMessageDialog(view, "Passwords do not match.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String result = registerOwner(fullName, email, phone, password);
-        if ("SUCCESS".equals(result)) {
-            JOptionPane.showMessageDialog(view, "Registration Successful! Your account is pending admin approval.");
-            new LoginView().setVisible(true);
-            view.dispose();
-        } else {
-            JOptionPane.showMessageDialog(view, result, "Registration Failed", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     public void showRenterRegistration(LoginView view) {
-        new RenterRegistrationView().setVisible(true);
+        Controller.MainFrame frame = new Controller.MainFrame();
+        frame.setVisible(true);
+        frame.showPanel("RENTER_REGISTER");
         view.dispose();
     }
 
     public void showOwnerRegistration(LoginView view) {
-        new PropertyOwnerRegistrationView().setVisible(true);
+        new view.OwnerRegistrationPage().setVisible(true);
         view.dispose();
     }
 
@@ -110,6 +60,9 @@ public class AuthController {
     }
 
     public String login(String email, String password) {
+        if (database.mySQLConnection.getConnection() == null) {
+            return "Database connection offline. Please check your MySQL server configuration.";
+        }
         if (!ValidationUtil.isNotEmpty(email) || !ValidationUtil.isNotEmpty(password)) {
             return "Please enter both email and password.";
         }
@@ -170,6 +123,9 @@ public class AuthController {
     }
 
     public String registerRenter(String fullName, String email, String phone, String password, String employmentStatus, double monthlyIncome) {
+        if (database.mySQLConnection.getConnection() == null) {
+            return "Database connection offline. Please check your MySQL server configuration.";
+        }
         if (!ValidationUtil.isNotEmpty(fullName) || !ValidationUtil.isNotEmpty(email) || !ValidationUtil.isNotEmpty(password)) {
             return "Please fill in all required fields.";
         }
@@ -191,6 +147,9 @@ public class AuthController {
     }
 
     public String registerOwner(String fullName, String email, String phone, String password) {
+        if (database.mySQLConnection.getConnection() == null) {
+            return "Database connection offline. Please check your MySQL server configuration.";
+        }
         if (!ValidationUtil.isNotEmpty(fullName) || !ValidationUtil.isNotEmpty(email) || !ValidationUtil.isNotEmpty(password)) {
             return "Please fill in all required fields.";
         }
@@ -209,6 +168,77 @@ public class AuthController {
         boolean success = userDAO.createOwner(user);
         
         return success ? "SUCCESS" : "Registration failed due to a system error.";
+    }
+
+    public String sendPasswordResetOTP(String email) {
+        if (database.mySQLConnection.getConnection() == null) {
+            return "Database connection offline. Please check your MySQL server configuration.";
+        }
+        if (!ValidationUtil.isNotEmpty(email)) {
+            return "Please enter your email address.";
+        }
+        if (!ValidationUtil.isValidEmail(email)) {
+            return "Invalid email format.";
+        }
+        if (!userDAO.isEmailExists(email)) {
+            return "Email address not found.";
+        }
+
+        // Generate a 6-digit secure random code
+        java.security.SecureRandom random = new java.security.SecureRandom();
+        int otpNum = 100000 + random.nextInt(900000);
+        String otpCode = String.valueOf(otpNum);
+
+        // Code is valid for 5 minutes
+        long expiryTime = System.currentTimeMillis() + (5 * 60 * 1000);
+        java.sql.Timestamp expiry = new java.sql.Timestamp(expiryTime);
+
+        boolean saved = userDAO.storeOTP(email, otpCode, expiry);
+        if (saved) {
+            // Send email in a background thread to prevent UI freezing
+            new Thread(() -> MailService.sendOTP(email, otpCode)).start();
+            return "SUCCESS:" + otpCode;
+        }
+        return "Failed to generate verification code due to a database error.";
+    }
+
+    public String verifyOTPAndResetPassword(String email, String otp, String newPassword, String confirmPassword) {
+        if (database.mySQLConnection.getConnection() == null) {
+            return "Database connection offline. Please check your MySQL server configuration.";
+        }
+        if (!ValidationUtil.isNotEmpty(email) || !ValidationUtil.isNotEmpty(otp) || !ValidationUtil.isNotEmpty(newPassword) || !ValidationUtil.isNotEmpty(confirmPassword)) {
+            return "Please fill in all fields.";
+        }
+        if (!ValidationUtil.isValidEmail(email)) {
+            return "Invalid email format.";
+        }
+        if (!ValidationUtil.isValidPassword(newPassword)) {
+            return "Password must be at least 8 characters.";
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            return "Passwords do not match.";
+        }
+        if (!userDAO.isEmailExists(email)) {
+            return "Email address not found.";
+        }
+
+        // Verify OTP
+        boolean validOTP = userDAO.verifyOTP(email, otp);
+        if (!validOTP) {
+            return "Invalid or expired verification code.";
+        }
+
+        // Update Password
+        boolean success = userDAO.updatePassword(email, newPassword);
+        if (success) {
+            userDAO.clearOTP(email);
+            User user = userDAO.getUserByEmail(email);
+            if (user != null) {
+                userDAO.resetLoginAttempts(user.getUserId());
+            }
+            return "SUCCESS";
+        }
+        return "Password update failed due to a database error.";
     }
 }
 

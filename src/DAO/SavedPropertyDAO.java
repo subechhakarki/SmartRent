@@ -1,6 +1,6 @@
 package DAO;
 
-import database.DatabaseConnection;
+import database.mySQLConnection;
 import Model.Property;
 import Model.SavedProperty;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class SavedPropertyDAO {
 
     public boolean saveProperty(int renterId, int propertyId) {
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) return true;
         String query = "INSERT INTO saved_properties (renter_id, property_id) VALUES (?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -28,7 +28,7 @@ public class SavedPropertyDAO {
     }
 
     public boolean removeSavedProperty(int renterId, int propertyId) {
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) return true;
         String query = "DELETE FROM saved_properties WHERE renter_id = ? AND property_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -43,7 +43,7 @@ public class SavedPropertyDAO {
 
     public List<Property> getSavedPropertiesForRenter(int renterId) {
         List<Property> list = new ArrayList<>();
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) return list;
         String query = "SELECT p.* FROM saved_properties s " +
                        "JOIN properties p ON s.property_id = p.property_id " +
@@ -63,6 +63,12 @@ public class SavedPropertyDAO {
                 p.setMonthlyRent(rs.getDouble("monthly_rent"));
                 p.setDeposit(rs.getDouble("deposit"));
                 p.setPropStatus(rs.getString("prop_status"));
+                String dbPath = rs.getString("image_path");
+                if (dbPath != null && dbPath.contains(",")) {
+                    p.setPrimaryImagePath(dbPath.split(",")[0]);
+                } else {
+                    p.setPrimaryImagePath(dbPath);
+                }
                 list.add(p);
             }
         } catch (SQLException e) {

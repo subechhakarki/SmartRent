@@ -31,34 +31,8 @@ public class AddProperty extends javax.swing.JFrame {
     public List<String> getSelectedImagePaths() { return selectedImagePaths; }
 
     // Getters for swing components
-    public javax.swing.JLabel getLblWelcome() { return lblWelcome; }
-    public javax.swing.JLabel getLblAddPropertyTitle() { return lblAddPropertyTitle; }
-    public javax.swing.JLabel getLblImagesStatus() { return lblImagesStatus; }
-    public javax.swing.JLabel getLblPreview1() { return lblPreview1; }
-    public javax.swing.JLabel getLblPreview2() { return lblPreview2; }
-    public javax.swing.JLabel getLblPreview3() { return lblPreview3; }
-    public javax.swing.JLabel getLblPreview4() { return lblPreview4; }
-    public javax.swing.JLabel getLblPreview5() { return lblPreview5; }
-    public javax.swing.JLabel getLblError() { return lblError; }
     
-    public javax.swing.JPanel getPnlSlot1() { return pnlSlot1; }
-    public javax.swing.JPanel getPnlSlot2() { return pnlSlot2; }
-    public javax.swing.JPanel getPnlSlot3() { return pnlSlot3; }
-    public javax.swing.JPanel getPnlSlot4() { return pnlSlot4; }
-    public javax.swing.JPanel getPnlSlot5() { return pnlSlot5; }
-    public javax.swing.JPanel getPnlImagesPreview() { return pnlImagesPreview; }
-    public javax.swing.JPanel getPnlCard() { return pnlCard; }
 
-    public javax.swing.JTextField getTxtPropTitle() { return txtPropTitle; }
-    public javax.swing.JTextField getTxtAddress() { return txtAddress; }
-    public javax.swing.JTextField getTxtBedrooms() { return txtBedrooms; }
-    public javax.swing.JTextField getTxtBathrooms() { return txtBathrooms; }
-    public javax.swing.JTextField getTxtRent() { return txtRent; }
-    public javax.swing.JTextField getTxtDeposit() { return txtDeposit; }
-    public javax.swing.JTextField getTxtAvailableFrom() { return txtAvailableFrom; }
-    public javax.swing.JTextArea getTxtDescription() { return txtDescription; }
-    public javax.swing.JComboBox getCmbPropertyType() { return cmbPropertyType; }
-    public javax.swing.JButton getBtnSave() { return btnSave; }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -66,7 +40,8 @@ public class AddProperty extends javax.swing.JFrame {
 
         pnlSidebar = new javax.swing.JPanel();
         lblLogo = new javax.swing.JLabel();
-        lblLogoSubtitle = new javax.swing.JLabel();
+        lblLogo.setBackground(new java.awt.Color(209, 232, 237));
+        lblLogo.setOpaque(true);
         btnNavDashboard = new javax.swing.JButton();
         btnNavMyProperties = new javax.swing.JButton();
         btnNavLeaseManagement = new javax.swing.JButton();
@@ -131,15 +106,10 @@ public class AddProperty extends javax.swing.JFrame {
 
         lblLogo.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
         lblLogo.setForeground(new java.awt.Color(255, 255, 255));
-        lblLogo.setText("SmartRent");
+        lblLogo.setText("");
         pnlSidebar.add(lblLogo);
-        lblLogo.setBounds(20, 20, 180, 30);
+        lblLogo.setBounds(0, 0, 200, 80);
 
-        lblLogoSubtitle.setFont(new java.awt.Font("Segoe UI", 2, 9)); // NOI18N
-        lblLogoSubtitle.setForeground(new java.awt.Color(180, 210, 215));
-        lblLogoSubtitle.setText("The rental experience you actually deserve");
-        pnlSidebar.add(lblLogoSubtitle);
-        lblLogoSubtitle.setBounds(20, 48, 190, 15);
 
         btnNavDashboard.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnNavDashboard.setForeground(new java.awt.Color(255, 255, 255));
@@ -150,7 +120,7 @@ public class AddProperty extends javax.swing.JFrame {
         btnNavDashboard.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnNavDashboard.addActionListener(this::btnNavDashboardActionPerformed);
         pnlSidebar.add(btnNavDashboard);
-        btnNavDashboard.setBounds(0, 80, 220, 40);
+        btnNavDashboard.setBounds(0, 100, 200, 40);
 
         btnNavMyProperties.setBackground(new java.awt.Color(44, 122, 135));
         btnNavMyProperties.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -161,7 +131,7 @@ public class AddProperty extends javax.swing.JFrame {
         btnNavMyProperties.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnNavMyProperties.addActionListener(this::btnNavMyPropertiesActionPerformed);
         pnlSidebar.add(btnNavMyProperties);
-        btnNavMyProperties.setBounds(0, 120, 220, 40);
+        btnNavMyProperties.setBounds(0, 140, 200, 40);
 
         btnNavLeaseManagement.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnNavLeaseManagement.setForeground(new java.awt.Color(255, 255, 255));
@@ -172,7 +142,7 @@ public class AddProperty extends javax.swing.JFrame {
         btnNavLeaseManagement.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnNavLeaseManagement.addActionListener(this::btnNavLeaseManagementActionPerformed);
         pnlSidebar.add(btnNavLeaseManagement);
-        btnNavLeaseManagement.setBounds(0, 160, 220, 40);
+        btnNavLeaseManagement.setBounds(0, 180, 200, 40);
 
         btnNavLogout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnNavLogout.setForeground(new java.awt.Color(255, 255, 255));
@@ -183,10 +153,10 @@ public class AddProperty extends javax.swing.JFrame {
         btnNavLogout.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnNavLogout.addActionListener(this::btnNavLogoutActionPerformed);
         pnlSidebar.add(btnNavLogout);
-        btnNavLogout.setBounds(0, 200, 220, 40);
+        btnNavLogout.setBounds(0, 240, 200, 40);
 
         getContentPane().add(pnlSidebar);
-        pnlSidebar.setBounds(0, 0, 220, 800);
+        pnlSidebar.setBounds(0, 0, 200, 800);
 
         pnlHeader.setBackground(new java.awt.Color(255, 255, 255));
         pnlHeader.setLayout(null);
@@ -205,7 +175,7 @@ public class AddProperty extends javax.swing.JFrame {
         lblWelcome.setBounds(800, 15, 200, 40);
 
         getContentPane().add(pnlHeader);
-        pnlHeader.setBounds(220, 0, 1060, 70);
+        pnlHeader.setBounds(200, 0, 1080, 70);
 
         pnlCard.setBackground(new java.awt.Color(255, 255, 255));
         pnlCard.setLayout(null);
@@ -473,7 +443,7 @@ public class AddProperty extends javax.swing.JFrame {
         lblError.setBounds(340, 580, 450, 40);
 
         getContentPane().add(pnlCard);
-        pnlCard.setBounds(250, 90, 1000, 660);
+        pnlCard.setBounds(230, 90, 1020, 660);
 
         pack();
         setLocationRelativeTo(null);
@@ -532,60 +502,59 @@ public class AddProperty extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnNavDashboard;
-    private javax.swing.JButton btnNavLeaseManagement;
-    private javax.swing.JButton btnNavLogout;
-    private javax.swing.JButton btnNavMyProperties;
-    private javax.swing.JButton btnRemove1;
-    private javax.swing.JButton btnRemove2;
-    private javax.swing.JButton btnRemove3;
-    private javax.swing.JButton btnRemove4;
-    private javax.swing.JButton btnRemove5;
-    private javax.swing.JButton btnSave;
-    private javax.swing.JButton btnUploadImages;
-    private javax.swing.JComboBox cmbPropertyType;
-    private javax.swing.JLabel lblAddPropertyTitle;
-    private javax.swing.JLabel lblAvailableFromLabel;
-    private javax.swing.JLabel lblBathroomsLabel;
-    private javax.swing.JLabel lblBedroomsLabel;
-    private javax.swing.JLabel lblDepositLabel;
-    private javax.swing.JLabel lblDescription;
-    private javax.swing.JLabel lblError;
-    private javax.swing.JLabel lblHeaderTitle;
-    private javax.swing.JLabel lblImagesStatus;
-    private javax.swing.JLabel lblLocationLabel;
-    private javax.swing.JLabel lblLogo;
-    private javax.swing.JLabel lblLogoSubtitle;
-    private javax.swing.JLabel lblPreview1;
-    private javax.swing.JLabel lblPreview2;
-    private javax.swing.JLabel lblPreview3;
-    private javax.swing.JLabel lblPreview4;
-    private javax.swing.JLabel lblPreview5;
-    private javax.swing.JLabel lblPropTitleLabel;
-    private javax.swing.JLabel lblPropertyDetails;
-    private javax.swing.JLabel lblPropertyTypeLabel;
-    private javax.swing.JLabel lblRentLabel;
-    private javax.swing.JLabel lblUploadPhotos;
-    private javax.swing.JLabel lblWelcome;
-    private javax.swing.JPanel pnlCard;
-    private javax.swing.JPanel pnlHeader;
-    private javax.swing.JPanel pnlImagesPreview;
-    private javax.swing.JPanel pnlPropertyDetailsHeader;
-    private javax.swing.JPanel pnlSidebar;
-    private javax.swing.JPanel pnlSlot1;
-    private javax.swing.JPanel pnlSlot2;
-    private javax.swing.JPanel pnlSlot3;
-    private javax.swing.JPanel pnlSlot4;
-    private javax.swing.JPanel pnlSlot5;
-    private javax.swing.JScrollPane scrollDesc;
-    private javax.swing.JTextField txtAddress;
-    private javax.swing.JTextField txtAvailableFrom;
-    private javax.swing.JTextField txtBathrooms;
-    private javax.swing.JTextField txtBedrooms;
-    private javax.swing.JTextField txtDeposit;
-    private javax.swing.JTextArea txtDescription;
-    private javax.swing.JTextField txtPropTitle;
-    private javax.swing.JTextField txtRent;
+    public javax.swing.JButton btnCancel;
+    public javax.swing.JButton btnNavDashboard;
+    public javax.swing.JButton btnNavLeaseManagement;
+    public javax.swing.JButton btnNavLogout;
+    public javax.swing.JButton btnNavMyProperties;
+    public javax.swing.JButton btnRemove1;
+    public javax.swing.JButton btnRemove2;
+    public javax.swing.JButton btnRemove3;
+    public javax.swing.JButton btnRemove4;
+    public javax.swing.JButton btnRemove5;
+    public javax.swing.JButton btnSave;
+    public javax.swing.JButton btnUploadImages;
+    public javax.swing.JComboBox cmbPropertyType;
+    public javax.swing.JLabel lblAddPropertyTitle;
+    public javax.swing.JLabel lblAvailableFromLabel;
+    public javax.swing.JLabel lblBathroomsLabel;
+    public javax.swing.JLabel lblBedroomsLabel;
+    public javax.swing.JLabel lblDepositLabel;
+    public javax.swing.JLabel lblDescription;
+    public javax.swing.JLabel lblError;
+    public javax.swing.JLabel lblHeaderTitle;
+    public javax.swing.JLabel lblImagesStatus;
+    public javax.swing.JLabel lblLocationLabel;
+    public javax.swing.JLabel lblLogo;
+    public javax.swing.JLabel lblPreview1;
+    public javax.swing.JLabel lblPreview2;
+    public javax.swing.JLabel lblPreview3;
+    public javax.swing.JLabel lblPreview4;
+    public javax.swing.JLabel lblPreview5;
+    public javax.swing.JLabel lblPropTitleLabel;
+    public javax.swing.JLabel lblPropertyDetails;
+    public javax.swing.JLabel lblPropertyTypeLabel;
+    public javax.swing.JLabel lblRentLabel;
+    public javax.swing.JLabel lblUploadPhotos;
+    public javax.swing.JLabel lblWelcome;
+    public javax.swing.JPanel pnlCard;
+    public javax.swing.JPanel pnlHeader;
+    public javax.swing.JPanel pnlImagesPreview;
+    public javax.swing.JPanel pnlPropertyDetailsHeader;
+    public javax.swing.JPanel pnlSidebar;
+    public javax.swing.JPanel pnlSlot1;
+    public javax.swing.JPanel pnlSlot2;
+    public javax.swing.JPanel pnlSlot3;
+    public javax.swing.JPanel pnlSlot4;
+    public javax.swing.JPanel pnlSlot5;
+    public javax.swing.JScrollPane scrollDesc;
+    public javax.swing.JTextField txtAddress;
+    public javax.swing.JTextField txtAvailableFrom;
+    public javax.swing.JTextField txtBathrooms;
+    public javax.swing.JTextField txtBedrooms;
+    public javax.swing.JTextField txtDeposit;
+    public javax.swing.JTextArea txtDescription;
+    public javax.swing.JTextField txtPropTitle;
+    public javax.swing.JTextField txtRent;
     // End of variables declaration//GEN-END:variables
 }

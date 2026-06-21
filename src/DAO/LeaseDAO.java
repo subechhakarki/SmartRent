@@ -1,6 +1,6 @@
 package DAO;
 
-import database.DatabaseConnection;
+import database.mySQLConnection;
 import Model.Lease;
 
 import java.sql.Connection;
@@ -13,8 +13,8 @@ import java.util.List;
 public class LeaseDAO {
 
     public boolean createLease(Lease lease) {
-        Connection conn = DatabaseConnection.getConnection();
-        if (conn == null) return true;
+        Connection conn = mySQLConnection.getConnection();
+        if (conn == null) return false;
         String query = "INSERT INTO leases (application_id, property_id, renter_id, owner_id, monthly_rent, deposit, start_date, end_date, terms, status) " +
                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(query, java.sql.Statement.RETURN_GENERATED_KEYS)) {
@@ -46,25 +46,8 @@ public class LeaseDAO {
 
     public List<Lease> getLeasesByOwner(int ownerId) {
         List<Lease> list = new ArrayList<>();
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) {
-            if (ownerId == 6) {
-                Lease l = new Lease();
-                l.setLeaseId(1);
-                l.setApplicationId(1);
-                l.setPropertyId(1);
-                l.setRenterId(7);
-                l.setOwnerId(ownerId);
-                l.setMonthlyRent(45000.0);
-                l.setDeposit(90000.0);
-                l.setStartDate(new java.util.Date());
-                l.setEndDate(new java.util.Date(System.currentTimeMillis() + 365L * 24 * 60 * 60 * 1000));
-                l.setTerms("Standard 1-year residential lease agreement.");
-                l.setStatus("ACTIVE");
-                l.setPropertyTitle("Lakeside Apartment");
-                l.setRenterName("Jane Renter");
-                list.add(l);
-            }
             return list;
         }
         String query = "SELECT l.*, p.title as property_title, u.full_name as renter_name " +
@@ -86,25 +69,8 @@ public class LeaseDAO {
 
     public List<Lease> getLeasesByRenter(int renterId) {
         List<Lease> list = new ArrayList<>();
-        Connection conn = DatabaseConnection.getConnection();
+        Connection conn = mySQLConnection.getConnection();
         if (conn == null) {
-            if (renterId == 7) {
-                Lease l = new Lease();
-                l.setLeaseId(1);
-                l.setApplicationId(1);
-                l.setPropertyId(1);
-                l.setRenterId(renterId);
-                l.setOwnerId(6);
-                l.setMonthlyRent(45000.0);
-                l.setDeposit(90000.0);
-                l.setStartDate(new java.util.Date());
-                l.setEndDate(new java.util.Date(System.currentTimeMillis() + 365L * 24 * 60 * 60 * 1000));
-                l.setTerms("Standard 1-year residential lease agreement.");
-                l.setStatus("ACTIVE");
-                l.setPropertyTitle("Lakeside Apartment");
-                l.setOwnerName("John Owner");
-                list.add(l);
-            }
             return list;
         }
         String query = "SELECT l.*, p.title as property_title, u.full_name as owner_name " +
